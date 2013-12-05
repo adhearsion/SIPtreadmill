@@ -1,0 +1,34 @@
+- content_for(:page_icon) { "icon-group" }
+- content_for(:page_title) { "Listing Users" }
+= render "layouts/page_header"
+.container-fluid.padded
+  .row-fluid
+    .span12
+      .box
+        .box-header
+          %span.title Users
+        .box-content
+          %table.table.table-normal
+            %thead
+              %tr
+                %td First Name
+                %td Last Name
+                %td Email
+                %td Phone Number
+                %td Admin?
+                %td.action-header
+
+            %tbody
+            - @users.each do |user|
+              %tr
+                %td= user.first_name
+                %td= user.last_name
+                %td= user.email
+                %td= user.phone_number
+                %td.centered= render "partials/bool_badge", :check_val => user.admin
+                %td
+                  .btn-group
+                    = link_to '', user, class: 'btn btn-info icon-eye-open', title: 'Show'
+                    = link_to '', edit_user_path(user), class: 'btn btn-warning icon-edit', title: 'Edit'
+          .table-footer
+            = paginate @users, theme: 'table'

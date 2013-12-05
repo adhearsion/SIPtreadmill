@@ -1,0 +1,111 @@
+- content_for(:page_icon) { "icon-rocket" }
+- content_for(:page_title) { "Listing Test Runs" }
+= render "layouts/page_header"
+#page_test_run.container-fluid.padded
+  .row-fluid
+    .span12
+      .box
+        .box-header
+          %span.title Test Runs
+          %ul.box-toolbar
+            %li= link_to "", new_test_run_path, class: 'btn btn-success icon-plus', title: 'Create new'
+        .box-content.data-grid
+          %table.table.datatable.table-normal
+            %thead
+              %tr
+                %td Name
+                %td Description
+                %td Sender scenario
+                %td Registration scenario
+                %td Receiver scenario
+                %td Profile
+                %td Target
+                %td Created On
+                %td Updated On
+                %td{"style" => "padding-right:5px;"} Status
+                - if current_user.admin_mode
+                  %td Owned by
+                %td.action-header
+
+            %tbody
+            - @test_runs.each do |test_run|
+              %tr
+                %td= test_run.name
+                %td= test_run.description
+                %td= link_to(test_run.scenario_name, test_run.scenario) if test_run.scenario
+                %td= link_to(test_run.registration_scenario.name, test_run.registration_scenario) if test_run.registration_scenario
+                %td= link_to(test_run.receiver_scenario.name, test_run.receiver_scenario) if test_run.receiver_scenario
+                %td= link_to test_run.profile_name, test_run.profile
+                %td= link_to test_run.target_name, test_run.target
+                %td
+                  %a{"sort" => test_run.created_at, "data-original-title" => test_run.created_at.to_s(:long_ordinal), "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => ""}
+                    = time_ago_in_words(test_run.created_at) + " ago"
+                - if test_run.created_at != test_run.updated_at
+                  %td
+                    %a{"sort" => test_run.updated_at, "data-original-title" => test_run.updated_at.to_s(:long_ordinal), "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => ""}
+                      = time_ago_in_words(test_run.updated_at) + " ago"
+                - else
+                  %td
+                    %a{"sort" => test_run.created_at} -
+                %td= status_label test_run.state
+                - if current_user.admin_mode
+                  %td= test_run.user.full_name if test_run.user
+                %td
+                  .btn-group
+                    = link_to '', test_run, class: 'btn btn-info icon-eye-open', title: 'Show'
+                    = link_to '', edit_test_run_path(test_run), class: 'btn btn-warning icon-edit', title: 'Edit'
+                    = link_to '', "/test_runs/#{test_run.id}/copy", class: 'btn alert-info icon-copy', title: "Clone"
+                    = link_to '', test_run, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger icon-trash', title: 'Delete'
+          .table-footer
+
+:javascript
+  $(function() {
+    $('.datatable').dataTable({
+      "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+      "sPaginationType": "bootstrap",
+      "bDestroy": true,
+      "bStateSave": true,
+      "bAutoWidth": false,
+      "aoColumns": [
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        { "sType": "custom_date" },
+        { "sType": "custom_date" },
+        { "bSortable": false },
+        #{"{}," if current_user.admin_mode}
+        { "bSortable": false }
+      ],
+      "aaSorting": [[8, "asc"]]
+    });
+  });
+
+  jQuery.fn.dataTableExt.oSort['custom_date-asc'] = function(x, y) {
+    var dateX = new Date($(x).attr('sort'));
+    var dateY = new Date($(y).attr('sort'));
+    if(+dateX > +dateY) {
+      return -1;
+    } else if(+dateX < +dateY) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
+  jQuery.fn.dataTableExt.oSort['custom_date-desc'] = function(x, y) {
+    var dateX = new Date($(x).attr('sort'));
+    var dateY = new Date($(y).attr('sort'));
+    if(+dateX > +dateY) {
+      return 1;
+    } else if(+dateX < +dateY) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+
+

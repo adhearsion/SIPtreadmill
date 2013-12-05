@@ -1,0 +1,26 @@
+- content_for(:page_icon) { "icon-bullseye" }
+- content_for(:page_title) { "Showing Target" }
+- content_for(:page_subtitle) { "#{@target.name}"}
+= render "layouts/page_header"
+.container-fluid.padded
+  .row-fluid
+    .span6
+      .box
+        .box-header
+          %span.title= @target.name
+          %ul.box-toolbar
+            %li= link_to '', targets_path, class: 'btn btn-primary icon-list', title: 'List'
+            %li= link_to '', edit_target_path(@target), class: 'btn btn-warning icon-edit', title: 'Edit'
+            %li= link_to '', @target, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger icon-trash', title: 'Delete'
+        .box-content.padded
+          %dl
+            %dt Name
+            %dd= @target.name
+            %dt Address
+            %dd= @target.address
+            %dt SSH Username
+            %dd= @target.ssh_username
+            - if current_user.admin_mode
+              %dt Owned by
+              %dd= @target.user.full_name if @target.user
+

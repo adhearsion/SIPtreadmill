@@ -1,0 +1,15 @@
+common: &common
+  adapter: postgresql
+  username: sip_treadmill
+  password: super_secret
+  host: 127.0.0.1
+  port: 5432
+  template: template0
+
+development:
+  <<: *common
+  database: treadmill_dev
+
+test:
+  <<: *common
+  database: treadmill_test

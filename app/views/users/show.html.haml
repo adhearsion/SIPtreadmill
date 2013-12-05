@@ -1,0 +1,39 @@
+- content_for(:page_icon) { "icon-group" }
+- content_for(:page_title) { "Showing User" }
+- content_for(:page_subtitle) { "#{@user.first_name} #{@user.last_name}"}
+= render "layouts/page_header"
+.container-fluid.padded
+  .row-fluid
+    .span6
+      .box
+        .box-header
+          %span.title= "#{@user.first_name} #{@user.last_name}"
+          %ul.box-toolbar
+            %li= link_to '', users_path, class: 'btn btn-primary icon-list', title: 'List'
+            %li= link_to '', edit_user_path(@user), class: 'btn btn-warning icon-edit', title: 'Edit'
+        .box-content.padded
+          %dl
+            %dt First Name
+            %dd= @user.first_name
+            %dt Last name
+            %dd= @user.last_name
+            %dt Email
+            %dd= @user.email
+            %dt Phone number
+            %dd= @user.phone_number
+            %dt Admin?
+            %dd= render "partials/bool_badge", :check_val => @user.admin
+    .span6
+      .box
+        .box-header
+          %span.title Statistics
+        .box-content.padded
+          %dl
+            %dt Test Runs
+            %dd= @user.test_runs.count
+            %dt Scenarios
+            %dd= @user.scenarios.count
+            %dt Profiles
+            %dd= @user.profiles.count
+            %dt Targets
+            %dd= @user.targets.count

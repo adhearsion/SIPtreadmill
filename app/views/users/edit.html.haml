@@ -1,0 +1,21 @@
+- content_for(:page_icon) { "icon-group" }
+- content_for(:page_title) { "Editing User" }
+- content_for(:page_subtitle) { "#{@user.first_name} #{@user.last_name}"}
+= render "layouts/page_header"
+.container-fluid.padded
+  .row-fluid
+    .span12
+      .box
+        .box-header
+          %span.title= "#{@user.first_name} #{@user.last_name}"
+          %ul.box-toolbar
+            %li= link_to '', :back, class: 'btn btn-primary icon-arrow-left', title: 'Back'
+            %li= link_to '', @user, class: 'btn btn-info icon-eye-open', title: 'Show'
+        .box-content.padded-top
+          = simple_form_for(@user, :html => {:class => 'form-horizontal' }) do |f|
+            = f.error_notification
+            .form-inputs
+              = f.input :admin
+            .form-actions
+              = f.button :submit, class: 'btn-default'
+

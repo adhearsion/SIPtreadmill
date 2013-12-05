@@ -1,0 +1,42 @@
+- content_for(:page_icon) { "icon-list" }
+- content_for(:page_title) { "Showing Scenario" }
+- content_for(:page_subtitle) { "#{@scenario.name}"}
+= render "layouts/page_header"
+:javascript
+  SyntaxHighlighter.all();
+.container-fluid.padded
+  .row-fluid
+    .span6
+      .box
+        .box-header
+          %span.title= @scenario.name
+          %ul.box-toolbar
+            %li= link_to '', scenarios_path, class: 'btn btn-primary icon-list', title: 'List'
+            %li= link_to '', edit_scenario_path(@scenario), class: 'btn btn-warning icon-edit', title: 'Edit'
+            %li= link_to '', @scenario, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger icon-trash', title: 'Delete'
+        .box-content.padded
+          %dl
+            %dt Name
+            %dd= @scenario.name
+            %dt Type
+            %dd= @scenario.receiver ? 'Receiver' : 'Sender'
+            - if @scenario.sippy_cup_scenario.nil? || @scenario.sippy_cup_scenario.empty?
+              %dt SIPp XML
+              %dd
+                - if @scenario.sipp_xml.nil? || @scenario.sipp_xml.empty?
+                  None supplied.
+                - else
+                  %pre{class: "brush:xml;"}= @scenario.sipp_xml
+              %dt CSV Data
+              %dd
+                - if @scenario.csv_data.nil? || @scenario.csv_data.empty?
+                  None supplied.
+                - else
+                  %pre= @scenario.csv_data
+            - else
+              %dt SippyCup Scenario
+              %pre
+                %dd= @scenario.sippy_cup_scenario
+            - if current_user.admin_mode
+              %dt Owned by
+              %dd= @scenario.user.full_name if @scenario.user

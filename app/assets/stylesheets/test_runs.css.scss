@@ -1,0 +1,21 @@
+#page_test_run {
+	form.test-run-form label {
+	  padding-right: 20px;
+	}
+
+	form.test-run-form .instructions {
+	  width: 49%;
+	}
+
+	form.test-run-form .row {
+	  margin-left: 0;
+		.help-inline.instructions {
+			vertical-align: top;
+		}
+	}
+
+	.ajax_display_data h6, .ajax_display_data p {
+		display: inline-block;
+		margin: 0;
+	}
+}

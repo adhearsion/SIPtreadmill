@@ -1,0 +1,6 @@
+%header.navbar.navbar-top.navbar-inverse
+  %nav.navbar-inner
+    .container-fluid
+      - if user_signed_in?
+        %ul.nav.pull-right
+          %li= link_to "Logged in as #{current_user.first_name} #{current_user.last_name}", '#'

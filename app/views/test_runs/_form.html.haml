@@ -1,0 +1,58 @@
+= simple_form_for(@test_run, :html => {:class => 'test-run-form'}) do |f|
+  = f.error_notification
+  .form-inputs.container-fluid.padded
+    .row-fluid
+      .span12
+        = f.label :name
+        = f.input_field :name
+        %span.help-inline.instructions
+          Give your new test run a name so you can refer to it in the future.
+    .row-fluid
+      .span12
+        = f.label :description
+        = f.input_field :description, :cols => 80, :rows => 3
+        %span.help-inline.instructions
+          Briefly describe this test. Note especially whether this is a baseline run, or note what changes you have made to the system under test. These notes will help when comparing test runs in the future.
+    .row-fluid
+      .span12
+        = f.label :scenario, label: "Sender scenario"
+        = f.input_field :scenario, collection: Scenario.where(receiver: false).order(:name).all, id: "test_run_scenario_id", name: "test_run[scenario_id]", selected: @test_run.scenario_id, include_blank: true
+        %span#sender_scenario_display.help-inline.instructions
+    .row-fluid
+      .span12
+        = f.label :receiver_scenario
+        = f.input_field :receiver_scenario, collection: Scenario.where(receiver: true).order(:name).all, id: "test_run_receiver_scenario_id", name: "test_run[receiver_scenario_id]", selected: @test_run.receiver_scenario_id, include_blank: true
+        %span#receiver_scenario_display.help-inline.instructions
+    .row-fluid
+      .span12
+        = f.label :profile, for: "test_run_profile_id"
+        = f.input_field :profile, collection: Profile.order(:name).all, id: "test_run_profile_id", name: "test_run[profile_id]", selected: @test_run.profile_id, include_blank: true
+        %span#profile_display.help-inline.instructions.ajax_display_data
+    .row-fluid
+      .span12
+        = f.label :target, for: "test_run_target_id"
+        = f.input_field :target, collection: current_user.targets.order(:name).all, id: "test_run_target_id", name: "test_run[target_id]", selected: @test_run.target_id, :include_blank => true
+        %span#target_display.help-inline.instructions.ajax_display_data
+  .form-actions
+    = f.button :submit, class: 'btn-default'
+#new_scenario.modal.hide.fade{:tabindex => "-1"}
+  .modal-header
+    %button.close{"data-dismiss" => "modal", type: 'button'} &times;
+    %h3.modal-title New Scenario
+  .modal-body
+    .modal-body-content
+      = render :template => 'scenarios/_form', locals: {remote: true, use_json: true, type_as_hidden: true}
+#new_profile.modal.hide.fade{:tabindex => "-1"}
+  .modal-header
+    %button.close{"data-dismiss" => "modal", type: 'button'} &times;
+    %h3.modal-title New Profile
+  .modal-body
+    .modal-body-content
+      = render :template => 'profiles/_form', locals: {remote: true, use_json: true}
+#new_target.modal.hide.fade{:tabindex => "-1"}
+  .modal-header
+    %button.close{"data-dismiss" => "modal", type: 'button'} &times;
+    %h3.modal-title New Target
+  .modal-body
+    .modal-body-content
+      = render :template => 'targets/_form', locals: {remote: true, use_json: true}

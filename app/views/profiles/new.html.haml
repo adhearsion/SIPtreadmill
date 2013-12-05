@@ -1,0 +1,13 @@
+- content_for(:page_icon) { "icon-bar-chart" }
+- content_for(:page_title) { "Creating New Profile" }
+= render "layouts/page_header"
+.container-fluid.padded
+  .row-fluid
+    .span12
+      .box
+        .box-header
+          %span.title New Profile
+          %ul.box-toolbar
+            %li= link_to '', :back, class: 'btn btn-primary icon-arrow-left', title: 'Back'
+        .box-content.padded-top
+          = render 'form'

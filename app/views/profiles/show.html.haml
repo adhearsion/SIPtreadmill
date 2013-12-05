@@ -1,0 +1,29 @@
+- content_for(:page_icon) { "icon-bar-chart" }
+- content_for(:page_title) { "Showing Profile" }
+- content_for(:page_subtitle) { "#{@profile.name}"}
+= render "layouts/page_header"
+.container-fluid.padded
+  .row-fluid
+    .span6
+      .box
+        .box-header
+          %span.title= @profile.name
+          %ul.box-toolbar
+            %li= link_to '', profiles_path, class: 'btn btn-primary icon-list', title: 'List'
+            %li= link_to '', edit_profile_path(@profile), class: 'btn btn-warning icon-edit', title: 'Edit'
+            %li= link_to '', @profile, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger icon-trash', title: 'Delete'
+        .box-content.padded
+          %dl
+            %dt Name
+            %dd= @profile.name
+            %dt Max calls
+            %dd= @profile.max_calls
+            %dt Calls per second
+            %dd= @profile.calls_per_second
+            %dt Max concurrent
+            %dd= @profile.max_concurrent
+            - if current_user.admin_mode
+              %dt Owned by
+              %dd= @profile.user.full_name if @profile.user 
+            %dt Transport type
+            %dd= @profile.transport_type.text

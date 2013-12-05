@@ -1,0 +1,88 @@
+$attblue: #22a9d5;
+
+body .modal {
+  width: 700px;
+  margin-left: -350px;
+}
+
+.blue_strip {
+  @include linear-gradient(lighten($attblue, 10%), darken($attblue, 10%));
+  color: #fff;
+  height: 31px;
+  padding-top: 10px;
+  position: relative;
+  border-bottom: 1px solid darken($attblue, 50%);
+}
+
+.blue_strip h1 {
+  position: relative;
+  margin-left: 20px;
+  font-size: 30px;
+  line-height: 1em;
+  padding: 0;
+  top: -15px;
+  color: #fff;
+}
+.blue_strip i.header-icon{
+  font-size: 30px;
+  line-height: 1em;
+  color: #fff;
+}
+
+form .instructions {
+  font-style: italic;
+  color: #666;
+}
+
+.hidden {
+  visibility: visible;
+}
+
+.loggedinas {
+
+}
+
+.dashboard-stats .glyph-red {
+  border: 1px solid #de7e6d;
+  color: #7d2a1c;
+  background: #e8a397;
+}
+
+.dashboard-stats .glyph-green {
+  border: 1px solid #97cc2e;
+  color: #2b3a0d;
+  background: #acd954;
+}
+
+.action-header {
+  width: 130px;
+}
+
+.padded-top {
+  padding-top: 20px;
+}
+
+div.uploader {
+  width: 300px;
+}
+
+.centered {
+  text-align: center;
+}
+
+.color-ok {
+  color: #0c0;
+}
+
+.color-ko {
+  color: #c00;
+}
+
+.help-inline.instructions {
+	vertical-align: top;
+}
+
+.ajax_display_data h6, .ajax_display_data p {
+	display: inline-block;
+	margin: 0;
+}

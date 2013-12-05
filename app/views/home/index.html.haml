@@ -1,0 +1,66 @@
+- if user_signed_in?
+  - content_for(:page_title) { "Dashboard" }
+  - content_for(:page_icon) { "icon-dashboard" }
+  - content_for(:page_subtitle) { "Welcome, #{current_user.first_name}"}
+- else
+  - content_for(:page_title) { "Authentication required" }
+  - content_for(:page_icon) { "icon-lock" }
+= render "layouts/page_header"
+- if user_signed_in?
+  .container-fluid.padded
+    .row-fluid
+      .span6
+        .box
+          .box-header
+            %span.title= "Queue summary"
+          .box-content.padded
+            .row-fluid
+              .span12.separate-sections{:style => "margin-top: 5px;"}
+                .row-fluid
+                  .span12
+                    .dashboard-stats
+                      %ul.inline
+                        %li.glyph
+                          %i.icon-bolt.icon-2x
+                        %li.count= @stats.enqueued
+                      .stats-label Queued jobs
+                .row-fluid{:style => "margin-top:30px;"}
+                  .span4
+                    .dashboard-stats.small
+                      %ul.inline
+                        %li.glyph
+                          %i.icon-list
+                        %li.count= @stats.processed
+                      .stats-label Processed jobs
+                  .span4
+                    .dashboard-stats.small
+                      %ul.inline
+                        %li.glyph.glyph-green
+                          %i.icon-ok
+                        %li.count= @stats.processed - @stats.failed
+                      .stats-label Successful jobs
+                  .span4
+                    .dashboard-stats.small
+                      %ul.inline
+                        %li.glyph.glyph-red
+                          %i.icon-remove
+                        %li.count= @stats.failed
+                      .stats-label Failed Jobs
+      .row-fluid
+        .span6
+          .box
+            .box-header
+              %span.title= "Completed Test Runs by Day"
+            .box-content.padded{:style => "margin-top: 12px"}
+              #testRunGraph
+                %svg
+  :javascript
+    $(function() {
+      drawRunsCompleted(#{get_completed_test_runs}, '#testRunGraph');
+    });
+
+- else
+  .container-fluid.padded
+    .row-fluid
+      .span12
+        %p= link_to 'Log In', user_omniauth_authorize_path(:att), class: "btn btn-success"

@@ -1,0 +1,52 @@
+- content_for(:page_icon) { "icon-bullseye" }
+- content_for(:page_title) { "Listing Targets" }
+= render "layouts/page_header"
+.container-fluid.padded
+  .row-fluid
+    .span12
+      .box
+        .box-header
+          %span.title Targets
+          %ul.box-toolbar
+            %li= link_to "", new_target_path, class: 'btn btn-success icon-plus', title: 'Create new'
+        .box-content.data-grid
+          %table.table.datatable.table-normal
+            %thead
+              %tr
+                %td Name
+                %td Address
+                %td SSH Username
+                - if current_user.admin_mode
+                  %td Owned by
+                %td.action-header
+
+            %tbody
+            - @targets.each do |target|
+              %tr
+                %td= target.name
+                %td= target.address
+                %td= target.ssh_username
+                - if current_user.admin_mode
+                  %td= target.user.full_name if target.user
+                %td
+                  .btn-group
+                    = link_to '', target, class: 'btn btn-info icon-eye-open', title: 'Show'
+                    = link_to '', edit_target_path(target), class: 'btn btn-warning icon-edit', title: 'Edit'
+                    = link_to '', target, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger icon-trash', title: 'Delete'
+          .table-footer
+
+:javascript
+  $(function() {
+    $('.datatable').dataTable({
+      "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+      "sPaginationType": "bootstrap",
+      "bDestroy": true,
+      "bStateSave": true,
+      "bAutoWidth": false,
+      "aoColumns": [
+        {},
+        {},
+        { "bSortable": false }
+      ]
+    });
+  });

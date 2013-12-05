@@ -1,0 +1,184 @@
+= simple_form_for(@scenario, remote: local_assigns[:remote], format: local_assigns[:use_json] ? :json : :html) do |f|
+  = f.error_notification
+  .form-inputs.container-fluid.padded
+    .row-fluid
+      .span4
+        = f.input :name
+      .span8
+        %span.help-inline.instructions
+          Give your new scenario a name so you can refer to it in the future.
+    .row-fluid
+      .span12
+        - if local_assigns[:type_as_hidden]
+          = f.label :receiver, id: "scenario_receiver_label"
+          = f.input_field :receiver, as: :hidden
+        - else
+          = f.input :receiver, :label => false, :inline_label => true
+    .row-fluid
+      .span12
+        = f.label :description
+        = f.input_field :description, :cols => 80, :rows => 3
+        %span.help-inline.instructions
+          Briefly describe this scenario.
+    .row-fluid.type-control
+      .span12
+        %label.control-label Scenario type
+        %label.radio.inline.control-label
+          - if @scenario.sippy_cup_scenario.nil? || @scenario.sippy_cup_scenario.blank?
+            %input{ type: "radio", value: "sippy_cup", name: "type", id: "scenario_type_sippy_cup"}
+          - else
+            %input{ type: "radio", value: "sippy_cup", name: "type", id: "scenario_type_sippy_cup", checked: "checked"}
+          Sippy Cup
+        %label.radio.inline.control-label
+          - if @scenario.sipp_xml.nil? || @scenario.sipp_xml.blank?
+            %input{ type: "radio", value: "sipp_xml", name: "type", id: "scenario_type_sipp_xml"}
+          - else
+            %input{ type: "radio", value: "sipp_xml", name: "type", id: "scenario_type_sipp_xml", checked: "checked"}
+          SIPp XML
+    .row-fluid
+      #scenario_type_form_row.span12{style: "#{!@scenario.sippy_cup_scenario.nil? || !@scenario.sippy_cup_scenario.blank? || !@scenario.sipp_xml.nil? || !@scenario.sipp_xml.blank? ? 'display:block;' : 'display: none;'}"}
+        #sippyCupForm{style: "#{@scenario.sippy_cup_scenario.nil? || @scenario.sippy_cup_scenario.blank? ? 'display: none;' : 'display: block;'}"}
+          .span4
+            = f.input :sippy_cup_scenario, wrapper_html: { id: "sippyCupScenario" }
+          .span8{style: "overflow: auto;"}
+            %p A SippyCup scenario is comprised of commands, one per line, like this:
+            %pre="invite\nstep2 argument_to_step2\nstep3\nstep4"
+            %p Some of the commands (steps) available are:
+            %dl
+              %dt invite
+              %dd send a SIP invite (starts a call)
+              %dt wait_for_answer
+              %dd wait for the remote end to answer the call
+              %dt ack_answer
+              %dd send a SIP ACK in response to the answer (required if receiving an answer)
+              %dt sleep &lt;seconds&gt;
+              %dd signals SIPp to wait for the specified number of seconds, generates PCAP silence for this duration
+              %dt send_digits &lt;digits, #, or *&gt;
+              %dd send the supplied digits as DTMF
+              %dt send_bye
+              %dd Sends a SIP BYE (hangup). Should be followed by receive_200
+              %dt wait_for_hangup
+              %dd Waits for a SIP BYE (hangup), then sends a SIP 200 (OK) in response
+            %p
+              For more information, please see the documentation on the
+              %a{ href: "http://bklang.github.io/sippy_cup" } SippyCup Website
+          .clearfix
+        #sippForm{style: "#{@scenario.sipp_xml.nil? || @scenario.sipp_xml.blank? ? 'display: none;' : 'display: block;'}"}
+          .row-fluid
+            .span4
+              = f.label :sipp_xml, label: "SIPp XML"
+              = f.input_field :sipp_xml
+              = f.input :pcap_audio
+              = f.input :csv_data
+              = f.hidden_field :pcap_audio_cache
+            .span8
+              %dl
+                %dt SIPp XML
+                %dd Use #{Scenario::PCAP_PLACEHOLDER} as a placeholder for the PCAP file path in the XML.
+                %dt CSV Data
+                %dd If CSV data is supplied, it will be passed to SIPp using the -inf option.
+    .row-fluid{id: "reg_scenario_form", style: "#{@scenario.receiver ? 'display:block;' : 'display:none'}"}
+      .span12
+        %h4 Registration Scenario
+      .row-fluid{ id: "registration_scenario_name", style: "display:none;"}
+        .span12
+          = f.input :name, input_html: {name: "registration_scenario[name]", id: "registration_scenario_name", value: @registration_scenario.name }
+      .row-fluid.type-control
+        .span12
+          %label.control-label Scenario type
+          %label.radio.inline.control-label
+          - if @scenario.sippy_cup_scenario.nil? || @scenario.sippy_cup_scenario.blank?
+            %input{ type: "radio", value: "sippy_cup", name: "type_2", id: "registration_type_sippy_cup"}
+          - else
+            %input{ type: "radio", value: "sippy_cup", name: "type_2", id: "registration_type_sippy_cup", checked: "checked"}
+          Sippy Cup
+          %label.radio.inline.control-label
+          - if @scenario.sipp_xml.nil? || @scenario.sipp_xml.blank?
+            %input{ type: "radio", value: "sipp_xml", name: "type_2", id: "registration_type_sipp_xml"}
+          - else
+            %input{ type: "radio", value: "sipp_xml", name: "type_2", id: "registration_type_sipp_xml", checked: "checked"}
+          SIPp XML
+      .row-fluid#scenario_type_form_row_2{style: "#{!@registration_scenario.sippy_cup_scenario.nil? || !@registration_scenario.sippy_cup_scenario.blank? || !@registration_scenario.sipp_xml.nil? || !@registration_scenario.sipp_xml.blank? ? 'display:block;' : 'display: none;'}"}
+        .span12
+          #sippyCupForm_2{style: "#{@registration_scenario.sippy_cup_scenario.nil? || @registration_scenario.sippy_cup_scenario.blank? ? 'display: none;' : 'display: block;'}"}
+            .row-fluid
+              .span4
+                = f.input :sippy_cup_scenario, wrapper_html: { id: "sippyCupScenario" }, input_html: { name: "registration_scenario[sippy_cup_scenario]", id: "registration_scenario_sippy_cup_scenario", value: @registration_scenario.sippy_cup_scenario }
+              .span8{style: "overflow: auto;"}
+                %p A SippyCup scenario is comprised of commands, one per line, like this:
+                %pre="invite\nstep2 argument_to_step2\nstep3\nstep4"
+                %p Some of the commands (steps) available are:
+                %dl
+                  %dt invite
+                  %dd send a SIP invite (starts a call)
+                  %dt wait_for_answer
+                  %dd wait for the remote end to answer the call
+                  %dt ack_answer
+                  %dd send a SIP ACK in response to the answer (required if receiving an answer)
+                  %dt sleep &lt;seconds&gt;
+                  %dd signals SIPp to wait for the specified number of seconds, generates PCAP silence for this duration
+                  %dt send_digits &lt;digits, #, or *&gt;
+                  %dd send the supplied digits as DTMF
+                  %dt send_bye
+                  %dd Sends a SIP BYE (hangup). Should be followed by receive_200
+                  %dt wait_for_hangup
+                  %dd Waits for a SIP BYE (hangup), then sends a SIP 200 (OK) in response
+                %p
+                  For more information, please see the documentation on the
+                  %a{ href: "http://bklang.github.io/sippy_cup" } SippyCup Website
+              .clearfix
+          #sippForm_2{style: "#{@registration_scenario.sipp_xml.nil? || @registration_scenario.sipp_xml.blank? ? 'display: none;' : 'display: block;'}"}
+            .row-fluid
+              .span4
+                = f.input :sipp_xml, input_html: {name: "registration_scenario[sipp_xml]", id: "registration_scenario_sipp_xml", value: @registration_scenario.sipp_xml }
+                = f.input :pcap_audio, input_html: {name: "registration_scenario[pcap_audio]", value: @registration_scenario.pcap_audio }
+                = f.input :csv_data, input_html: { name: "registration_scenario[csv_data]", value: @registration_scenario.csv_data }
+                = f.hidden_field :pcap_audio_cache, input_html: { name: "registration_scenario[pcap_audio_cache]", value: @registration_scenario.pcap_audio_cache }
+              .span8
+                %dl
+                  %dt SIPp XML
+                  %dd Use #{Scenario::PCAP_PLACEHOLDER} as a placeholder for the PCAP file path in the XML.
+                  %dt CSV Data
+                  %dd If CSV data is supplied, it will be passed to SIPp using the -inf option.  
+
+  .form-actions.span12
+    = f.button :submit, class: 'btn-default'
+
+:javascript
+  $(document).ready(function(){
+    var receiver_toggle = $("#scenario_receiver");
+    if(receiver_toggle.prop("checked")) {
+      $("#registrationHeader").show();
+      $("#registration_scenario").show();
+      $("#registration_scenario_name").show();
+    }
+  });
+  $("#scenario_receiver").click(function() {
+    $("#registrationHeader").toggle(this.checked);
+    $("#registration_scenario").toggle(this.checked);
+    $("#registration_scenario_name").toggle(this.checked);
+  });
+  $("#sipp").on('click', function() {
+    $("#sippyCup").removeClass("active");
+    $("#sipp").addClass("active");
+    $("#sippyCupForm").hide();
+    $("#sippForm").show();
+  });
+  $("#sippyCup").on('click', function() {
+    $("#sippyCup").addClass("active");
+    $("#sipp").removeClass("active");
+    $("#sippyCupForm").show();
+    $("#sippForm").hide();
+  });
+  $("#sipp2").on('click', function() {
+    $("#sippyCup2").removeClass("active");
+    $("#sipp2").addClass("active");
+    $("#sippyCupForm2").hide();
+    $("#sippForm2").show();
+  });
+  $("#sippyCup2").on('click', function() {
+    $("#sippyCup2").addClass("active");
+    $("#sipp2").removeClass("active");
+    $("#sippyCupForm2").show();
+    $("#sippForm2").hide();
+  });

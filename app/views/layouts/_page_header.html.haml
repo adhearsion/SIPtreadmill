@@ -1,0 +1,25 @@
+.row-fluid
+  .area-top.clearfix
+    .pull-left.header
+      %h3.title
+        %i{class: content_for?(:page_icon) ? content_for(:page_icon) : 'icon-table'}
+        - if content_for?(:page_title)
+          = yield(:page_title)
+        - else
+          Page title
+      - if content_for?(:page_subtitle)
+        %h5
+          = yield(:page_subtitle)
+    .pull-right.inline.loggedinas
+      - if user_signed_in?
+        %p
+          Logged in as
+          %strong= "#{current_user.first_name} #{current_user.last_name}"
+        - if current_user.admin
+          -if current_user.admin_mode
+            %p= link_to 'Disable admin mode', home_toggle_admin_path, class: 'btn btn-mini btn-danger', method: :post
+          -else
+            %p= link_to 'Enable admin mode', home_toggle_admin_path, class: 'btn btn-mini btn-success', method: :post
+.row-fluid
+  .padded
+    = render 'layouts/messages'

@@ -1,0 +1,196 @@
+# Place all the behaviors and hooks related to the matching controller here.
+# All this logic will automatically be available in application.js.
+# You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
+
+jQuery ->
+  addSpacer = (select_node) ->
+    spacer = $(document.createElement('option'));
+    spacer.append(document.createTextNode('---------------'));
+    spacer.attr('disabled', 'disabled');
+    select_node.append(spacer);
+
+  addCreator = (select_node) ->
+    creator = $(document.createElement('option'));
+    creator.append(document.createTextNode('Create new...'));
+    creator.val('__create')
+    select_node.append(creator);
+
+  addOptions = (name) ->
+    select_node = $('#test_run_'+name+'_id')
+    addSpacer(select_node);
+    addCreator(select_node);
+    select_node.change ->
+      setCurrentCaller name
+      if select_node.val() == '__create'
+        $('#new_'+getFormName(name)).modal()
+        switch name
+          when 'scenario'
+            $('#scenario_receiver_label').html('Sender Scenario')
+            $('#scenario_receiver').val(false)
+          when 'receiver_scenario'
+            $('#scenario_receiver_label').html('Receiver Scenario')
+            $('#scenario_receiver').val(true)
+
+  addCallback = (name) ->
+    $('#new_'+getFormName(name)).bind 'ajax:complete', (evt, xhr, status) ->
+      switch xhr.status
+        when 422
+          attachErrors(name, $.parseJSON(xhr.responseText))
+        when 201
+          reloadOptions(name)
+          $('#new_'+getFormName(name)).modal('hide')
+          $('#new_'+getFormName(name)).find('form')[0].reset();
+        else console.log("status #{xhr.status} not recognized")
+
+  reloadOptions = (name) ->
+    $.ajax "/#{getFormName(name)}s.json",
+      dataType: "json",
+      data: {type: getCurrentCaller()},
+      success: (data, status, xhr) ->
+        select_node = $('#test_run_'+getCurrentCaller()+'_id')
+        select_node.empty()
+        highest_id = 0
+        for item in data
+          select_node.append("<option value=\"#{item.id}\">#{item.name}</option>")
+          highest_id = item.id if item.id > highest_id
+        addSpacer(select_node)
+        addCreator(select_node)
+        select_node.val(highest_id)
+        switch getCurrentCaller()
+          when 'receiver_scenario'
+            showScenario $("#test_run_receiver_scenario_id").val(), "receiver_scenario_display"
+          when 'scenario'
+            showScenario $("#test_run_scenario_id").val(), "sender_scenario_display"
+          when 'profile'
+            showProfile $("#test_run_profile_id").val(), "profile_display"
+          when 'target'
+            showTarget $("#test_run_target_id").val(), "target_display"
+        true
+
+  attachErrors = (name, errors) ->
+    if name == getCurrentCaller()
+      select_node = $('#new_'+getFormName(name))
+      select_node.prepend('<div class="alert alert-error">Please review the problems below:</div>')
+      for col of errors
+        field_node = $(".#{getFormName(name)}_#{col}")
+        field_node.addClass('error')
+        field_node.find('.controls').append('<span class="help-inline">' + errors[col].join(' and ') + '</span>')
+      resetSelectBox
+
+  clearErrors = (name) ->
+    select_node = $('#new_'+getFormName(name))
+    select_node.find('.alert-error').remove()
+    select_node.find('.control-group').removeClass('error')
+    select_node.find('.help-inline').remove()
+
+  bindModal = (name) ->
+    $(".modal").on "hidden", ->
+      clearErrors(name)
+      resetSelectBox(name)
+
+  resetSelectBox = (name) ->
+    select_node = $('#test_run_'+name+'_id')
+    if select_node.val() == '__create'
+      select_node.val('')
+
+  setCurrentCaller = (name) ->
+    window.current_caller = name
+
+  getCurrentCaller = ->
+    window.current_caller
+
+  getFormName = (name) ->
+    if name == 'receiver_scenario' then 'scenario' else name
+
+  setupSelector = (name) ->
+    addOptions(name)
+    addCallback(name)
+    bindModal(name)
+
+  setupSelector('scenario')
+  setupSelector('registration_scenario')
+  setupSelector('receiver_scenario')
+  setupSelector('profile')
+  setupSelector('target')
+
+  # Activate Bootstrap's Tooltip functionality!
+  $('[data-toggle=tooltip]').tooltip();
+
+  # Dynamic profile and target loading.
+  $("#test_run_profile_id").change ->
+    if not $("#test_run_profile_id").val()? or $("#test_run_profile_id").val() is "__create" or $("#test_run_profile_id").val() is ""
+      $("#profile_display").html("")
+    else
+      showProfile $("#test_run_profile_id").val(), "profile_display"
+  $("#test_run_target_id").change ->
+    if not $("#test_run_target_id").val()? or $("#test_run_target_id").val() is "__create" or $("#test_run_target_id").val() is ""
+      $("#target_display").html("")
+    else
+      showTarget $("#test_run_target_id").val(), "target_display"
+
+  showProfile = (profile_id, destination_id) ->
+    if profile_id? and profile_id isnt "" and profile_id isnt false
+      $.ajax
+        type: "GET"
+        dataType: "json"
+        url: "/profiles/" + profile_id + ".json"
+        success: (data) ->
+          transport_code = data.transport_type
+          switch transport_code
+            when "u1"
+              transport_type = "UDP Mono"
+            when "un"
+              transport_type = "UDP Multi"
+            when "t1"
+              transport_type = "TCP Mono"
+            when "tn"
+              transport_type = "TCP Multi"
+            else
+              transport_type = "None given."
+          html = "<h6>Max calls:</h6><p>&nbsp;" + data.max_calls + "</p><br/><h6>Calls per second:</h6><p>&nbsp;" + data.calls_per_second + "</p><br/><h6>Max concurrent:</h6><p>&nbsp;" + data.max_concurrent + "</p><br/><h6>Transport type:</h6><p>&nbsp;" + transport_type
+          $("#" + destination_id).html html
+
+  showTarget = (target_id, destination_id) ->
+    if target_id? and target_id isnt "" and target_id isnt false
+      $.ajax
+        type: "GET"
+        dataType: "json"
+        url: "/targets/" + target_id + ".json"
+        success: (data) ->
+          html = "<h6>Address:</h6><p>&nbsp;" + data.address.replace(/\n/g,"<br/>")
+          $("#" + destination_id).html html
+
+  # Dynamic scenario loading.
+  $("#test_run_scenario_id").change ->
+      if not $("#test_run_scenario_id").val()? or $("#test_run_scenario_id").val() is "__create" or $("#test_run_scenario_id").val() is ""
+        $("#sender_scenario_display").html("")
+      else
+        showScenario $("#test_run_scenario_id").val(), "sender_scenario_display"
+  $("#test_run_receiver_scenario_id").change ->
+    if not $("#test_run_receiver_scenario_id").val()? or $("#test_run_receiver_scenario_id").val() is "__create" or $("#test_run_receiver_scenario_id").val() is ""
+      $("#receiver_scenario_display").html("")
+    else
+      showScenario $("#test_run_receiver_scenario_id").val(), "receiver_scenario_display"
+
+  showScenario = (scenario_id, destination_id) ->
+    if scenario_id
+      $.ajax
+        type: "GET"
+        dataType: "json"
+        url: "/scenarios/" + scenario_id + ".json"
+        success: (data) ->
+          if data.description?
+            $("#" + destination_id).html data.description.replace(/\n/g,"<br/>")
+          else
+            $("#" + destination_id).html "No description provided."
+
+  # On page load, show details.
+  $(document).ready ->
+    if $("#test_run_scenario_id").val()
+      showScenario $("#test_run_scenario_id").val(), "sender_scenario_display"
+    if $("#test_run_receiver_scenario_id").val()
+      showScenario $("#test_run_receiver_scenario_id").val(), "receiver_scenario_display"
+    if $("#test_run_profile_id").val()
+      showProfile $("#test_run_profile_id").val(), "profile_display"
+    if $("#test_run_target_id").val()
+       showTarget $("#test_run_target_id").val(), "target_display"

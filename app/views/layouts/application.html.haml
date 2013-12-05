@@ -1,0 +1,10 @@
+!!!
+%html
+  %head
+    = render 'layouts/head'
+  %body
+    = render 'layouts/blue_strip'
+    = render 'layouts/sidebar'
+    .main-content
+      = yield
+    = render 'layouts/footer'

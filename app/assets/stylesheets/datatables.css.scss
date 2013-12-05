@@ -1,0 +1,57 @@
+.table thead:first-child tr:first-child td {
+	border-top: 1px solid #d0d0d0;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: bold;
+	line-height: 1.4em;
+	position: relative;
+	padding-right: 20px;
+}
+
+table.table.table-normal tbody td {
+	text-align: center;
+}
+
+table.table.table-normal tbody tr td:nth-child(1) {
+	font-weight: bold;
+}
+
+table.table.table-normal tbody tr td:nth-child(2) {
+	text-align: left;
+}
+
+table.table.table-normal tbody tr td:nth-child(8) a, table.table.table-normal tbody tr td:nth-child(9) a {
+	font-style: oblique;
+}
+
+table.table.table-normal tbody tr:last-child {
+	border-bottom: 1px solid #eee;
+}
+
+.dataTables_info {
+	padding-left: 10px;
+}
+
+.dataTables_paginate {
+	padding-right: 10px;
+}
+
+.btn-group {
+	height: 15px;
+}
+
+.dataTables_length, .dataTables_filter {
+	width: 100%;
+}
+
+.dataTables_length > label {
+	margin-left: 10px;
+}
+
+.dataTables_filter > label {
+	margin-right: 10px;
+}
+
+.box-content.data-grid {
+	overflow-x: scroll;
+}

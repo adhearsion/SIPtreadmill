@@ -1,0 +1,15 @@
+- content_for(:page_icon) { "icon-rocket" }
+- content_for(:page_title) { "Creating New Test Run" }
+= render "layouts/page_header"
+#page_test_run.container-fluid.padded
+  .row-fluid
+    .span12
+      .box
+        .box-header
+          %span.title New Test Run
+          %ul.box-toolbar
+            %li= link_to '', :back, class: 'btn btn-primary icon-arrow-left', title: 'Back'
+        .box-content.padded-top
+          = render 'form'
+
+

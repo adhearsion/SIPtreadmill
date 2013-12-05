@@ -1,0 +1,38 @@
+.sidebar-background
+  .primary-sidebar-background
+.primary-sidebar
+  / Main nav
+  %ul.nav.nav-collapse.collapse.nav-collapse-primary
+    - if user_signed_in?
+      %li{class: controller.controller_name == 'home' ? 'active' : ''}
+        %span.glow
+        %a{href: root_path}
+          %i.icon-dashboard.icon-2x
+          %span Dashboard
+
+      %li{class: controller.controller_name == 'test_runs' ? 'active' : ''}
+        %span.glow
+        %a{href: test_runs_path}
+          %i.icon-rocket.icon-2x
+          %span Test Runs
+      %li{class: controller.controller_name == 'scenarios' ? 'active' : ''}
+        %span.glow
+        %a{href: scenarios_path}
+          %i.icon-list.icon-2x
+          %span Scenarios
+      %li{class: controller.controller_name == 'profiles' ? 'active' : ''}
+        %span.glow
+        %a{href: profiles_path}
+          %i.icon-bar-chart.icon-2x
+          %span Profiles
+      %li{class: controller.controller_name == 'targets' ? 'active' : ''}
+        %span.glow
+        %a{href: targets_path}
+          %i.icon-bullseye.icon-2x
+          %span Targets
+      - if current_user.admin
+        %li{class: controller.controller_name == 'users' ? 'active' : ''}
+          %span.glow
+          %a{href: users_path}
+            %i.icon-group.icon-2x
+            %span Users

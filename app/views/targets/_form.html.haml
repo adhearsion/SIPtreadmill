@@ -1,0 +1,8 @@
+= simple_form_for(@target, remote: local_assigns[:remote], format: local_assigns[:use_json] ? :json : :html) do |f|
+  = f.error_notification
+  .form-inputs
+    = f.input :name
+    = f.input :address
+    = f.input :ssh_username, label: "SSH Username"
+  .form-actions
+    = f.button :submit, class: 'btn-default'
