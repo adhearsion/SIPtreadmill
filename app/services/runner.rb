@@ -24,6 +24,7 @@ class Runner
 
     @sipp_file = nil
     @rtcp_data = nil
+    @ssh_error = nil
   rescue
     clean_up_handlers
     raise
@@ -31,13 +32,19 @@ class Runner
 
   def run
     if @stats_collector
-      Thread.new { @stats_collector.run }
+      run_and_catch_errors mode: :error do
+        @stats_collector.run
+      end
     end
-    run_rtcp_listener
+
+    run_and_catch_errors mode: :notify do
+      @rtcp_listener.run
+    end
 
     begin
       @sippy_runner = SippyCup::Runner.new @scenario.to_sippycup_scenario(@opts), full_sipp_output: false
       @sippy_runner.run
+      check_ssh_errors
     ensure
       @rtcp_listener.stop
       @stats_collector.stop if @stats_collector
@@ -66,13 +73,29 @@ class Runner
     @sippy_runner.stop
   end
 
-  def run_rtcp_listener
+  def run_and_catch_errors(opts = {})
     Thread.new do
       begin
-        @rtcp_listener.run
+        yield
       rescue => e
-        Airbrake.notify e
+        case opts[:mode]
+        when :notify
+          Airbrake.notify e
+        when :error
+          @ssh_error = e
+        end
       end
+    end
+  end
+
+  def check_ssh_errors
+    raise @ssh_error if @ssh_error
+  end
+
+  def clean_up_handlers
+    if @stats_file
+      @stats_file.close
+      @stats_file.unlink
     end
   end
 end
