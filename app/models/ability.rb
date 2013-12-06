@@ -17,10 +17,13 @@ class Ability
     # Profiles and Scenarios are shared by all
     can :read, Profile
     can :read, Scenario
+    can :generate_auth_token, :current_user
+    can :manage, user
 
     if user.admin
       can :manage, User
       can :toggle_admin_mode, :current_user
+      can :make_others_admin, :current_user
     end
   end
 end

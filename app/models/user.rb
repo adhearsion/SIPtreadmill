@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :email, :first_name, :last_name, :phone_number, :provider, :uid, :name
+  attr_accessible :email, :first_name, :last_name, :phone_number, :provider, :uid, :name, :authentication_token
   devise :omniauthable, :omniauth_providers => [:att, :github]
 
   has_many :targets
@@ -41,5 +41,25 @@ class User < ActiveRecord::Base
 
   def full_name
     return self.name || "#{self.first_name} #{self.last_name}"
+  end
+
+  def ensure_authentication_token
+    unless self.authentication_token.present?
+      self.new_auth_token!
+    end
+  end
+
+  def new_auth_token!
+    self.authentication_token = generate_authentication_token
+    self.save
+  end
+
+  private
+
+  def generate_authentication_token
+    loop do
+      token = Devise.friendly_token
+      break token unless User.where(authentication_token: token).first
+    end
   end
 end
