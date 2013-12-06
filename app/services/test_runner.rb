@@ -11,6 +11,8 @@ class TestRunner
     @receiver_pid = nil
     @password = ssh_password
     @vmstat_buffer = []
+    @receiver_port = Kernel.rand(5000...10000)
+    @sender_port   = Kernel.rand(5000...10000)
   end
 
   def run
@@ -50,7 +52,7 @@ class TestRunner
       max_concurrent: 1,
       destination: @test_run.target.address,
       source: TestRunner::BIND_IP,
-      source_port: 8837,
+      source_port: @receiver_port,
       transport_mode: @test_run.profile.transport_type.to_s,
       full_sipp_output: false
     }
@@ -64,7 +66,7 @@ class TestRunner
 
     @test_run.receiver_scenario.to_disk path, "receiver_scenario"
 
-    command = "sipp -sf #{path('receiver_scenario.xml')} -i #{TestRunner::BIND_IP} -p 8837"
+    command = "sipp -sf #{path('receiver_scenario.xml')} -i #{TestRunner::BIND_IP} -p #{@receiver_port}"
     command << " -inf #{path('receiver_scenario.csv')}" if @test_run.receiver_scenario.csv_data.present?
     command << " -t #{@test_run.profile.transport_type.to_s}" if @test_run.profile.transport_type.present?
     puts "Running receiver scenario using command #{command.inspect}"
@@ -96,6 +98,7 @@ class TestRunner
       number_of_calls: @test_run.profile.max_calls,
       calls_per_second: @test_run.profile.calls_per_second,
       max_concurrent: @test_run.profile.max_concurrent,
+      source_port: @sender_port,
       transport_mode: @test_run.profile.transport_type.to_s,
       vmstat_buffer: @vmstat_buffer
     }
