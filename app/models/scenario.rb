@@ -30,6 +30,22 @@ class Scenario < ActiveRecord::Base
     sippy_cup_scenario.split("\n").map(&:chomp)
   end
 
+  def duplicate(requesting_user)
+    new_scenario = Scenario.new(
+      name: "#{self.name} (Copy)",
+      description: self.description,
+      user: requesting_user,
+    )
+    if sippy_cup_scenario.present?
+      new_scenario.sippy_cup_scenario = self.sippy_cup_scenario
+    else
+      new_scenario.pcap_audio = self.pcap_audio
+      new_scenario.sipp_xml = self.sipp_xml
+      new_scenario.csv_data = self.csv_data
+    end
+    new_scenario.save ? new_scenario : nil
+  end
+
   def writable?
     !(self.test_runs.count > 0)
   end
@@ -51,4 +67,5 @@ class Scenario < ActiveRecord::Base
   def pcap_data
     File.read(pcap_audio.url) if pcap_audio.url
   end
+
 end
