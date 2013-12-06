@@ -38,10 +38,6 @@ form .instructions {
   visibility: visible;
 }
 
-.loggedinas {
-
-}
-
 .dashboard-stats .glyph-red {
   border: 1px solid #de7e6d;
   color: #7d2a1c;
@@ -85,4 +81,12 @@ div.uploader {
 .ajax_display_data h6, .ajax_display_data p {
 	display: inline-block;
 	margin: 0;
+}
+
+.loggedinas p {
+	text-align: right;
+	a {
+		font-size: 1.2em;
+		color: $attblue;
+	}
 }

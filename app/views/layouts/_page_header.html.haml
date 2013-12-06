@@ -20,6 +20,8 @@
             %p= link_to 'Disable admin mode', home_toggle_admin_path, class: 'btn btn-mini btn-danger', method: :post
           -else
             %p= link_to 'Enable admin mode', home_toggle_admin_path, class: 'btn btn-mini btn-success', method: :post
+        %p
+          =link_to 'Logout', destroy_user_session_path, :method => :delete, data: { confirm: "Are you sure you want to logout? You may lose unsaved data." }
 .row-fluid
   .padded
     = render 'layouts/messages'
