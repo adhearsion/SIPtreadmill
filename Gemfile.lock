@@ -12,17 +12,6 @@ GIT
       sinatra
       thin
 
-GIT
-  remote: git://github.com/bklang/sippy_cup.git
-  revision: 85de2ebdb215ef08357ef64c3993160507b1cee4
-  branch: master
-  specs:
-    sippy_cup (0.3.0)
-      activesupport (> 3.0)
-      nokogiri (~> 1.6.0)
-      packetfu
-      psych (~> 2.0.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -282,6 +271,11 @@ GEM
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
+    sippy_cup (0.3.0)
+      activesupport (> 3.0)
+      nokogiri (~> 1.6.0)
+      packetfu
+      psych (~> 2.0.0)
     slim (2.0.1)
       temple (~> 0.6.6)
       tilt (>= 1.3.3, < 2.1)
@@ -358,7 +352,7 @@ DEPENDENCIES
   sidekiq
   simple_form
   sinatra (>= 1.3.0)
-  sippy_cup!
+  sippy_cup
   slim (>= 1.1.0)
   state_machine
   therubyracer

@@ -53,7 +53,7 @@ gem 'thin'
 # Deploy with Capistrano
 # gem 'capistrano'
 
-gem 'sippy_cup', github: 'bklang/sippy_cup', branch: 'master'
+gem 'sippy_cup'
 gem 'net-ssh'
 
 group :development do
