@@ -16,7 +16,7 @@ class Scenario < ActiveRecord::Base
 
   validate :sippy_cup_scenario_must_be_valid
 
-  def to_scenario_object(opts = {})
+  def to_sippycup_scenario(opts = {})
     if sippy_cup_scenario.present?
       scenario = SippyCup::Scenario.new name, opts
       scenario.build sippy_cup_scenario.split("\n")
@@ -45,12 +45,6 @@ class Scenario < ActiveRecord::Base
   private
 
   def pcap_data
-    pcap_data = nil
-    if pcap_audio.url
-      open pcap_audio.url do |f|
-        pcap_data = f.read   
-      end
-    end
-    pcap_data
+    File.read(pcap_audio.url) if pcap_audio.url
   end
 end

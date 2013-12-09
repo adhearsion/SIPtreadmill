@@ -28,11 +28,11 @@ describe Runner do
     it "passes the same port to Listener and SippyCup" do
       Kernel.should_receive(:rand).and_return(rtcp_port)
       RTCPTools::Listener.should_receive(:new).with(rtcp_port+1).and_return rtcp_listener
-      scenario.should_receive(:to_scenario_object).and_return scenario
+      scenario.should_receive(:to_sippycup_scenario).and_return scenario
       rtcp_listener.stub(:run)
       rtcp_listener.stub(:stop)
       rtcp_listener.stub(:organize_data)
-      SippyCup::Runner.should_receive(:new).with(scenario).and_return sippy_cup_runner
+      SippyCup::Runner.should_receive(:new).with(scenario, full_sipp_output: false).and_return sippy_cup_runner
       sippy_cup_runner.should_receive(:run)
       subject.run
     end

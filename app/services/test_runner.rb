@@ -2,7 +2,7 @@ require 'tempfile'
 
 class TestRunner
   SIPPYCUP_TARGET_PORT = "12345"
-  BIND_IP = ENV['TEST_RUN_BIND_IP'] || "10.203.175.1"
+  BIND_IP = ENV['TEST_RUN_BIND_IP']
 
   attr_accessor :stopped
 
@@ -53,7 +53,7 @@ class TestRunner
       transport_mode: @test_run.profile.transport_type.to_s,
     }
     options[:scenario_variables] = write_csv_data @test_run.registration_scenario if @test_run.registration_scenario.csv_data.present?
-    scenario = @test_run.registration_scenario.to_scenario_object options
+    scenario = @test_run.registration_scenario.to_sippycup_scenario options
     cup = SippyCup::Runner.new scenario, full_sipp_output: false 
     cup.run
   end
@@ -69,7 +69,7 @@ class TestRunner
     
     options[:scenario_variables] = write_csv_data @test_run.receiver_scenario if @test_run.receiver_scenario.csv_data.present?
     
-    scenario = @test_run.receiver_scenario.to_scenario_object options
+    scenario = @test_run.receiver_scenario.to_sippycup_scenario options
     @receiver_runner = SippyCup::Runner.new scenario, full_sipp_output: false
     Thread.new do
       begin

@@ -23,7 +23,7 @@ describe Scenario do
     end
   end
 
-  context '#to_scenario_object' do
+  context '#to_sippycup_scenario' do
     context 'XML Scenario' do
       let(:scenario) { FactoryGirl.build :sipp_scenario }
       let(:options) do
@@ -33,7 +33,7 @@ describe Scenario do
         }
       end
       it 'should return a SippyCup::XMLScenario object' do
-        object = scenario.to_scenario_object options
+        object = scenario.to_sippycup_scenario options
         object.should be_a(SippyCup::XMLScenario)
       end
     end
@@ -47,7 +47,7 @@ describe Scenario do
         }
       end
       it 'should return a SippyCup::Scenario object' do
-        object = scenario.to_scenario_object options
+        object = scenario.to_sippycup_scenario options
         object.should be_a(SippyCup::Scenario)
         object.to_xml.should match(%r{INVITE})
       end

@@ -29,7 +29,7 @@ class Runner
     run_rtcp_listener
 
     begin
-      @sippy_runner = SippyCup::Runner.new @scenario.to_scenario_object(@opts)#, full_sipp_output: false
+      @sippy_runner = SippyCup::Runner.new @scenario.to_sippycup_scenario(@opts), full_sipp_output: false
       @sippy_runner.run
     ensure
       @rtcp_listener.stop
