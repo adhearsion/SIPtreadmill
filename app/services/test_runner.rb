@@ -70,20 +70,14 @@ class TestRunner
     options[:scenario_variables] = write_csv_data @test_run.receiver_scenario if @test_run.receiver_scenario.csv_data.present?
     
     scenario = @test_run.receiver_scenario.to_sippycup_scenario options
-    @receiver_runner = SippyCup::Runner.new scenario, full_sipp_output: false
-    Thread.new do
-      begin
-        @receiver_runner.run
-      rescue SippyCup::Error => e
-        @receiver_error = e 
-      end
-    end
+    @receiver_runner = SippyCup::Runner.new scenario, full_sipp_output: false, async: true
+    @receiver_runner.run
   end
 
   def halt_receiver_scenario
     return unless @receiver_runner
     @receiver_runner.stop
-    raise @receiver_error if @receiver_error
+    @receiver_runner.wait
   end
 
   def execute_runner
