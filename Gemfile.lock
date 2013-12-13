@@ -14,8 +14,8 @@ GIT
 
 GIT
   remote: git://github.com/mojolingo/sippy_cup.git
-  revision: ac21fc389e31da0499b51dd6f2a592c093216b6c
-  branch: feature/async-runner
+  revision: f62e31616d99a79eead75c12d747353e3e8a8573
+  branch: develop
   specs:
     sippy_cup (0.3.0)
       activesupport (> 3.0)
