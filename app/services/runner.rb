@@ -4,13 +4,12 @@ require 'tempfile'
 
 class Runner
   attr_accessor :sipp_file, :rtcp_data
-  def initialize(name, scenario, profile, target)
+  def initialize(name, scenario, opts = {})
     @name = name
+    @scenario = scenario
     @stats_file = Tempfile.new('stats')
-    @opts = { stats_file: @stats_file.path, full_sipp_output: false, media_port: Kernel.rand(16384..32767) }
-    @opts.merge! scenario
-    @opts.merge! profile
-    @opts.merge! target
+    @opts = { stats_file: @stats_file.path, media_port: Kernel.rand(16384..32767) }
+    @opts.merge! opts
     @stopped = false
 
     @stats_collector = StatsCollector.new host: @opts[:destination], vm_buffer: @opts.delete(:vmstat_buffer), interval: 1, name: @name, user: @opts[:username], password: @opts[:password] if @opts[:password]
@@ -30,7 +29,7 @@ class Runner
     run_rtcp_listener
 
     begin
-      @sippy_runner = SippyCup::Runner.new(@opts)
+      @sippy_runner = SippyCup::Runner.new @scenario.to_sippycup_scenario(@opts), full_sipp_output: false
       @sippy_runner.run
     ensure
       @rtcp_listener.stop

@@ -13,11 +13,11 @@ GIT
       thin
 
 GIT
-  remote: git://github.com/bklang/sippy_cup.git
-  revision: aa42ae141e83a6db80325c89ae185fc71b7e619e
-  branch: master
+  remote: git://github.com/mojolingo/sippy_cup.git
+  revision: f62e31616d99a79eead75c12d747353e3e8a8573
+  branch: develop
   specs:
-    sippy_cup (0.2.3)
+    sippy_cup (0.3.0)
       activesupport (> 3.0)
       nokogiri (~> 1.6.0)
       packetfu
@@ -173,8 +173,8 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.2)
     mime-types (1.23)
-    mini_portile (0.5.1)
-    multi_json (1.8.0)
+    mini_portile (0.5.2)
+    multi_json (1.8.2)
     multipart-post (1.2.0)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
@@ -208,7 +208,7 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.2)
       pry (>= 0.9.10)
-    psych (2.0.1)
+    psych (2.0.2)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
     rack (1.4.5)
