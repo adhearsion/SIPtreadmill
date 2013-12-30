@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   attr_accessible :email, :first_name, :last_name, :phone_number, :provider, :uid, :name
-  devise :omniauthable, :omniauth_providers => [:att]
+  devise :omniauthable, :omniauth_providers => [:att, :github]
 
   has_many :targets
   has_many :profiles

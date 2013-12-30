@@ -63,4 +63,4 @@
   .container-fluid.padded
     .row-fluid
       .span12
-        %p= link_to 'Log In', user_omniauth_authorize_path(:att), class: "btn btn-success"
+        %p= link_to 'Log In', user_omniauth_authorize_path(@omniauth_type), class: "btn btn-success"
