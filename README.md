@@ -25,8 +25,8 @@ The target describes the server on which the SIP application being tested is run
 In order to get started with Treadmill, the following are required:
 
 * [SIPp](http://sipp.sourceforge.net)
-* An [AT&T APIMatrix](https://apimatrix.tfoundry.com) account
-* An AT&T APIMatrix application with profile access
+* An [AT&T APIMatrix](https://apimatrix.tfoundry.com) account, or a [GitHub](https://github.com) account.
+* An AT&T APIMatrix application with profile access, or a GitHub application with user access.
 * [Redis](http://redis.io)
 * [PostgreSQL](http://www.postgresql.org/) (preferred, but any other rails-compatible database will do)
 * Amazon S3 credentials for file uploads with CarrierWave
@@ -39,10 +39,16 @@ The majority of configuration for SIP Treadmill is done via environment variable
 <dl>
   <dt>COOKIE_SECRET</dt>
   <dd>A secret token used to sign cookies. Should be at least 30 random characters long.</dd>
+  <dt>OMNIAUTH_TYPE</dt>
+  <dd>The omniauth method to use. Valid options are 'github' and 'att'</dd>
   <dt>APIMATRIX_KEY</dt>
   <dd>The Client ID for your APIMatrix application</dd>
   <dt>APIMATRIX_SECRET</dt>
   <dd>The Client Secret for your APIMatrix application</dd>
+  <dt>GITHUB_KEY</dt>
+  <dd>The Client ID of your GitHub application</dd>
+  <dt>GITHUB_SECRET</dt>
+  <dd>The Client secret for your GitHub application</dd>
   <dt>AWS_ACCESS_KEY_ID</dt>
   <dd>The access key ID for your Amazon S3</dd>
   <dt>AWS_SECRET_ACCESS_KEY</dt>
