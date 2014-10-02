@@ -1,4 +1,5 @@
 ENV['LANGUAGE'] = ENV['LANG'] = ENV['LC_ALL'] = "en_US.UTF-8"
+include_recipe "openssl"
 include_recipe "postgresql::server"
 include_recipe "database::postgresql"
 
