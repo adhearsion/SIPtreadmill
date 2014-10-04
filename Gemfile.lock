@@ -13,6 +13,14 @@ GIT
       thin
 
 GIT
+  remote: git://github.com/intridea/omniauth-github.git
+  revision: a17d8b9e4765251de9892f47facba1fcfd6a8fa7
+  specs:
+    omniauth-github (1.1.1)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.1)
+
+GIT
   remote: git://github.com/mojolingo/sippy_cup.git
   revision: f62e31616d99a79eead75c12d747353e3e8a8573
   branch: develop
@@ -348,6 +356,7 @@ DEPENDENCIES
   net-ssh
   omniauth (~> 1.0)
   omniauth-att!
+  omniauth-github!
   pg
   poltergeist
   pry-rails
