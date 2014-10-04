@@ -22,11 +22,11 @@ describe User do
       user.uid = auth.uid
       user.provider = auth.provider
       user.save!
-      User.find_or_create_from_auth_hash(auth).should == user
+      User.find_or_create_from_auth_hash(:att, auth).should == user
     end
 
     it %q{should create a new user when no previous AT&T login and no matching email address} do
-      found_user = User.find_or_create_from_auth_hash(auth)
+      found_user = User.find_or_create_from_auth_hash(:att, auth)
       found_user.first_name.should == 'Test'
       found_user.last_name.should == 'User'
       found_user.email.should == 'test@example.com'
