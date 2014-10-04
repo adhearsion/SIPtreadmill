@@ -1,7 +1,6 @@
 require 'tempfile'
 
 class TestRunner
-  SIPPYCUP_TARGET_PORT = "12345"
   BIND_IP = ENV['TEST_RUN_BIND_IP']
 
   attr_accessor :stopped
