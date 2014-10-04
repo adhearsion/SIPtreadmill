@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-ruby '1.9.3'
 
 gem 'rails', '3.2.13'
 gem 'devise'
@@ -54,7 +53,7 @@ gem 'thin'
 # Deploy with Capistrano
 # gem 'capistrano'
 
-gem 'sippy_cup', github: "mojolingo/sippy_cup", branch: "develop"
+gem 'sippy_cup'
 gem 'net-ssh'
 
 group :development do
