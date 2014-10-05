@@ -8,7 +8,14 @@ class Runner
     @name = name
     @scenario = scenario
     @stats_file = Tempfile.new('stats')
-    @opts = { stats_file: @stats_file.path, media_port: Kernel.rand(16384..32767) }
+    @errors_report_file = Tempfile.new('errors_report')
+    @summary_report_file = Tempfile.new('summary_report')
+    @opts = {
+      stats_file: @stats_file.path,
+      errors_report_file: @errors_report_file.path,
+      summary_report_file: @summary_report_file.path,
+      media_port: Kernel.rand(16384..32767)
+    }
     @opts.merge! opts
     @stopped = false
 
@@ -41,7 +48,19 @@ class Runner
       @stats_file.rewind
       stats_data = @stats_file.read
     end
-    { stats_data: stats_data, rtcp_data: rtcp_data }
+
+    @summary_report_file.rewind
+    summary_report = @summary_report_file.read
+
+    @errors_report_file.rewind
+    errors_report = @errors_report_file.read
+
+    {
+      stats_data: stats_data,
+      rtcp_data: rtcp_data,
+      summary_report: summary_report,
+      errors_report: errors_report
+    }
   ensure
     clean_up_handlers
   end

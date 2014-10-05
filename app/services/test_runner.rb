@@ -27,6 +27,10 @@ class TestRunner
       parse_rtcp_data result[:rtcp_data]
       parse_system_stats @vmstat_buffer if has_stats_credentials?
     end
+
+    @test_run.summary_report = result[:summary_report]
+    @test_run.errors_report = result[:errors_report]
+    @test_run.save!
   ensure
     halt_receiver_scenario
     close_csv_files

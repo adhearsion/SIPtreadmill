@@ -104,6 +104,12 @@
             .span12
               .box
                 .box-header
+                  %span.title Test run summary
+                .box-content.padded
+                  %pre{style: 'font-size: 0.8em'}
+                    = @test_run.summary_report
+              .box
+                .box-header
                   %span.title Test run results
                 .box-content.padded
                   %h2 Total Calls
