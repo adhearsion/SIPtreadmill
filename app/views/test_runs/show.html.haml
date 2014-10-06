@@ -104,12 +104,6 @@
             .span12
               .box
                 .box-header
-                  %span.title Test run summary
-                .box-content.padded
-                  %pre{style: 'font-size: 0.8em'}
-                    = @test_run.summary_report
-              .box
-                .box-header
                   %span.title Test run results
                 .box-content.padded
                   %h2 Total Calls
@@ -159,6 +153,14 @@
                     %dd= @test_run.avg_packet_loss
                     %dt Max packet loss
                     %dd= @test_run.max_packet_loss
+          .row-fluid
+            .span12
+              .box
+                .box-header
+                  %span.title Test run summary
+                .box-content.padded
+                  %pre{style: 'font-size: 0.8em'}
+                    = @test_run.summary_report
 
 - if @test_run.state == 'queued' || @test_run.state == 'running'
   :javascript
