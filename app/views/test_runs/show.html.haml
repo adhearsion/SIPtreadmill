@@ -44,6 +44,10 @@
             %dd= link_to @test_run.target_name, @test_run.target
             %dd= "Address: #{@test_run.target.address}"
 
+            %dt Logs:
+            %dd= link_to "Errors Report", @test_run.errors_report_file_url
+            %dd= link_to "Raw Stats", @test_run.stats_file_url
+
             %dt Created By:
             %dd= @test_run.user.full_name if @test_run.user
 
