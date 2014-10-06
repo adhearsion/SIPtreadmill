@@ -21,6 +21,8 @@ class TestRun < ActiveRecord::Base
   validates_presence_of :name, :profile, :target, :user
   mount_uploader :errors_report_file, ErrorsReportFileUploader
   mount_uploader :stats_file, StatsFileUploader
+  delegate :url, to: :errors_report_file, prefix: true
+  delegate :url, to: :stats_file, prefix: true
 
   validate :validate_scenarios
 
