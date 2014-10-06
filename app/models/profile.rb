@@ -1,6 +1,6 @@
 class Profile < ActiveRecord::Base
   classy_enum_attr :transport_type, default: 'u1'
-  attr_accessible :calls_per_second, :max_calls, :max_concurrent, :name, :transport_type
+  attr_accessible :calls_per_second, :max_calls, :max_concurrent, :calls_per_second_incr, :calls_per_second_max, :calls_per_second_interval, :name, :transport_type
   belongs_to :user
   has_many :test_runs
 

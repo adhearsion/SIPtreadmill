@@ -15,7 +15,9 @@
               %tr
                 %td Name
                 %td Max calls
-                %td Calls per second
+                %td Calls per second Initial
+                %td Calls per second Max
+                %td Calls per second Increment/Interval
                 %td Max concurrent
                 - if current_user.admin_mode
                   %td Owned by
@@ -28,6 +30,12 @@
                 %td= profile.name
                 %td= profile.max_calls
                 %td= profile.calls_per_second
+                %td= profile.calls_per_second_max
+                %td
+                  - if profile.calls_per_second_incr
+                    = profile.calls_per_second_incr
+                    \/
+                    = profile.calls_per_second_interval
                 %td= profile.max_concurrent
                 - if current_user.admin_mode
                   %td= profile.user.full_name if profile.user
