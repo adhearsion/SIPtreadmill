@@ -52,14 +52,12 @@ class Runner
     @summary_report_file.rewind
     summary_report = @summary_report_file.read
 
-    @errors_report_file.rewind
-    errors_report = @errors_report_file.read
-
     {
       stats_data: stats_data,
+      stats_file: @stats_file,
       rtcp_data: rtcp_data,
       summary_report: summary_report,
-      errors_report: errors_report
+      errors_report_file: @errors_report_file
     }
   ensure
     clean_up_handlers

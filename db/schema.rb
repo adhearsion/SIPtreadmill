@@ -99,7 +99,8 @@ ActiveRecord::Schema.define(:version => 20141005150720) do
     t.string   "error_name"
     t.text     "error_message"
     t.text     "summary_report"
-    t.text     "errors_report"
+    t.string   "errors_report_file"
+    t.string   "stats_file"
   end
 
   create_table "users", :force => true do |t|

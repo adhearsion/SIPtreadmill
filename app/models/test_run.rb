@@ -19,6 +19,8 @@ class TestRun < ActiveRecord::Base
   delegate :name, :to => :target, :prefix => true
   delegate :registration_scenario, :to => :receiver_scenario, allow_nil: true
   validates_presence_of :name, :profile, :target, :user
+  mount_uploader :errors_report_file, ErrorsReportFileUploader
+  mount_uploader :stats_file, StatsFileUploader
 
   validate :validate_scenarios
 

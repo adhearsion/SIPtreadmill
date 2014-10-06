@@ -29,7 +29,8 @@ class TestRunner
     end
 
     @test_run.summary_report = result[:summary_report]
-    @test_run.errors_report = result[:errors_report]
+    @test_run.errors_report_file = result[:errors_report_file]
+    @test_run.stats_file = result[:stats_file]
     @test_run.save!
   ensure
     halt_receiver_scenario
