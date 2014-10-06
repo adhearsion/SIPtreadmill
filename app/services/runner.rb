@@ -59,8 +59,6 @@ class Runner
       summary_report: summary_report,
       errors_report_file: @errors_report_file
     }
-  ensure
-    clean_up_handlers
   end
 
   def stop
@@ -75,13 +73,6 @@ class Runner
       rescue => e
         Airbrake.notify e
       end
-    end
-  end
-
-  def clean_up_handlers
-    if @stats_file
-      @stats_file.close
-      @stats_file.unlink
     end
   end
 end
