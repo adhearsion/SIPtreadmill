@@ -95,14 +95,10 @@ class TestRun < ActiveRecord::Base
 
   def total_calls_json
     data = [{key: "Successful", values: []}, {key: "Failed", values: []}, {key: "Started", values: []}]
-    # For tracking rate-of-change
-    last_d = SippData.new
-    last_d.successful_calls = 0
-    last_d.failed_calls = 0
     self.sipp_data.all.each do |d|
       time = d.time.to_i * 1000 #Convert to JS epoch
-      data[0][:values] << [time, d.successful_calls - last_d.successful_calls]
-      data[1][:values] << [time, d.failed_calls - last_d.failed_calls]
+      data[0][:values] << [time, d.successful_calls]
+      data[1][:values] << [time, d.failed_calls]
       data[2][:values] << [time, d.cps]
       last_d = d
     end
