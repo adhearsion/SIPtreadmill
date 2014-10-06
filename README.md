@@ -24,11 +24,11 @@ The target describes the server on which the SIP application being tested is run
 
 In order to get started with Treadmill, the following are required:
 
-* [SIPp](http://sipp.sourceforge.net)
+* [SIPp](http://sipp.sourceforge.net) - MUST BE A DEVELOPMENT BUILD, see https://github.com/SIPp/sipp/pull/106
 * An [AT&T APIMatrix](https://apimatrix.tfoundry.com) account, or a [GitHub](https://github.com) account.
 * An AT&T APIMatrix application with profile access, or a GitHub application with user access.
 * [Redis](http://redis.io)
-* [PostgreSQL](http://www.postgresql.org/) (preferred, but any other rails-compatible database will do)
+* [PostgreSQL](http://www.postgresql.org/) (preferred, but any other Rails-compatible database will do)
 * Amazon S3 credentials for file uploads with CarrierWave
 
 Once you have all of the pieces, copy `config/database.yml.sample` to `config/database.yml`, and plug in the values required to connect to your database of choice.

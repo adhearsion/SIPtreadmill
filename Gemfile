@@ -53,7 +53,7 @@ gem 'thin'
 # Deploy with Capistrano
 # gem 'capistrano'
 
-gem 'sippy_cup'
+gem 'sippy_cup', github: 'mojolingo/sippy_cup', branch: 'develop'
 gem 'net-ssh'
 
 group :development do

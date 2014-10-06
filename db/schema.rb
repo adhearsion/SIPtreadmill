@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140101171241) do
+ActiveRecord::Schema.define(:version => 20141005150720) do
 
   create_table "profiles", :force => true do |t|
     t.string   "name"
@@ -98,6 +98,9 @@ ActiveRecord::Schema.define(:version => 20140101171241) do
     t.integer  "receiver_scenario_id"
     t.string   "error_name"
     t.text     "error_message"
+    t.text     "summary_report"
+    t.string   "errors_report_file"
+    t.string   "stats_file"
   end
 
   create_table "users", :force => true do |t|
