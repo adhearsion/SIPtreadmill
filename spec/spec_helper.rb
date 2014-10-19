@@ -70,7 +70,7 @@ end
 Fog.mock!
 Fog.credentials_path = Rails.root.join('config/fog_credentials.yml')
 connection = Fog::Storage.new(provider: 'AWS')
-connection.directories.create(key: "foundry_test_tool_#{Rails.env}") # This should not be duplicated from the CarrierWave initializer
+connection.directories.create(key: "sip-treadmill-#{Rails.env}") # This should not be duplicated from the CarrierWave initializer
 
 FactoryGirl.find_definitions
 
