@@ -19,11 +19,15 @@ class Scenario < ActiveRecord::Base
   def to_sippycup_scenario(opts = {})
     if sippy_cup_scenario.present?
       scenario = SippyCup::Scenario.new name, opts
-      scenario.build sippy_cup_scenario.split("\n")
+      scenario.build sippy_cup_scenario_steps
       scenario
     else
       SippyCup::XMLScenario.new name, sipp_xml, pcap_data, opts
     end
+  end
+
+  def sippy_cup_scenario_steps
+    sippy_cup_scenario.split("\n").map(&:chomp)
   end
 
   def writable?
@@ -33,7 +37,7 @@ class Scenario < ActiveRecord::Base
   def sippy_cup_scenario_must_be_valid
     if sippy_cup_scenario.present?
       scenario = SippyCup::Scenario.new(name, source: '127.0.0.1', destination: '127.0.0.1')
-      scenario.build(sippy_cup_scenario.split("\n"))
+      scenario.build sippy_cup_scenario_steps
       unless scenario.valid?
         scenario.errors.each do |err|
           errors.add(:sippy_cup_scenario, "#{err[:message]} (Step #{err[:step]})")
