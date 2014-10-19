@@ -100,7 +100,6 @@ class TestRun < ActiveRecord::Base
       data[0][:values] << [time, d.successful_calls]
       data[1][:values] << [time, d.failed_calls]
       data[2][:values] << [time, d.cps]
-      last_d = d
     end
     data.to_json
   end
