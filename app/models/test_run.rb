@@ -5,6 +5,7 @@ class TestRun < ActiveRecord::Base
   attr_accessible :target, :target_id
   attr_accessible :receiver_scenario, :receiver_scenario_id
   attr_accessible :registration_scenario, :registration_scenario_id
+  attr_accessible :to_user
   belongs_to :profile
   belongs_to :scenario
   belongs_to :receiver_scenario, class_name: "Scenario"

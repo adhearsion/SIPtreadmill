@@ -93,6 +93,7 @@ class TestRunner
       number_of_calls: @test_run.profile.max_calls,
       calls_per_second: @test_run.profile.calls_per_second,
       max_concurrent: @test_run.profile.max_concurrent,
+      to_user: @test_run.to_user,
       transport_mode: @test_run.profile.transport_type.to_s,
       vmstat_buffer: @vmstat_buffer
     }

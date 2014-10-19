@@ -5,6 +5,7 @@ FactoryGirl.define do
     scenario { FactoryGirl.build(:scenario, id: 1) }
     profile { FactoryGirl.build(:profile, id: 1) }
     target { FactoryGirl.build(:target, id: 1) }
+    to_user '+14044754840'
     errors_report_file { File.open(File.join(Rails.root, 'spec', 'fixtures', 'errors.txt')) }
     state 'pending'
   end
