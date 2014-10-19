@@ -53,12 +53,12 @@ class TestRunner
       max_concurrent: 1,
       destination: @test_run.target.address,
       source: TestRunner::BIND_IP,
-      source_port: 8837,
+      source_port: 8838,
       transport_mode: @test_run.profile.transport_type.to_s,
     }
     options[:scenario_variables] = write_csv_data @test_run.registration_scenario if @test_run.registration_scenario.csv_data.present?
     scenario = @test_run.registration_scenario.to_sippycup_scenario options
-    cup = SippyCup::Runner.new scenario, full_sipp_output: false 
+    cup = SippyCup::Runner.new scenario, full_sipp_output: false
     cup.run
   end
 
@@ -70,9 +70,9 @@ class TestRunner
       source_port: 8838,
       transport_mode: @test_run.profile.transport_type.to_s
     }
-    
+
     options[:scenario_variables] = write_csv_data @test_run.receiver_scenario if @test_run.receiver_scenario.csv_data.present?
-    
+
     scenario = @test_run.receiver_scenario.to_sippycup_scenario options
     @receiver_runner = SippyCup::Runner.new scenario, full_sipp_output: false, async: true
     @receiver_runner.run
@@ -85,7 +85,7 @@ class TestRunner
   end
 
   def execute_runner
-    runner_scenario = @test_run.scenario 
+    runner_scenario = @test_run.scenario
 
     opts = {
       source: TestRunner::BIND_IP,
@@ -105,7 +105,7 @@ class TestRunner
       opts[:username] = @test_run.target.ssh_username
     end
 
-    @runner = Runner.new runner_name, runner_scenario, opts 
+    @runner = Runner.new runner_name, runner_scenario, opts
     @runner.run
   end
 
