@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.19'
 gem 'devise'
 gem 'omniauth', '~> 1.0'
 gem 'omniauth-att', github: 'att-innovate/omniauth-att'
