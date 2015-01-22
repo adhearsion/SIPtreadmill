@@ -53,6 +53,8 @@ The majority of configuration for SIP Treadmill is done via environment variable
   <dd>The access key ID for your Amazon S3</dd>
   <dt>AWS_SECRET_ACCESS_KEY</dt>
   <dd>The access key secret for your Amazon S3</dd>
+  <dt>AWS_S3_BUCKET</dt>
+  <dd>The name of the Amazon S3 bucket for storage</dd>
   <dt>TEST_RUN_BIND_IP</dt>
   <dd>The IP address to bind to for sending SIP traffic</dd>
 </dl>
