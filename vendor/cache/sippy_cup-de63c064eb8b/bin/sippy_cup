@@ -1,0 +1,68 @@
+#!/usr/bin/env ruby
+
+require 'sippy_cup'
+require 'getoptlong'
+
+def usage
+  puts "#{$0} [OPTS] </path/to/sippy_cup_definition.yml>"
+  puts
+  puts "--compile, -c  Compile the given scenario manifest to XML and PCAP"
+  puts "--run, -r      Run the scenario"
+  puts "--help, -h     Print this usage information"
+  puts "--version, -V  Print SippyCup version"
+end
+
+opts = GetoptLong.new(
+  ['--compile', '-c', GetoptLong::NO_ARGUMENT],
+  ['--run', '-r', GetoptLong::NO_ARGUMENT],
+  ['--help', '-h', GetoptLong::NO_ARGUMENT],
+  ['--version', '-V', GetoptLong::NO_ARGUMENT]
+)
+
+compile = false
+run = false
+opts.each do |opt, arg|
+  case opt
+  when '--compile'
+    compile = true
+  when '--run'
+    run = true
+  when '--help'
+    usage
+    exit 0
+  when '--version'
+    require 'sippy_cup/version'
+    puts "SippyCup version #{SippyCup::VERSION}"
+    exit 0
+  end
+end
+
+unless ARGV.count == 1
+  puts "ERROR: Must supply the SippyCup manifest file"
+  puts
+  usage
+  exit 1
+end
+
+manifest_path = ARGV.shift
+
+unless File.readable? manifest_path
+  puts "ERROR: Unable to read manifest file"
+  puts
+  usage
+  exit 1
+end
+
+unless compile || run
+  puts "No action (compile or run) specified. Exiting."
+  usage
+  exit 1
+end
+
+scenario = SippyCup::Scenario.from_manifest File.read(manifest_path), input_filename: manifest_path
+scenario.compile! if compile
+
+if run
+  runner = SippyCup::Runner.new scenario
+  runner.run
+end
