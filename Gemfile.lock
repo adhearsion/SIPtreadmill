@@ -14,11 +14,11 @@ GIT
 
 GIT
   remote: git://github.com/mojolingo/sippy_cup.git
-  revision: de63c064eb8bbc819d58dd5709241021415d987d
-  branch: develop
+  revision: 564d3b5df7e8f239b1dd01007b87576bd79c02af
+  tag: v0.5.0
   specs:
-    sippy_cup (0.4.1)
-      activesupport (> 3.0)
+    sippy_cup (0.5.0)
+      activesupport (~> 3.0)
       nokogiri (~> 1.6.0)
       packetfu
       psych (~> 2.0.1)
@@ -212,7 +212,7 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.2)
       pry (>= 0.9.10)
-    psych (2.0.6)
+    psych (2.0.11)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
     rack (1.4.5)

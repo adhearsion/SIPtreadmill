@@ -2,15 +2,15 @@
 
 Gem::Specification.new do |s|
   s.name = "sippy_cup"
-  s.version = "0.4.1"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ben Klang", "Will Drexler"]
-  s.date = "2015-01-22"
+  s.date = "2015-01-23"
   s.description = "This tool makes it easier to generate SIPp load tests with DTMF interactions."
   s.email = ["bklang&mojolingo.com", "wdrexler&mojolingo.com"]
   s.executables = ["sippy_cup"]
-  s.files = [".gitignore", ".rspec", ".travis.yml", "CHANGELOG.md", "Gemfile", "Guardfile", "LICENSE", "README.markdown", "Rakefile", "bin/sippy_cup", "lib/sippy_cup.rb", "lib/sippy_cup/media.rb", "lib/sippy_cup/media/dtmf_payload.rb", "lib/sippy_cup/media/pcmu_payload.rb", "lib/sippy_cup/media/rtp_header.rb", "lib/sippy_cup/media/rtp_payload.rb", "lib/sippy_cup/runner.rb", "lib/sippy_cup/scenario.rb", "lib/sippy_cup/tasks.rb", "lib/sippy_cup/version.rb", "lib/sippy_cup/xml_scenario.rb", "sippy_cup.gemspec", "spec/fixtures/dtmf_2833_1.pcap", "spec/fixtures/scenario.xml", "spec/sippy_cup/fixtures/test.yml", "spec/sippy_cup/media_spec.rb", "spec/sippy_cup/runner_spec.rb", "spec/sippy_cup/scenario_spec.rb", "spec/sippy_cup/xml_scenario_spec.rb", "spec/spec_helper.rb"]
+  s.files = [".gitignore", ".rspec", ".travis.yml", "CHANGELOG.md", "Gemfile", "Guardfile", "LICENSE", "README.markdown", "Rakefile", "bin/sippy_cup", "examples/navigate_ivr.yml", "examples/simple_call.yml", "examples/wait_for_call.yml", "lib/sippy_cup.rb", "lib/sippy_cup/media.rb", "lib/sippy_cup/media/dtmf_payload.rb", "lib/sippy_cup/media/pcmu_payload.rb", "lib/sippy_cup/media/rtp_header.rb", "lib/sippy_cup/media/rtp_payload.rb", "lib/sippy_cup/runner.rb", "lib/sippy_cup/scenario.rb", "lib/sippy_cup/tasks.rb", "lib/sippy_cup/version.rb", "lib/sippy_cup/xml_scenario.rb", "sippy_cup.gemspec", "spec/fixtures/dtmf_2833_1.pcap", "spec/fixtures/scenario.xml", "spec/sippy_cup/fixtures/test.yml", "spec/sippy_cup/media_spec.rb", "spec/sippy_cup/runner_spec.rb", "spec/sippy_cup/scenario_spec.rb", "spec/sippy_cup/xml_scenario_spec.rb", "spec/spec_helper.rb"]
   s.homepage = "https://github.com/bklang/sippy_cup"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<packetfu>, [">= 0"])
       s.add_runtime_dependency(%q<nokogiri>, ["~> 1.6.0"])
-      s.add_runtime_dependency(%q<activesupport>, ["> 3.0"])
+      s.add_runtime_dependency(%q<activesupport>, ["~> 3.0"])
       s.add_runtime_dependency(%q<psych>, ["~> 2.0.1"])
       s.add_development_dependency(%q<guard-rspec>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.11"])
@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
     else
       s.add_dependency(%q<packetfu>, [">= 0"])
       s.add_dependency(%q<nokogiri>, ["~> 1.6.0"])
-      s.add_dependency(%q<activesupport>, ["> 3.0"])
+      s.add_dependency(%q<activesupport>, ["~> 3.0"])
       s.add_dependency(%q<psych>, ["~> 2.0.1"])
       s.add_dependency(%q<guard-rspec>, [">= 0"])
       s.add_dependency(%q<rspec>, ["~> 2.11"])
@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<packetfu>, [">= 0"])
     s.add_dependency(%q<nokogiri>, ["~> 1.6.0"])
-    s.add_dependency(%q<activesupport>, ["> 3.0"])
+    s.add_dependency(%q<activesupport>, ["~> 3.0"])
     s.add_dependency(%q<psych>, ["~> 2.0.1"])
     s.add_dependency(%q<guard-rspec>, [">= 0"])
     s.add_dependency(%q<rspec>, ["~> 2.11"])

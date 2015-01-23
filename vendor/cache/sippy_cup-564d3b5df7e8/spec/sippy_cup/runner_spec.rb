@@ -20,7 +20,7 @@ describe SippyCup::Runner do
 name: foobar
 source: 'dah.com'
 destination: 'bar.com'
-max_concurrent: 5
+concurrent_max: 5
 calls_per_second: 2
 number_of_calls: 10
 steps:
@@ -89,7 +89,7 @@ steps:
 name: foobar
 source: 'dah.com'
 destination: 'bar.com'
-max_concurrent: 5
+concurrent_max: 5
 calls_per_second: 2
 number_of_calls: 10
 options:
@@ -119,7 +119,7 @@ steps:
 name: foobar
 source: 'dah.com'
 destination: 'bar.com'
-max_concurrent: 5
+concurrent_max: 5
 calls_per_second: 2
 number_of_calls: 10
 source_port: 1234
@@ -147,7 +147,7 @@ steps:
 name: foobar
 source: 'dah.com'
 destination: 'bar.com'
-max_concurrent: 5
+concurrent_max: 5
 calls_per_second: 2
 number_of_calls: 10
 from_user: pat
@@ -176,7 +176,7 @@ steps:
 name: foobar
 source: 'dah.com'
 destination: 'bar.com'
-max_concurrent: 5
+concurrent_max: 5
 calls_per_second: 2
 number_of_calls: 10
 media_port: 6000
@@ -204,7 +204,7 @@ steps:
 name: foobar
 source: 'dah.com'
 destination: 'bar.com'
-max_concurrent: 5
+concurrent_max: 5
 calls_per_second: 2
 number_of_calls: 10
 stats_file: stats.csv
@@ -231,7 +231,7 @@ steps:
 name: foobar
 source: 'dah.com'
 destination: 'bar.com'
-max_concurrent: 5
+concurrent_max: 5
 calls_per_second: 2
 number_of_calls: 10
 stats_file: stats.csv
@@ -275,7 +275,7 @@ steps:
 name: foobar
 source: 'dah.com'
 destination: 'bar.com'
-max_concurrent: 5
+concurrent_max: 5
 calls_per_second: 2
 number_of_calls: 10
 summary_report_file: report.txt
@@ -303,7 +303,7 @@ steps:
 name: foobar
 source: 'dah.com'
 destination: 'bar.com'
-max_concurrent: 5
+concurrent_max: 5
 calls_per_second: 2
 number_of_calls: 10
 errors_report_file: errors.txt
@@ -325,13 +325,43 @@ steps:
       end
     end
 
+    context "specifying rate increase options" do
+      let(:manifest) do
+        <<-MANIFEST
+name: foobar
+source: 'dah.com'
+destination: 'bar.com'
+concurrent_max: 5
+calls_per_second: 2
+calls_per_second_max: 5
+calls_per_second_incr: 2
+number_of_calls: 10
+errors_report_file: errors.txt
+steps:
+  - invite
+  - wait_for_answer
+  - ack_answer
+  - sleep 3
+  - send_digits 'abc'
+  - sleep 5
+  - send_digits '#'
+  - wait_for_hangup
+        MANIFEST
+      end
+
+      it 'should not terminate the test when reaching the rate limit and set the rate limit and increase appropriately' do
+        expect_command_execution(/-no_rate_quit -rate_max 5 -rate_increase 2/)
+        subject.run
+      end
+    end
+
     context "specifying a variables file" do
       let(:manifest) do
         <<-MANIFEST
 name: foobar
 source: 'dah.com'
 destination: 'bar.com'
-max_concurrent: 5
+concurrent_max: 5
 calls_per_second: 2
 number_of_calls: 10
 scenario_variables: /path/to/vars.csv
@@ -361,7 +391,7 @@ steps:
 name: foobar
 source: 'dah.com'
 destination: 'bar.com'
-max_concurrent: 5
+concurrent_max: 5
 calls_per_second: 2
 number_of_calls: 10
 transport_mode: t1
@@ -395,7 +425,7 @@ steps:
 
         it "doesn't raise anything if SIPp returns 0" do
           quietly do
-            subject.run.should be_true
+            subject.run.should be true
           end
         end
       end
@@ -406,7 +436,7 @@ steps:
         it "returns false if SIPp returns 1" do
           quietly do
             logger.should_receive(:info).ordered.with(/Test completed successfully but some calls failed./)
-            subject.run.should be_false
+            subject.run.should be false
           end
         end
       end
@@ -493,6 +523,8 @@ steps:
         end
 
         it "does not leak threads" do
+          Thread.list.each { |t| t.kill unless t = Thread.main }
+          sleep 0.1
           original_thread_count = active_thread_count
           quietly do
             subject.run
@@ -515,6 +547,8 @@ steps:
 
         it "does not leak threads" do
           quietly do
+            Thread.list.each { |t| t.kill unless t = Thread.main }
+            sleep 0.1
             original_thread_count = active_thread_count
             subject.run
             sleep 0.1
