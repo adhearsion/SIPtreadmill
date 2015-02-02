@@ -5,6 +5,7 @@ class TestRun < ActiveRecord::Base
   attr_accessible :target, :target_id
   attr_accessible :receiver_scenario, :receiver_scenario_id
   attr_accessible :registration_scenario, :registration_scenario_id
+  attr_accessible :to_user, :from_user, :advertise_address, :sipp_options
   belongs_to :profile
   belongs_to :scenario
   belongs_to :receiver_scenario, class_name: "Scenario"
@@ -19,6 +20,10 @@ class TestRun < ActiveRecord::Base
   delegate :name, :to => :target, :prefix => true
   delegate :registration_scenario, :to => :receiver_scenario, allow_nil: true
   validates_presence_of :name, :profile, :target, :user
+  mount_uploader :errors_report_file, ErrorsReportFileUploader
+  mount_uploader :stats_file, StatsFileUploader
+  delegate :url, to: :errors_report_file, prefix: true
+  delegate :url, to: :stats_file, prefix: true
 
   validate :validate_scenarios
 
@@ -95,7 +100,7 @@ class TestRun < ActiveRecord::Base
       time = d.time.to_i * 1000 #Convert to JS epoch
       data[0][:values] << [time, d.successful_calls]
       data[1][:values] << [time, d.failed_calls]
-      data[2][:values] << [time, d.concurrent_calls]
+      data[2][:values] << [time, d.cps]
     end
     data.to_json
   end

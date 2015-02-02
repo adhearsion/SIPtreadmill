@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
-ruby '1.9.3'
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.19'
 gem 'devise'
 gem 'omniauth', '~> 1.0'
 gem 'omniauth-att', github: 'att-innovate/omniauth-att'
+gem 'omniauth-github', '~> 1.1'
 gem 'haml'
 gem 'simple_form'
 gem 'carrierwave'
@@ -53,7 +53,7 @@ gem 'thin'
 # Deploy with Capistrano
 # gem 'capistrano'
 
-gem 'sippy_cup', github: 'bklang/sippy_cup', branch: 'master'
+gem 'sippy_cup', '0.5.0'
 gem 'net-ssh'
 
 group :development do

@@ -2,9 +2,9 @@
   = f.error_notification
   .form-inputs.container-fluid.padded
     .row-fluid
-      .span4
-        = f.input :name
-      .span8
+      .span12
+        = f.label :name
+        = f.input_field :name
         %span.help-inline.instructions
           Give your new scenario a name so you can refer to it in the future.
     .row-fluid
@@ -49,8 +49,6 @@
               %dd send a SIP invite (starts a call)
               %dt wait_for_answer
               %dd wait for the remote end to answer the call
-              %dt ack_answer
-              %dd send a SIP ACK in response to the answer (required if receiving an answer)
               %dt sleep &lt;seconds&gt;
               %dd signals SIPp to wait for the specified number of seconds, generates PCAP silence for this duration
               %dt send_digits &lt;digits, #, or *&gt;
@@ -147,13 +145,15 @@
 :javascript
   $(document).ready(function(){
     var receiver_toggle = $("#scenario_receiver");
-    if(receiver_toggle.prop("checked")) {
+    if(receiver_toggle.is(":checked")) {
+      $("#reg_scenario_form").show();
       $("#registrationHeader").show();
       $("#registration_scenario").show();
       $("#registration_scenario_name").show();
     }
   });
   $("#scenario_receiver").click(function() {
+    $("#reg_scenario_form").toggle(this.checked);
     $("#registrationHeader").toggle(this.checked);
     $("#registration_scenario").toggle(this.checked);
     $("#registration_scenario_name").toggle(this.checked);

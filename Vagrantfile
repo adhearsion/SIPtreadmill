@@ -1,7 +1,7 @@
 Vagrant.configure("2") do |config|
   config.vm.box = 'precise64'
   config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
-  config.librarian_chef.cheffile_dir = "."
+  config.omnibus.chef_version = :latest
 
   config.vm.define :dev do |dev|
     dev.vm.network :private_network, ip: "10.203.132.10"
@@ -31,9 +31,13 @@ Vagrant.configure("2") do |config|
           git_ref: 'v20130806',
         },
         'rvm' => {
+          'installs' => { 'vagrant' => true },
           'user_installs' => [
-            { 'user' => 'vagrant',
+            {
+              'user' => 'vagrant',
               'default_ruby'  => '1.9.3-p448',
+              'rubies' => ['1.9.3-p448'],
+              'install_rubies' => true,
               'gems' => {
                 '1.9.3-p448' => [
                   { 'name' => 'bundler' }

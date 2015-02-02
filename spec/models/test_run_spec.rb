@@ -234,7 +234,7 @@ describe TestRun do
         test_run.stub(:sipp_data).and_return sipp_data
         test_run.total_calls_json.should == [{ key: "Successful", values: [[946732563000, 1], [946732563000, 1]] },
                                              { key: "Failed", values: [[946732563000, 0], [946732563000, 1]] },
-                                             { key: "Started", values: [[946732563000, 1],[946732563000, 1]] }].to_json
+                                             { key: "Started", values: [[946732563000, 1.5],[946732563000, 1.5]] }].to_json
       end
     end
 

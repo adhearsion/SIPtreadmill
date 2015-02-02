@@ -24,11 +24,11 @@ The target describes the server on which the SIP application being tested is run
 
 In order to get started with Treadmill, the following are required:
 
-* [SIPp](http://sipp.sourceforge.net)
-* An [AT&T APIMatrix](https://apimatrix.tfoundry.com) account
-* An AT&T APIMatrix application with profile access
+* [SIPp](http://sipp.sourceforge.net) - MUST BE A DEVELOPMENT BUILD, see https://github.com/SIPp/sipp/pull/106
+* An [AT&T APIMatrix](https://apimatrix.tfoundry.com) account, or a [GitHub](https://github.com) account.
+* An AT&T APIMatrix application with profile access, or a GitHub application with user access.
 * [Redis](http://redis.io)
-* [PostgreSQL](http://www.postgresql.org/) (preferred, but any other rails-compatible database will do)
+* [PostgreSQL](http://www.postgresql.org/) (preferred, but any other Rails-compatible database will do)
 * Amazon S3 credentials for file uploads with CarrierWave
 
 Once you have all of the pieces, copy `config/database.yml.sample` to `config/database.yml`, and plug in the values required to connect to your database of choice.
@@ -39,14 +39,22 @@ The majority of configuration for SIP Treadmill is done via environment variable
 <dl>
   <dt>COOKIE_SECRET</dt>
   <dd>A secret token used to sign cookies. Should be at least 30 random characters long.</dd>
+  <dt>OMNIAUTH_TYPE</dt>
+  <dd>The omniauth method to use. Valid options are 'github' and 'att'</dd>
   <dt>APIMATRIX_KEY</dt>
   <dd>The Client ID for your APIMatrix application</dd>
   <dt>APIMATRIX_SECRET</dt>
   <dd>The Client Secret for your APIMatrix application</dd>
+  <dt>GITHUB_KEY</dt>
+  <dd>The Client ID of your GitHub application</dd>
+  <dt>GITHUB_SECRET</dt>
+  <dd>The Client secret for your GitHub application</dd>
   <dt>AWS_ACCESS_KEY_ID</dt>
   <dd>The access key ID for your Amazon S3</dd>
   <dt>AWS_SECRET_ACCESS_KEY</dt>
   <dd>The access key secret for your Amazon S3</dd>
+  <dt>AWS_S3_BUCKET</dt>
+  <dd>The name of the Amazon S3 bucket for storage</dd>
   <dt>TEST_RUN_BIND_IP</dt>
   <dd>The IP address to bind to for sending SIP traffic</dd>
 </dl>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130930174850) do
+ActiveRecord::Schema.define(:version => 20150202215251) do
 
   create_table "profiles", :force => true do |t|
     t.string   "name"
@@ -66,8 +66,8 @@ ActiveRecord::Schema.define(:version => 20130930174850) do
   create_table "system_load_data", :force => true do |t|
     t.integer  "test_run_id"
     t.float    "cpu"
-    t.float  "memory"
-    t.datetime  "logged_at"
+    t.float    "memory"
+    t.datetime "logged_at"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
@@ -98,6 +98,13 @@ ActiveRecord::Schema.define(:version => 20130930174850) do
     t.integer  "receiver_scenario_id"
     t.string   "error_name"
     t.text     "error_message"
+    t.text     "summary_report"
+    t.string   "errors_report_file"
+    t.string   "stats_file"
+    t.string   "to_user"
+    t.string   "from_user"
+    t.string   "advertise_address"
+    t.string   "sipp_options"
   end
 
   create_table "users", :force => true do |t|
@@ -111,6 +118,7 @@ ActiveRecord::Schema.define(:version => 20130930174850) do
     t.datetime "updated_at",                      :null => false
     t.boolean  "admin",        :default => false
     t.boolean  "admin_mode",   :default => false
+    t.string   "name"
   end
 
 end

@@ -1,5 +1,6 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
+ENV['COOKIE_SECRET'] = 'ABCD' * 15
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
@@ -69,7 +70,7 @@ end
 Fog.mock!
 Fog.credentials_path = Rails.root.join('config/fog_credentials.yml')
 connection = Fog::Storage.new(provider: 'AWS')
-connection.directories.create(key: "foundry_test_tool_#{Rails.env}") # This should not be duplicated from the CarrierWave initializer
+connection.directories.create(key: "sip-treadmill-#{Rails.env}") # This should not be duplicated from the CarrierWave initializer
 
 FactoryGirl.find_definitions
 
