@@ -17,7 +17,7 @@ describe TestRunner do
       to_user: '+14044754840',
       from_user: 'sippppp',
       advertise_address: '10.5.5.1',
-      sipp_options: '-p 101',
+      options: {'p' => '101'},
       vmstat_buffer: an_instance_of(Array),
       destination: test_run.target.address
     }

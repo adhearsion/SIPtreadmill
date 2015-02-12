@@ -38,7 +38,7 @@
         = f.input :to_user, label: 'SIP destination (user portion)'
         = f.input :from_user, label: 'SIP source (user portion)'
         = f.input :advertise_address, label: 'SIP advertise address'
-        = f.input :sipp_options, label: 'SIPp command line options'
+        = f.input_field :sipp_options, label: 'SIPp command line options in SippyCup (YAML) format'
         %span#target_display.help-inline.instructions
   .form-actions
     = f.button :submit, class: 'btn-default'

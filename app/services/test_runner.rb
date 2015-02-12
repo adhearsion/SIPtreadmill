@@ -98,7 +98,7 @@ class TestRunner
       vmstat_buffer: @vmstat_buffer,
       advertise_address: @test_run.advertise_address,
       from_user: @test_run.from_user,
-      options: @test_run.sipp_options,
+      options: Psych.safe_load(@test_run.sipp_options),
     }
 
     opts[:scenario_variables] = write_csv_data @test_run.scenario if @test_run.scenario.csv_data.present?
