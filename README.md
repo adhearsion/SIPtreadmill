@@ -33,6 +33,8 @@ In order to get started with Treadmill, the following are required:
 
 Once you have all of the pieces, copy `config/database.yml.sample` to `config/database.yml`, and plug in the values required to connect to your database of choice.
 
+Ensure that the user running the worker process has passwordless sudo access to run SIPp.
+
 ### Environment Variables
 
 The majority of configuration for SIP Treadmill is done via environment variables. These environment variables are:
