@@ -202,13 +202,17 @@ describe TestRun do
   context "#duplicate" do
     it "should duplicate the test run" do
       test_run = FactoryGirl.create :test_run, user: FactoryGirl.build(:user), scenario: FactoryGirl.build(:scenario),
-                      profile: FactoryGirl.build(:profile), target: FactoryGirl.build(:target), name: "TestRun"
+                      profile: FactoryGirl.build(:profile), target: FactoryGirl.build(:target), name: "TestRun",
+                      from_user: 'foobar', advertise_address: '127.0.0.1', sipp_options: 'p: "101"'
       new_tr = test_run.duplicate
       new_tr.user.should == test_run.user
       new_tr.scenario.should == test_run.scenario
       new_tr.profile.should == test_run.profile
       new_tr.target.should == test_run.target
       new_tr.name.should == "TestRun Retry 1"
+      new_tr.from_user.should == 'foobar'
+      new_tr.advertise_address.should == '127.0.0.1'
+      new_tr.sipp_options.should == 'p: "101"'
     end
 
     it "should increment the number correctly" do

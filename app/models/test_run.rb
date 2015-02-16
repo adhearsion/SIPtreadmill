@@ -44,8 +44,15 @@ class TestRun < ActiveRecord::Base
   end
 
   def duplicate
-    new_run = TestRun.new(scenario_id: self.scenario.id, profile_id: self.profile.id,
-                               target_id: self.target.id, description: self.description)
+    new_run = TestRun.new(
+      scenario_id: self.scenario.id,
+      profile_id: self.profile.id,
+      target_id: self.target.id,
+      description: self.description,
+      from_user: self.from_user,
+      advertise_address: self.advertise_address,
+      sipp_options: self.sipp_options,
+    )
     new_run.user = self.user
     new_run.receiver_scenario_id = self.receiver_scenario.id if self.receiver_scenario
     if match = self.name.match(/Retry (\d+)$/)
