@@ -95,7 +95,10 @@ class TestRunner
       max_concurrent: @test_run.profile.max_concurrent,
       to_user: @test_run.to_user,
       transport_mode: @test_run.profile.transport_type.to_s,
-      vmstat_buffer: @vmstat_buffer
+      vmstat_buffer: @vmstat_buffer,
+      advertise_address: @test_run.advertise_address,
+      from_user: @test_run.from_user,
+      options: Psych.safe_load(@test_run.sipp_options),
     }
 
     opts[:scenario_variables] = write_csv_data @test_run.scenario if @test_run.scenario.csv_data.present?

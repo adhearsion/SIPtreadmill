@@ -30,10 +30,17 @@
         %span#profile_display.help-inline.instructions.ajax_display_data
     .row-fluid
       .span12
-        = f.input :to_user, label: 'SIP destination (user portion)'
         = f.label :target, for: "test_run_target_id"
         = f.input_field :target, collection: current_user.targets.order(:name).all, id: "test_run_target_id", name: "test_run[target_id]", selected: @test_run.target_id, :include_blank => true
         %span#target_display.help-inline.instructions.ajax_display_data
+    .row-fluid
+      .span12
+        = f.input :to_user, label: 'SIP destination (user portion)'
+        = f.input :from_user, label: 'SIP source (user portion)'
+        = f.input :advertise_address, label: 'SIP advertise address'
+        = f.label :sipp_options, label: 'SIPp command line options in SippyCup (YAML) format'
+        = f.input_field :sipp_options, :cols => 80, :rows => 3
+        %span#target_display.help-inline.instructions
   .form-actions
     = f.button :submit, class: 'btn-default'
 #new_scenario.modal.hide.fade{:tabindex => "-1"}

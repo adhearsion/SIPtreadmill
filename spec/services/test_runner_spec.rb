@@ -15,6 +15,9 @@ describe TestRunner do
       max_concurrent: test_run.profile.max_concurrent,
       transport_mode: test_run.profile.transport_type.to_s,
       to_user: '+14044754840',
+      from_user: 'sippppp',
+      advertise_address: '10.5.5.1',
+      options: {'p' => '101'},
       vmstat_buffer: an_instance_of(Array),
       destination: test_run.target.address
     }
