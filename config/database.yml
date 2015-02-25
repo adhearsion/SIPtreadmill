@@ -1,0 +1,19 @@
+common: &common
+  adapter: postgresql
+  username: <%= ENV['DATABASE_USERNAME'] || 'sip_treadmill' %>
+  password: <%= ENV['DATABASE_PASSWORD'] || 'super_secret' %>
+  host: <%= ENV['DATABASE_HOST'] || '127.0.0.1' %>
+  port: <%= ENV['DATABASE_PORT'].to_i || 5432 %>
+  template: template0
+
+production:
+  <<: *common
+  database: <%= ENV['DATABASE_NAME'] || 'treadmill' %>
+
+development:
+  <<: *common
+  database: <%= ENV['DATABASE_NAME'] || 'treadmill_dev' %>
+
+test:
+  <<: *common
+  database: <%= ENV['DATABASE_NAME'] || 'treadmill_test' %>
