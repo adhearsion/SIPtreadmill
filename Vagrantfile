@@ -96,6 +96,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define :deploy do |deploy|
+    deploy.vm.box = 'ubuntu/trusty64'
+
     public_ip = "10.203.132.12"
 
     deploy.vm.network :private_network, ip: public_ip
