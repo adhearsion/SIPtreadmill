@@ -94,4 +94,23 @@ Vagrant.configure("2") do |config|
       }
     end
   end
+
+  config.vm.define :deploy do |deploy|
+    public_ip = "10.203.132.12"
+
+    deploy.vm.network :private_network, ip: public_ip
+    deploy.vm.hostname = "local.treadmill.mojolingo.net"
+
+    deploy.vm.provider :virtualbox do |vb|
+      vb.name = "SIP-Treadmil-Deploy"
+    end
+
+    deploy.vm.provision "shell", inline: <<-SCRIPT
+  wget -qO - https://deb.packager.io/key | sudo apt-key add -
+  echo "deb https://deb.packager.io/gh/att-innovate/SIPtreadmill trusty feature/packaging" | sudo tee /etc/apt/sources.list.d/SIPtreadmill.list
+
+  sudo apt-get -y update
+  sudo apt-get -y install siptreadmill
+SCRIPT
+  end
 end
