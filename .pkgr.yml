@@ -5,4 +5,4 @@ wizards:
   - https://github.com/pkgr/addon-apache2.git
   - https://github.com/mojolingo/pkgr-addon-siptreadmill.git
 after:
-  - rm -rf .git
+  - rm -rf .git app/assets sipp treadmill tmp vendor/cache
