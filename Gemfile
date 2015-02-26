@@ -58,6 +58,8 @@ gem 'thin'
 gem 'sippy_cup', '0.5.0'
 gem 'net-ssh'
 
+gem 'rails_12factor'
+
 group :development do
   # To use debugger
   # gem 'debugger'
