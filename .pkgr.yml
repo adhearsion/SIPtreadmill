@@ -1,2 +1,3 @@
 targets:
   ubuntu-14.04:
+installer: https://github.com/pkgr/installer.git#master
