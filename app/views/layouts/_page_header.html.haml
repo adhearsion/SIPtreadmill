@@ -14,12 +14,14 @@
       - if user_signed_in?
         %p
           Logged in as
-          %strong= "#{current_user.first_name} #{current_user.last_name}"
+          %strong= "#{current_user.full_name}"
         - if current_user.admin
           -if current_user.admin_mode
             %p= link_to 'Disable admin mode', home_toggle_admin_path, class: 'btn btn-mini btn-danger', method: :post
           -else
             %p= link_to 'Enable admin mode', home_toggle_admin_path, class: 'btn btn-mini btn-success', method: :post
+        %p
+          =link_to 'Logout', destroy_user_session_path, :method => :delete, data: { confirm: "Are you sure you want to logout? You may lose unsaved data." }
 .row-fluid
   .padded
     = render 'layouts/messages'

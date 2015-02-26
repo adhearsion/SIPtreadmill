@@ -5,5 +5,5 @@ CarrierWave.configure do |config|
     :aws_access_key_id      => ENV['AWS_ACCESS_KEY_ID'] || 'test',
     :aws_secret_access_key  => ENV['AWS_SECRET_ACCESS_KEY'] || 'test',
   }
-  config.fog_directory  = "foundry_test_tool_#{Rails.env}"
+  config.fog_directory  = ENV['AWS_S3_BUCKET'] ||"sip-treadmill-#{Rails.env}"
 end

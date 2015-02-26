@@ -3,12 +3,6 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 jQuery ->
-  $("input#scenario_receiver").change ->
-    if $(this).is(':checked')
-      $("#reg_scenario_form").show()
-    else
-      $("#reg_scenario_form").hide()
-
   $("input:radio[name=type]").change ->
     $("#scenario_type_form_row").show()
     if $(this).val() is "sippy_cup"

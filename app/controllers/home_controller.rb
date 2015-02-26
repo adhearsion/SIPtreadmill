@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   def index
+    @omniauth_type = ENV['OMNIAUTH_TYPE'] == 'github' ? :github : :att
   end
 
   def toggle_admin

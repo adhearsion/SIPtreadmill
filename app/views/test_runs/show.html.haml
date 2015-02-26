@@ -42,7 +42,12 @@
 
             %dt Target:
             %dd= link_to @test_run.target_name, @test_run.target
+            %dd= "SIP user: #{@test_run.to_user}"
             %dd= "Address: #{@test_run.target.address}"
+
+            %dt Logs:
+            %dd= link_to "Errors Report", @test_run.errors_report_file_url
+            %dd= link_to "Raw Stats", @test_run.stats_file_url
 
             %dt Created By:
             %dd= @test_run.user.full_name if @test_run.user
@@ -153,6 +158,14 @@
                     %dd= @test_run.avg_packet_loss
                     %dt Max packet loss
                     %dd= @test_run.max_packet_loss
+          .row-fluid
+            .span12
+              .box
+                .box-header
+                  %span.title Test run summary
+                .box-content.padded
+                  %pre{style: 'font-size: 0.8em'}
+                    = @test_run.summary_report
 
 - if @test_run.state == 'queued' || @test_run.state == 'running'
   :javascript

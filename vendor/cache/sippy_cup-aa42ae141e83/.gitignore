@@ -1,7 +1,0 @@
-.*.sw*
-.DS_Store
-*.gem
-/spec/reports/
-Gemfile.lock
-.ruby-gemset
-tmp/
