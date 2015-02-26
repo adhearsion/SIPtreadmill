@@ -39,14 +39,7 @@ sudo apt-get -y update
 sudo apt-get -y install siptreadmill
 ```
 
-After installing the application, you will be requested to run `sudo siptreadmill configure` to complete installation and setup of the database, Redis, SIPp, and a front-end webserver (Apache2).
-
-It is necessary post-installation to configure the application's authentication, like so:
-
-```
-sudo siptreadmill config:set OMNIAUTH_TYPE=github GITHUB_KEY=foobar GITHUB_SECRET=baz AWS_ACCESS_KEY_ID=foobar AWS_SECRET_ACCESS_KEY=baz
-sudo service siptreadmill restart
-```
+After installing the application, you will be requested to run `sudo siptreadmill configure` to complete installation and setup of the database, Redis, SIPp, and a front-end webserver (Apache2), as well as to configure some essential settings of the application.
 
 SIP Treadmill should then be running on port 80.
 
@@ -75,6 +68,8 @@ The majority of configuration for SIP Treadmill is done via environment variable
   <dt>TEST_RUN_BIND_IP</dt>
   <dd>The IP address to bind to for sending SIP traffic</dd>
 </dl>
+
+You can change these settings using `sudo siptreadmill config:set KEY=value`.
 
 ### Dependencies (for manual installation)
 
