@@ -7,38 +7,28 @@ describe TestRunner do
   let(:jid) { 'abc123' }
   subject { TestRunner.new test_run, jid }
 
-  before { scenario.stub(:to_disk) }
-
-  let(:runner_scenario) do
+  let(:options) do
     {
-      scenario: "/tmp/abc123/scenario",
-      source: TestRunner::BIND_IP
-    }
-  end
-
-  let(:runner_profile) do
-    {
+      source: TestRunner::BIND_IP,
       number_of_calls: test_run.profile.max_calls,
       calls_per_second: test_run.profile.calls_per_second,
       max_concurrent: test_run.profile.max_concurrent,
       transport_mode: test_run.profile.transport_type.to_s,
-      vmstat_buffer: an_instance_of(Array)
-    }
-  end
-
-  let(:runner_target) do
-    {
+      to_user: '+14044754840',
+      from_user: 'sippppp',
+      advertise_address: '10.5.5.1',
+      options: {'p' => '101'},
+      vmstat_buffer: an_instance_of(Array),
       destination: test_run.target.address
     }
   end
 
   let(:mock_runner) { double run: {} }
 
-  it "writes the scenario to disk and instantiates the runner with the correct parameters" do
-    scenario.should_receive(:to_disk).once.with('/tmp/abc123/', 'scenario',
-      source: "#{TestRunner::BIND_IP}:#{TestRunner::SIPPYCUP_TARGET_PORT}",
-      destination: test_run.target.address)
-    Runner.should_receive(:new).with("myfirsttest_run", runner_scenario, runner_profile, runner_target).and_return(mock_runner)
+  let(:runner_options) { { full_sipp_output: false, async: true } }
+
+  it "instantiates the runner with the correct parameters" do
+    Runner.should_receive(:new).with("myfirsttest_run", scenario, options).and_return(mock_runner)
     mock_runner.should_receive(:run)
     subject.run
   end
@@ -46,66 +36,68 @@ describe TestRunner do
   context "when the test run has a receiver scenario" do
     let(:receiver_scenario) { FactoryGirl.build(:sipp_scenario, receiver: true) }
     let(:test_run) { FactoryGirl.create(:test_run, scenario: scenario, receiver_scenario: receiver_scenario, jid: jid) }
-
-    before { receiver_scenario.stub(:to_disk) }
-
-    it "writes the receiver scenario to disk and starts it before starting the main scenario" do
-      receiver_scenario.should_receive(:to_disk).once.with('/tmp/abc123/', 'receiver_scenario').ordered
-
-      pid = '1234'
-      Process.should_receive(:spawn).with("sipp -sf /tmp/abc123/receiver_scenario.xml -i #{TestRunner::BIND_IP} -p 8837 -t u1", out: '/dev/null', err: '/dev/null').ordered.and_return pid
-
-      scenario.should_receive(:to_disk).once.with('/tmp/abc123/', 'scenario',
-        source: "#{TestRunner::BIND_IP}:#{TestRunner::SIPPYCUP_TARGET_PORT}",
-        destination: test_run.target.address).ordered
-      Runner.should_receive(:new).with("myfirsttest_run", runner_scenario, runner_profile, runner_target).ordered.and_return(mock_runner)
-      mock_runner.should_receive(:run).ordered
-      Process.should_receive(:kill).with("KILL", pid).ordered
-      subject.run
+    let(:receiver_options) do
+      {
+        source: TestRunner::BIND_IP,
+        source_port: 8838,
+        transport_mode: test_run.profile.transport_type.to_s
+      }
     end
 
-    it "should not fail if the receiver scenario was stopped before attempting to halt it" do
-      pid = '1234'
-      Process.should_receive(:spawn).with("sipp -sf /tmp/abc123/receiver_scenario.xml -i #{TestRunner::BIND_IP} -p 8837 -t u1", out: '/dev/null', err: '/dev/null').ordered.and_return pid
-      Runner.should_receive(:new).with("myfirsttest_run", runner_scenario, runner_profile, runner_target).ordered.and_return(mock_runner)
+    let(:receiver_sippy) { receiver_scenario.to_sippycup_scenario receiver_options }
+    let(:receiver_runner) { double run: {} }
+
+    it "starts the receiver scenario before the main scenario" do
+      receiver_scenario.should_receive(:to_sippycup_scenario).twice.with(receiver_options).ordered.and_return(receiver_sippy)
+      SippyCup::Runner.should_receive(:new).with(receiver_sippy, runner_options).ordered.and_return(receiver_runner)
+      receiver_runner.should_receive :run
+      receiver_runner.should_receive :wait
+
+      Runner.should_receive(:new).with("myfirsttest_run", scenario, options).ordered.and_return(mock_runner)
       mock_runner.should_receive(:run).ordered
-      Process.should_receive(:kill).with("KILL", pid).ordered.and_raise(Errno::ESRCH)
+      receiver_runner.should_receive :stop
       subject.run
     end
 
     it "should terminate the receiver scenario if any problems ocurr" do
-      pid = '1234'
-      Process.should_receive(:spawn).with("sipp -sf /tmp/abc123/receiver_scenario.xml -i #{TestRunner::BIND_IP} -p 8837 -t u1", out: '/dev/null', err: '/dev/null').ordered.and_return pid
+      receiver_scenario.should_receive(:to_sippycup_scenario).twice.with(receiver_options).ordered.and_return(receiver_sippy)
+      SippyCup::Runner.should_receive(:new).with(receiver_sippy, runner_options).ordered.and_return(receiver_runner)
+      receiver_runner.should_receive :run
+      receiver_runner.should_receive :wait 
 
-      scenario.should_receive(:to_disk).and_raise StandardError
-
-      Process.should_receive(:kill).with("KILL", pid).ordered
+      Runner.should_receive(:new).and_raise StandardError
+      receiver_runner.should_receive :stop
       expect { subject.run }.to raise_error StandardError
     end
 
     context "with CSV data" do
       let(:receiver_scenario) { FactoryGirl.build(:sipp_scenario, receiver: true, csv_data: 'abc;123') }
 
-      it "passes -inf to SIPp" do
-        pid = '1234'
-        Process.should_receive(:spawn).with("sipp -sf /tmp/abc123/receiver_scenario.xml -i #{TestRunner::BIND_IP} -p 8837 -inf /tmp/abc123/receiver_scenario.csv -t u1", out: '/dev/null', err: '/dev/null').ordered.and_return pid
-        Runner.should_receive(:new).with("myfirsttest_run", runner_scenario, runner_profile, runner_target).ordered.and_return(mock_runner)
+      before do
+        receiver_options[:scenario_variables] = "/tmp/receiver.csv"
+      end
+
+      it "writes the receiver scenario csv data and passes it to SippyCup" do
+        subject.should_receive(:write_csv_data).with(receiver_scenario).ordered.and_return "/tmp/receiver.csv"
+        receiver_scenario.should_receive(:to_sippycup_scenario).twice.with(receiver_options).and_return(receiver_sippy)
+        SippyCup::Runner.should_receive(:new).with(receiver_sippy, runner_options).ordered.and_return(receiver_runner)
+        receiver_runner.should_receive :run
+        receiver_runner.should_receive :wait
+
+        Runner.should_receive(:new).with("myfirsttest_run", scenario, options).ordered.and_return(mock_runner)
         mock_runner.should_receive(:run).ordered
-        Process.should_receive(:kill).with("KILL", pid).ordered.and_raise(Errno::ESRCH)
-        subject.run
+        receiver_runner.should_receive :stop
+        subject.run 
       end
     end
 
     context "and a registration scenario" do
       let(:registration_scenario) { FactoryGirl.build(:sipp_scenario, receiver: true) }
       let(:receiver_scenario) { FactoryGirl.build(:sipp_scenario, receiver: true, registration_scenario: registration_scenario) }
-
-      before { registration_scenario.stub(:to_disk) }
+      let(:runner_options) { { full_sipp_output: false } }
 
       it "writes the receiver scenario to disk and starts it before starting the main scenario" do
-        registration_scenario.should_receive(:to_disk).once.with('/tmp/abc123/', 'registration_scenario').ordered
         reg_options = {
-          scenario: "/tmp/abc123/registration_scenario",
           number_of_calls: 1,
           calls_per_second: 1,
           max_concurrent: 1,
@@ -113,40 +105,56 @@ describe TestRunner do
           source: TestRunner::BIND_IP,
           source_port: 8837,
           transport_mode: 'u1',
-          full_sipp_output: false
         }
+        reg_sippy = registration_scenario.to_sippycup_scenario reg_options
         mock_reg_runner = double 'SippyCup::Runner'
-        SippyCup::Runner.should_receive(:new).with(reg_options).ordered.and_return(mock_reg_runner)
+        registration_scenario.should_receive(:to_sippycup_scenario).with(reg_options).ordered.and_return reg_sippy
+        SippyCup::Runner.should_receive(:new).with(reg_sippy, runner_options).ordered.and_return(mock_reg_runner)
         mock_reg_runner.should_receive(:run).ordered
 
-        receiver_scenario.should_receive(:to_disk).once.with('/tmp/abc123/', 'receiver_scenario').ordered
+        receiver_scenario.should_receive(:to_sippycup_scenario).twice.with(receiver_options).and_return(receiver_sippy)
+        SippyCup::Runner.should_receive(:new).with(receiver_sippy, runner_options.merge(async: true)).ordered.and_return(receiver_runner)
+        receiver_runner.should_receive :run
+        receiver_runner.should_receive :wait
 
-        pid = '1234'
-        Process.should_receive(:spawn).with("sipp -sf /tmp/abc123/receiver_scenario.xml -i #{TestRunner::BIND_IP} -p 8837 -t u1", out: '/dev/null', err: '/dev/null').ordered.and_return pid
-
-        scenario.should_receive(:to_disk).once.with('/tmp/abc123/', 'scenario',
-          source: "#{TestRunner::BIND_IP}:#{TestRunner::SIPPYCUP_TARGET_PORT}",
-          destination: test_run.target.address).ordered
-        Runner.should_receive(:new).with("myfirsttest_run", runner_scenario, runner_profile, runner_target).ordered.and_return(mock_runner)
+        Runner.should_receive(:new).with("myfirsttest_run", scenario, options).ordered.and_return(mock_runner)
         mock_runner.should_receive(:run).ordered
-        Process.should_receive(:kill).with("KILL", pid).ordered
+
+        receiver_runner.should_receive :stop
         subject.run
       end
 
       context "with CSV data" do
         let(:registration_scenario) { FactoryGirl.build(:sipp_scenario, receiver: true, csv_data: 'abc;123') }
+        let(:runner_options) { { full_sipp_output: false } }
 
         it "passes the :scenario_variables option to the registration runner" do
+          reg_options = {
+            number_of_calls: 1,
+            calls_per_second: 1,
+            max_concurrent: 1,
+            destination: test_run.target.address,
+            source: TestRunner::BIND_IP,
+            source_port: 8837,
+            transport_mode: 'u1',
+            scenario_variables: '/tmp/reg.csv'
+          }
+          reg_sippy = registration_scenario.to_sippycup_scenario reg_options
           mock_reg_runner = double 'SippyCup::Runner'
-          SippyCup::Runner.should_receive(:new).with(hash_including(scenario_variables: "/tmp/abc123/registration_scenario.csv")).ordered.and_return(mock_reg_runner)
+          subject.should_receive(:write_csv_data).with(registration_scenario).and_return '/tmp/reg.csv'
+          registration_scenario.should_receive(:to_sippycup_scenario).with(reg_options).ordered.and_return reg_sippy
+          SippyCup::Runner.should_receive(:new).with(reg_sippy, runner_options).ordered.and_return(mock_reg_runner)
           mock_reg_runner.should_receive(:run).ordered
 
-          pid = '1234'
-          Process.should_receive(:spawn).with("sipp -sf /tmp/abc123/receiver_scenario.xml -i #{TestRunner::BIND_IP} -p 8837 -t u1", out: '/dev/null', err: '/dev/null').ordered.and_return pid
+          receiver_scenario.should_receive(:to_sippycup_scenario).twice.with(receiver_options).and_return(receiver_sippy)
+          SippyCup::Runner.should_receive(:new).with(receiver_sippy, runner_options.merge(async: true)).ordered.and_return(receiver_runner)
+          receiver_runner.should_receive :run
+          receiver_runner.should_receive :wait
 
-          Runner.should_receive(:new).with("myfirsttest_run", runner_scenario, runner_profile, runner_target).ordered.and_return(mock_runner)
+          Runner.should_receive(:new).with("myfirsttest_run", scenario, options).ordered.and_return(mock_runner)
           mock_runner.should_receive(:run).ordered
-          Process.should_receive(:kill).with("KILL", pid).ordered
+
+          receiver_runner.should_receive :stop
           subject.run
         end
       end
@@ -156,16 +164,13 @@ describe TestRunner do
   context "with CSV" do
     let(:scenario) { FactoryGirl.build(:sipp_scenario, id: 1, csv_data: "foo;123") }
 
-    let(:runner_scenario) do
-      {
-        scenario: "/tmp/abc123/scenario",
-        scenario_variables: "/tmp/abc123/scenario.csv",
-        source: TestRunner::BIND_IP
-      }
+    before do
+      options[:scenario_variables] = '/tmp/data.csv'
     end
 
     it "passes the :scenario_variables option to the runner" do
-      Runner.should_receive(:new).with("myfirsttest_run", runner_scenario, runner_profile, runner_target).and_return(mock_runner)
+      subject.should_receive(:write_csv_data).with(scenario).and_return '/tmp/data.csv'
+      Runner.should_receive(:new).with("myfirsttest_run", scenario, options).and_return(mock_runner)
       mock_runner.should_receive(:run)
       subject.run
     end

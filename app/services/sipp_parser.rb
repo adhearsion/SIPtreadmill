@@ -12,11 +12,11 @@ class SippParser
         time: DateTime.parse(row['CurrentTime']),
         test_run: @test_run,
         total_calls: row['TotalCallCreated'],
-        successful_calls: row['SuccessfulCall(C)'],
-        failed_calls: row['FailedCall(C)'],
+        successful_calls: row['SuccessfulCall(P)'],
+        failed_calls: row['FailedCall(P)'],
         concurrent_calls: row['CurrentCall'],
-        avg_call_duration: row['CallLength(C)'],
-        response_time: row['ResponseTime1(C)'],
+        avg_call_duration: row['CallLength(P)'],
+        response_time: row['ResponseTime1(P)'],
         cps: row['CallRate(P)']
       }
       SippData.create data

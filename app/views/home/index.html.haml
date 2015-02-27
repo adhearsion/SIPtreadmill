@@ -1,7 +1,7 @@
 - if user_signed_in?
   - content_for(:page_title) { "Dashboard" }
   - content_for(:page_icon) { "icon-dashboard" }
-  - content_for(:page_subtitle) { "Welcome, #{current_user.first_name}"}
+  - content_for(:page_subtitle) { "Welcome, #{current_user.full_name}"}
 - else
   - content_for(:page_title) { "Authentication required" }
   - content_for(:page_icon) { "icon-lock" }
@@ -63,4 +63,4 @@
   .container-fluid.padded
     .row-fluid
       .span12
-        %p= link_to 'Log In', user_omniauth_authorize_path(:att), class: "btn btn-success"
+        %p= link_to 'Log In', user_omniauth_authorize_path(@omniauth_type), class: "btn btn-success"

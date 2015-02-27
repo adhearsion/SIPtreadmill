@@ -1,6 +1,7 @@
+require 'tempfile'
+
 class TestRunner
-  SIPPYCUP_TARGET_PORT = "12345"
-  BIND_IP = ENV['TEST_RUN_BIND_IP'] || "10.203.132.10"
+  BIND_IP = ENV['TEST_RUN_BIND_IP']
 
   attr_accessor :stopped
 
@@ -8,17 +9,16 @@ class TestRunner
     @test_run = test_run
     @jid = job_id
     @stopped = false
-    @receiver_pid = nil
+    @receiver_runner = nil
+    @receiver_error = nil
     @password = ssh_password
     @vmstat_buffer = []
+    @csv_files = []
   end
 
   def run
     execute_registration_scenario
     start_receiver_scenario
-
-    @test_run.scenario.to_disk path, "scenario", source: "#{TestRunner::BIND_IP}:#{SIPPYCUP_TARGET_PORT}",
-      destination: @test_run.target.address
 
     result = execute_runner
 
@@ -27,8 +27,14 @@ class TestRunner
       parse_rtcp_data result[:rtcp_data]
       parse_system_stats @vmstat_buffer if has_stats_credentials?
     end
+
+    @test_run.summary_report = result[:summary_report]
+    @test_run.errors_report_file = result[:errors_report_file]
+    @test_run.stats_file = result[:stats_file]
+    @test_run.save!
   ensure
     halt_receiver_scenario
+    close_csv_files
   end
 
   def stop
@@ -41,80 +47,89 @@ class TestRunner
   def execute_registration_scenario
     return unless @test_run.registration_scenario
 
-    @test_run.registration_scenario.to_disk path, "registration_scenario"
-
     options = {
-      scenario: path("registration_scenario"),
       number_of_calls: 1,
       calls_per_second: 1,
       max_concurrent: 1,
       destination: @test_run.target.address,
       source: TestRunner::BIND_IP,
-      source_port: 8837,
+      source_port: 8838,
       transport_mode: @test_run.profile.transport_type.to_s,
-      full_sipp_output: false
     }
-    options[:scenario_variables] = path("registration_scenario.csv") if @test_run.registration_scenario.csv_data.present?
-    cup = SippyCup::Runner.new options
+    options[:scenario_variables] = write_csv_data @test_run.registration_scenario if @test_run.registration_scenario.csv_data.present?
+    scenario = @test_run.registration_scenario.to_sippycup_scenario options
+    cup = SippyCup::Runner.new scenario, full_sipp_output: false
     cup.run
   end
 
   def start_receiver_scenario
     return unless @test_run.receiver_scenario
 
-    @test_run.receiver_scenario.to_disk path, "receiver_scenario"
+    options = {
+      source: TestRunner::BIND_IP,
+      source_port: 8838,
+      transport_mode: @test_run.profile.transport_type.to_s
+    }
 
-    command = "sipp -sf #{path('receiver_scenario.xml')} -i #{TestRunner::BIND_IP} -p 8837"
-    command << " -inf #{path('receiver_scenario.csv')}" if @test_run.receiver_scenario.csv_data.present?
-    command << " -t #{@test_run.profile.transport_type.to_s}" if @test_run.profile.transport_type.present?
-    puts "Running receiver scenario using command #{command.inspect}"
+    options[:scenario_variables] = write_csv_data @test_run.receiver_scenario if @test_run.receiver_scenario.csv_data.present?
 
-    @receiver_pid = Process.spawn command, out: '/dev/null', err: '/dev/null'
+    scenario = @test_run.receiver_scenario.to_sippycup_scenario options
+    @receiver_runner = SippyCup::Runner.new scenario, full_sipp_output: false, async: true
+    @receiver_runner.run
   end
 
   def halt_receiver_scenario
-    return unless @receiver_pid
-
-    puts "Terminating receiver scenario..."
-
-    Process.kill 'KILL', @receiver_pid
-
-    @receiver_pid = nil
-  rescue Errno::ESRCH
-    puts "Could not stop the receiver scenario because it was not running"
+    return unless @receiver_runner
+    @receiver_runner.stop
+    @receiver_runner.wait
   end
 
   def execute_runner
-    runner_scenario = {
-      scenario: path("scenario"),
-      source: TestRunner::BIND_IP
-    }
+    runner_scenario = @test_run.scenario
 
-    runner_scenario[:scenario_variables] = path("scenario.csv") if @test_run.scenario.csv_data.present?
-
-    runner_profile = {
+    opts = {
+      source: TestRunner::BIND_IP,
+      destination: @test_run.target.address,
       number_of_calls: @test_run.profile.max_calls,
       calls_per_second: @test_run.profile.calls_per_second,
       max_concurrent: @test_run.profile.max_concurrent,
+      to_user: @test_run.to_user,
       transport_mode: @test_run.profile.transport_type.to_s,
-      vmstat_buffer: @vmstat_buffer
+      vmstat_buffer: @vmstat_buffer,
+      advertise_address: @test_run.advertise_address,
+      from_user: @test_run.from_user,
+      options: Psych.safe_load(@test_run.sipp_options),
     }
 
-    runner_target = {
-      destination: @test_run.target.address
-    }
+    opts[:scenario_variables] = write_csv_data @test_run.scenario if @test_run.scenario.csv_data.present?
 
     if has_stats_credentials?
-      runner_target[:password] = @password
-      runner_target[:username] = @test_run.target.ssh_username
+      opts[:password] = @password
+      opts[:username] = @test_run.target.ssh_username
     end
 
-    @runner = Runner.new runner_name, runner_scenario, runner_profile, runner_target
+    @runner = Runner.new runner_name, runner_scenario, opts
     @runner.run
   end
 
   def path(suffix = '')
     File.join "/tmp", @jid, suffix
+  end
+
+  def write_csv_data(scenario)
+    t = Tempfile.new 'csv'
+    t.write scenario.csv_data
+    t.rewind
+
+    @csv_files << t
+    t.path
+  end
+
+  def close_csv_files
+    @csv_files.each do |f|
+      f.close
+      f.unlink
+    end
   end
 
   def runner_name

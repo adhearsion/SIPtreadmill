@@ -16,19 +16,18 @@ class Scenario < ActiveRecord::Base
 
   validate :sippy_cup_scenario_must_be_valid
 
-  def to_disk(dir, prefix, options = {})
-    FileUtils.mkdir_p dir
-
+  def to_sippycup_scenario(opts = {})
     if sippy_cup_scenario.present?
-      opts = options.merge name: name, filename: File.join(dir, prefix)
-      SippyCup::Scenario.from_manifest(sippy_cup_scenario, opts).compile!
+      scenario = SippyCup::Scenario.new name, opts
+      scenario.build sippy_cup_scenario_steps
+      scenario
     else
-      # TODO: We can't use File.write here because FakeFS hasn't released support for it yet: https://github.com/defunkt/fakefs/issues/155
-      pcap_file_path = File.join(dir, "#{prefix}.pcap")
-      dump_pcap pcap_file_path if pcap_audio.present?
-      write_to_disk File.join(dir, "#{prefix}.xml"), sipp_xml.gsub(PCAP_PLACEHOLDER, pcap_file_path)
-      write_to_disk File.join(dir, "#{prefix}.csv"), csv_data if csv_data.present?
+      SippyCup::XMLScenario.new name, sipp_xml, pcap_data, opts
     end
+  end
+
+  def sippy_cup_scenario_steps
+    sippy_cup_scenario.split("\n").map(&:chomp)
   end
 
   def writable?
@@ -38,7 +37,7 @@ class Scenario < ActiveRecord::Base
   def sippy_cup_scenario_must_be_valid
     if sippy_cup_scenario.present?
       scenario = SippyCup::Scenario.new(name, source: '127.0.0.1', destination: '127.0.0.1')
-      scenario.build(sippy_cup_scenario.split("\n"))
+      scenario.build sippy_cup_scenario_steps
       unless scenario.valid?
         scenario.errors.each do |err|
           errors.add(:sippy_cup_scenario, "#{err[:message]} (Step #{err[:step]})")
@@ -49,13 +48,7 @@ class Scenario < ActiveRecord::Base
 
   private
 
-  def write_to_disk(filename, content, mode = 'w')
-    File.open(filename, mode) { |f| f.write content }
-  end
-
-  def dump_pcap(path)
-    open pcap_audio.url do |f|
-      write_to_disk path, f.read, 'wb'
-    end
+  def pcap_data
+    File.read(pcap_audio.url) if pcap_audio.url
   end
 end

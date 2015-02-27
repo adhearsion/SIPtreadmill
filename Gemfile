@@ -1,10 +1,12 @@
 source 'https://rubygems.org'
+
 ruby '1.9.3'
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.19'
 gem 'devise'
 gem 'omniauth', '~> 1.0'
 gem 'omniauth-att', github: 'att-innovate/omniauth-att'
+gem 'omniauth-github', '~> 1.1'
 gem 'haml'
 gem 'simple_form'
 gem 'carrierwave'
@@ -36,6 +38,8 @@ group :assets do
   gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
+
+  gem 'turbo-sprockets-rails3'
 end
 
 gem 'jquery-rails'
@@ -53,8 +57,10 @@ gem 'thin'
 # Deploy with Capistrano
 # gem 'capistrano'
 
-gem 'sippy_cup', github: 'bklang/sippy_cup', branch: 'master'
+gem 'sippy_cup', '0.5.0'
 gem 'net-ssh'
+
+gem 'rails_12factor'
 
 group :development do
   # To use debugger
