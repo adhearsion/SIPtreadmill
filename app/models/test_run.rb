@@ -50,6 +50,7 @@ class TestRun < ActiveRecord::Base
       target_id: self.target.id,
       description: self.description,
       from_user: self.from_user,
+      to_user: self.to_user,
       advertise_address: self.advertise_address,
       sipp_options: self.sipp_options,
     )
