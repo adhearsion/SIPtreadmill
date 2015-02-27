@@ -34,7 +34,7 @@ The preferred method of installation of SIP Treadmill is to Ubuntu 14.04 via a p
 
 ```
 wget -qO - https://deb.packager.io/key | sudo apt-key add -
-echo "deb https://deb.packager.io/gh/att-innovate/SIPtreadmill trusty feature/packaging" | sudo tee /etc/apt/sources.list.d/SIPtreadmill.list
+echo "deb https://deb.packager.io/gh/att-innovate/SIPtreadmill trusty develop" | sudo tee /etc/apt/sources.list.d/SIPtreadmill.list
 sudo apt-get -y update
 sudo apt-get -y install siptreadmill
 ```
