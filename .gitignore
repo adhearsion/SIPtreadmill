@@ -26,9 +26,6 @@ public/uploads
 
 .ruby-gemset
 
-# Rails local configuration. Use the sample files.
-config/database.yml
-
 /public/assets
 
 # Development environment things

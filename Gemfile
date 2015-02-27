@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '1.9.3'
+
 gem 'rails', '3.2.19'
 gem 'devise'
 gem 'omniauth', '~> 1.0'
@@ -55,6 +57,8 @@ gem 'thin'
 
 gem 'sippy_cup', '0.5.0'
 gem 'net-ssh'
+
+gem 'rails_12factor'
 
 group :development do
   # To use debugger

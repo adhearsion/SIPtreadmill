@@ -14,7 +14,7 @@ Scenarios describe how the calls in a Test Run behave. Call duration, DTMF input
 
 ### Profile
 
-The profile describes the call volume produced by the Test Run. The profile has three main fields: calls per second (how many calls are generated each second), concurrent calls (the number of calls that can occur at one time), and total number of calls for the test run.  
+The profile describes the call volume produced by the Test Run. The profile has three main fields: calls per second (how many calls are generated each second), concurrent calls (the number of calls that can occur at one time), and total number of calls for the test run.
 
 ### Target
 
@@ -22,20 +22,28 @@ The target describes the server on which the SIP application being tested is run
 
 ## The Setup
 
-In order to get started with Treadmill, the following are required:
+### Prerequisites
 
-* [SIPp](http://sipp.sourceforge.net) - MUST BE A DEVELOPMENT BUILD, see https://github.com/SIPp/sipp/pull/106
 * An [AT&T APIMatrix](https://apimatrix.tfoundry.com) account, or a [GitHub](https://github.com) account.
-* An AT&T APIMatrix application with profile access, or a GitHub application with user access.
-* [Redis](http://redis.io)
-* [PostgreSQL](http://www.postgresql.org/) (preferred, but any other Rails-compatible database will do)
-* Amazon S3 credentials for file uploads with CarrierWave
+* An AT&T APIMatrix application with profile access, or a GitHub application with user access. Credentials for such.
+* Amazon S3 bucket and credentials for file uploads.
 
-Once you have all of the pieces, copy `config/database.yml.sample` to `config/database.yml`, and plug in the values required to connect to your database of choice.
+### Installation from packages
 
-Ensure that the user running the worker process has passwordless sudo access to run SIPp.
+The preferred method of installation of SIP Treadmill is to Ubuntu 14.04 via a package:
 
-### Environment Variables
+```
+wget -qO - https://deb.packager.io/key | sudo apt-key add -
+echo "deb https://deb.packager.io/gh/att-innovate/SIPtreadmill trusty develop" | sudo tee /etc/apt/sources.list.d/SIPtreadmill.list
+sudo apt-get -y update
+sudo apt-get -y install siptreadmill
+```
+
+After installing the application, you will be requested to run `sudo siptreadmill configure` to complete installation and setup of the database, Redis, SIPp, and a front-end webserver (Apache2), as well as to configure some essential settings of the application.
+
+SIP Treadmill should then be running on port 80.
+
+### Configuration
 
 The majority of configuration for SIP Treadmill is done via environment variables. These environment variables are:
 <dl>
@@ -60,6 +68,18 @@ The majority of configuration for SIP Treadmill is done via environment variable
   <dt>TEST_RUN_BIND_IP</dt>
   <dd>The IP address to bind to for sending SIP traffic</dd>
 </dl>
+
+You can change these settings using `sudo siptreadmill config:set KEY=value`.
+
+### Dependencies (for manual installation)
+
+In order to get started with Treadmill, the following are required:
+
+* [SIPp](http://sipp.sourceforge.net) - MUST BE A DEVELOPMENT BUILD, see https://github.com/SIPp/sipp/pull/106
+* [Redis](http://redis.io)
+* [PostgreSQL](http://www.postgresql.org/) (preferred, but any other Rails-compatible database will do)
+
+Ensure that the user running the worker process has passwordless sudo access to run SIPp.
 
 ## Development environment
 
