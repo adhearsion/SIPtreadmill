@@ -25,7 +25,7 @@ The target describes the server on which the SIP application being tested is run
 ### Prerequisites
 
 * An [AT&T APIMatrix](https://apimatrix.tfoundry.com) account, or a [GitHub](https://github.com) account.
-* An AT&T APIMatrix application with profile access, or a GitHub application with user access. Credentials for such.
+* An AT&T APIMatrix application with profile access, or a GitHub application with user access. Credentials for such. Callback URL is `http://yourdomain.com/users/auth/github` or `/users/auth/att`.
 * Amazon S3 bucket and credentials for file uploads.
 
 ### Installation from packages
