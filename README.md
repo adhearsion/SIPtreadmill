@@ -59,12 +59,16 @@ The majority of configuration for SIP Treadmill is done via environment variable
   <dd>The Client ID of your GitHub application</dd>
   <dt>GITHUB_SECRET</dt>
   <dd>The Client secret for your GitHub application</dd>
+  <dt>STORAGE_TYPE</dt>
+  <dd>Storage for uploaded files. Valid options are 's3' and 'file'.</dd>
   <dt>AWS_ACCESS_KEY_ID</dt>
   <dd>The access key ID for your Amazon S3</dd>
   <dt>AWS_SECRET_ACCESS_KEY</dt>
   <dd>The access key secret for your Amazon S3</dd>
   <dt>AWS_S3_BUCKET</dt>
   <dd>The name of the Amazon S3 bucket for storage</dd>
+  <dt>FILE_PATH</dt>
+  <dd>Location of uploaded files on local filesystem.</dd>
   <dt>TEST_RUN_BIND_IP</dt>
   <dd>The IP address to bind to for sending SIP traffic</dd>
 </dl>
