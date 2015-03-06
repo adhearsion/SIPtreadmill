@@ -50,7 +50,7 @@ The majority of configuration for SIP Treadmill is done via environment variable
   <dt>COOKIE_SECRET</dt>
   <dd>A secret token used to sign cookies. Should be at least 30 random characters long.</dd>
   <dt>OMNIAUTH_TYPE</dt>
-  <dd>The omniauth method to use. Valid options are 'github' and 'att'</dd>
+  <dd>The omniauth method to use. Valid options are 'github', 'att', and 'none'</dd>
   <dt>APIMATRIX_KEY</dt>
   <dd>The Client ID for your APIMatrix application</dd>
   <dt>APIMATRIX_SECRET</dt>
