@@ -3,4 +3,4 @@ rvm:
   - 1.9.3
 before_script:
   - cp .env.sample .env
-  - psql -c 'create database treadmill_test;' -U postgres
+  - bundle exec rake db:create
