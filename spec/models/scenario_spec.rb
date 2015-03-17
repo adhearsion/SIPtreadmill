@@ -14,7 +14,7 @@ describe Scenario do
     it "should not accept an invalid SippyCup scenario" do
       scenario = FactoryGirl.build :sippy_cup_scenario, sippy_cup_scenario: "send_digits 'abc'"
       scenario.should_not be_valid
-      scenario.errors.messages[:sippy_cup_scenario].should == ["send_digits 'abc': Invalid DTMF digit requested: a (Step 1)"]
+      scenario.errors.messages[:sippy_cup_scenario].should == ["send_digits 'abc': Media not started (Step 1)"]
     end
 
     it "should accept a valid SippyCup scenario" do
