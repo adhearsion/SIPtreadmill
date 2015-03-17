@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(:version => 20150216173416) do
     t.boolean  "admin",        :default => false
     t.boolean  "admin_mode",   :default => false
     t.string   "name"
+    t.string   "authentication_token"
   end
 
 end

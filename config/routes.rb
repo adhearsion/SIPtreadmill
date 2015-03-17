@@ -17,6 +17,11 @@ SIPTreadmill::Application.routes.draw do
   end
 
   resources :users, only: [:index, :show, :edit, :update, :copy]
+  resources :users do
+    member do
+      get 'generate_token'
+    end
+  end
 
   post '/home/toggle_admin'
 

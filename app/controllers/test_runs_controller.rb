@@ -1,4 +1,5 @@
 class TestRunsController < ApplicationController
+  before_filter :token_auth!
   before_filter :authenticate_user!
   load_and_authorize_resource
 
@@ -138,6 +139,17 @@ class TestRunsController < ApplicationController
       redirect_to @test_run, notice: 'Test run successfully stopped'
     else
       redirect_to @test_run, alert: 'Test run can not be stopped.'
+    end
+  end
+
+  private
+
+  def token_auth!
+    user_email = params[:user_email].presence
+    user       = user_email && User.find_by_email(user_email)
+
+    if user && Devise.secure_compare(user.authentication_token, params[:auth_token])
+      sign_in user, store: false
     end
   end
 end
