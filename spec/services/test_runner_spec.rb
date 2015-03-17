@@ -103,7 +103,7 @@ describe TestRunner do
           max_concurrent: 1,
           destination: test_run.target.address,
           source: TestRunner::BIND_IP,
-          source_port: 8837,
+          source_port: 8838,
           transport_mode: 'u1',
         }
         reg_sippy = registration_scenario.to_sippycup_scenario reg_options
@@ -135,7 +135,7 @@ describe TestRunner do
             max_concurrent: 1,
             destination: test_run.target.address,
             source: TestRunner::BIND_IP,
-            source_port: 8837,
+            source_port: 8838,
             transport_mode: 'u1',
             scenario_variables: '/tmp/reg.csv'
           }
