@@ -75,6 +75,16 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def copy
+    @profile = Profile.find(params[:profile_id])
+    new_profile = @profile.duplicate current_user
+    if new_profile
+      redirect_to new_profile
+    else
+      redirect_to @profile, alert: "Could not copy the selected profile"
+    end
+  end
+
   # DELETE /profiles/1
   # DELETE /profiles/1.json
   def destroy

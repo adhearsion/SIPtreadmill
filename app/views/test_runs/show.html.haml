@@ -12,7 +12,8 @@
             %li= link_to '', test_runs_path, class: 'btn btn-primary icon-list', title: 'List'
             - if @test_run.state == 'pending'
               %li= link_to '', edit_test_run_path(@test_run), class: 'btn btn-warning icon-edit', title: 'Edit'
-              %li= link_to '', "/test_runs/#{@test_run.id}/copy", class: 'btn alert-info icon-copy', title: "Clone"
+            %li= link_to '', "/test_runs/#{@test_run.id}/copy", class: 'btn alert-info icon-copy', title: "Clone"
+            - unless @test_run.state == 'running'
               %li= link_to '', @test_run, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger icon-trash', title: 'Delete'
         .box-content.padded
           %dl

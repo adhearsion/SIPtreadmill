@@ -113,6 +113,16 @@ class ScenariosController < ApplicationController
       end
     end
   end
+
+  def copy
+    @scenario = Scenario.find(params[:scenario_id])
+    new_scenario = @scenario.duplicate current_user
+    if new_scenario
+      redirect_to new_scenario
+    else
+      redirect_to @scenario, alert: "Could not copy the scenario"
+    end
+  end
   # DELETE /scenarios/1
   # DELETE /scenarios/1.json
   def destroy

@@ -10,4 +10,16 @@ class Profile < ActiveRecord::Base
   def writable?
     self.test_runs.count == 0
   end
+
+  def duplicate(requesting_user)
+    new_profile = Profile.new(
+      name: "#{self.name} (Copy)",
+      calls_per_second: self.calls_per_second,
+      max_calls: self.max_calls,
+      max_concurrent: self.max_concurrent,
+      transport_type: self.transport_type,
+      user: requesting_user
+    )
+    new_profile.save ? new_profile : nil
+  end
 end

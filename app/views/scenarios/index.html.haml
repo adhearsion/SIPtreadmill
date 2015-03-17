@@ -33,6 +33,7 @@
                     - else
                       %a{"data-original-title" => "Read-only: in use by #{pluralize(scenario.test_runs.count, 'test run')}", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#", :title => ""}
                         %span{class: 'btn btn- icon-edit', disabled: "disabled"}
+                    = link_to '', "/scenarios/#{scenario.id}/copy", class: 'btn alert-info icon-copy', title: "Clone"
                     = link_to '', scenario, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger icon-trash', title: 'Delete'
           .table-footer
             = paginate @scenarios, theme: 'table'
