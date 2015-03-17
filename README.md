@@ -93,6 +93,7 @@ Ensure that the user running the worker process has passwordless sudo access to 
 4. Add the [librarian-chef plugin](https://github.com/jimmycuadra/vagrant-librarian-chef) to your Vagrant installation by doing `vagrant plugin install vagrant-librarian-chef`.
 4. Build the VMs: `vagrant up`
 5. SSH into the `dev` VM (`vagrant ssh dev`), move to `/srv/treadmill/current` and run the specs (`rake spec`)
+6. Copy `.env.sample` to `.env`.
 6. Launch the app (`foreman start`).
 6. You can access the app via http://dev.local.treadmill.mojolingo.net:5000/
 
