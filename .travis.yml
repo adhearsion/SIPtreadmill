@@ -3,6 +3,6 @@ rvm:
   - 1.9.3
 before_script:
   - cp .env.sample .env
-  - bundle exec rake db:create
+  - bundle exec rake db:create db:test:prepare
 env: DATABASE_USERNAME=postgres DATABASE_PASSWORD=''
 cache: bundler
