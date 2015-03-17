@@ -1,0 +1,97 @@
+#!/bin/bash
+
+set -e
+
+. "${INSTALLER_DIR}/wizard"
+
+input_start() {
+    wiz_put "siptreadmill/authentication/provider"
+    if wiz_ask ; then
+        if [ $(wiz_get "siptreadmill/authentication/provider") -eq "none" ]; then
+            STATE="storage"
+        else
+            STATE="auth_creds"
+        fi
+    else
+        STATE="done"
+        echo "Authentication configuration canceled."
+        exit 1
+    fi
+}
+
+input_auth_creds() {
+    wiz_put "siptreadmill/authentication/key"
+    wiz_put "siptreadmill/authentication/token"
+
+    if wiz_ask ; then
+        STATE="storage"
+    else
+        STATE="start"
+    fi
+}
+
+input_storage() {
+    wiz_put "siptreadmill/storage/type"
+
+    if wiz_ask ;  then
+        if [ $(wiz_get "siptreadmill/storage/type") -eq "s3" ]; then
+            STATE="s3"
+        else
+            STATE="filepath"
+        fi
+    else
+        STATE="start"
+    fi
+}
+
+input_filepath() {
+    wiz_put "siptreadmill/storage/directory"
+
+    if wiz_ask ; then
+        STATE="done"
+    else
+        STATE="start"
+    fi
+}
+
+input_s3() {
+    wiz_put "siptreadmill/s3/bucket"
+    wiz_put "siptreadmill/s3/key"
+    wiz_put "siptreadmill/s3/token"
+
+    if wiz_ask ; then
+        STATE="done"
+    else
+        STATE="start"
+    fi
+}
+
+state_machine() {
+    case "$1" in
+        "start")
+            input_start
+            ;;
+        "auth_creds")
+            input_auth_creds
+            ;;
+        "storage")
+            input_storage
+            ;;
+        "filepath")
+            input_filepath
+            ;;
+        "s3")
+            input_s3
+            ;;
+        "done")
+            echo "DONE"
+            break
+            ;;
+        *)
+            echo "invalid state ${STATE}"
+            break
+            ;;
+    esac
+}
+
+wizard "start"

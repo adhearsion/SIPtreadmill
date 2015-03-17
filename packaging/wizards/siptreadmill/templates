@@ -1,0 +1,47 @@
+Template: siptreadmill/authentication/provider
+Type: select
+Choices: github, att, none
+Translations: Github, AT&T APIMatrix, Guest Mode
+Default: github
+Description: Which authentication provider do you want to use for $APP_NAME?
+ Chose the authentication provider you have setup $APP_NAME.
+
+Template: siptreadmill/authentication/key
+Type: string
+Description: Authentication provider API key
+ The API key provided to you by your authentication provider
+
+Template: siptreadmill/authentication/token
+Type: string
+Description: Authentication provider API token
+ The API token/secret provided to you by your authentication provider
+
+Template: siptreadmill/storage/type
+Type: select
+Choices: file, s3
+Translations: Local Filesystem, AWS S3
+Default: file
+Description: Where do you want to store uploaded files for $APP_NAME?
+ Chose where you store uploaded files for $APP_NAME.
+
+Template: siptreadmill/storage/directory
+Type: string
+Default: $APP_HOME/public/uploads
+Description: Directory to store uploaded files in
+ Chose a directory to store uploaded files in.
+
+Template: siptreadmill/s3/bucket
+Type: string
+Default: siptreadmill
+Description: AWS S3 bucket
+ The S3 bucket name you want to use for storing files
+
+Template: siptreadmill/s3/key
+Type: string
+Description: AWS S3 key
+ The API token/secret provided to you by your authentication provider
+
+Template: siptreadmill/s3/token
+Type: string
+Description: AWS S3 authentication token
+ The token/secret provided to you by Amazon.

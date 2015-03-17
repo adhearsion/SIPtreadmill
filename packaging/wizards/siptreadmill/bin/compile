@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+ROOT_DIR=$(dirname $(dirname $0))
+APP_NAME="$1"
+APP_VERSION="$2"
+APP_ITERATION="$3"
+APP_DIR="$4"
+APP_SAFE_NAME=${APP_NAME//-/_}
+
+find ${ROOT_DIR}/debian -type f -print0 | xargs -0 sed -i "s/_APP_NAME_/${APP_NAME}/g"
+find ${ROOT_DIR}/debian -type f -print0 | xargs -0 sed -i "s/_APP_VERSION_/${APP_VERSION}/g"
+find ${ROOT_DIR}/debian -type f -print0 | xargs -0 sed -i "s/_APP_ITERATION_/${APP_ITERATION}/g"
+find ${ROOT_DIR}/debian -type f -print0 | xargs -0 sed -i "s/_APP_SAFE_NAME_/${APP_SAFE_NAME}/g"
