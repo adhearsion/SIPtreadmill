@@ -1,5 +1,6 @@
 # [develop](https://github.com/mojolingo/SIPtreadmill/compare/0.1.1...develop)
   * Authentication is now optional. When disabled, anonymous users have full administrative access.
+  * AT&T APIMatrix authentication was removed, since the client library for this has been abandoned.
   * File storage may now be to local disk or S3
   * Profiles and targets may now be cloned similarly to test runs
   * Failures to gather info from the test target via SSH are now notified as exceptions

@@ -24,8 +24,10 @@ The target describes the server on which the SIP application being tested is run
 
 ### Prerequisites
 
-* An [AT&T APIMatrix](https://apimatrix.tfoundry.com) account, or a [GitHub](https://github.com) account.
-* An AT&T APIMatrix application with profile access, or a GitHub application with user access. Credentials for such. Callback URL is `http://yourdomain.com/users/auth/github` or `/users/auth/att`.
+Optionally:
+
+* A [GitHub](https://github.com) account.
+* A GitHub application with user access & credentials for such. Callback URL is `http://yourdomain.com/users/auth/github`.
 * Amazon S3 bucket and credentials for file uploads.
 
 ### Installation from packages
@@ -50,11 +52,7 @@ The majority of configuration for SIP Treadmill is done via environment variable
   <dt>COOKIE_SECRET</dt>
   <dd>A secret token used to sign cookies. Should be at least 30 random characters long.</dd>
   <dt>OMNIAUTH_TYPE</dt>
-  <dd>The omniauth method to use. Valid options are 'github', 'att', and 'none'</dd>
-  <dt>APIMATRIX_KEY</dt>
-  <dd>The Client ID for your APIMatrix application</dd>
-  <dt>APIMATRIX_SECRET</dt>
-  <dd>The Client Secret for your APIMatrix application</dd>
+  <dd>The omniauth method to use. Valid options are 'github', and 'none'</dd>
   <dt>GITHUB_KEY</dt>
   <dd>The Client ID of your GitHub application</dd>
   <dt>GITHUB_SECRET</dt>

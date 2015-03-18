@@ -246,7 +246,6 @@ Devise.setup do |config|
 end
 
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :att, ENV['APIMATRIX_KEY'], ENV['APIMATRIX_SECRET'], :scope => 'profile'
   provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET']
 end
 
