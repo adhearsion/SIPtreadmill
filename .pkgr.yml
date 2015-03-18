@@ -11,4 +11,4 @@ wizards:
   - https://github.com/pkgr/addon-apache2.git
   - ./packaging/wizards/siptreadmill
 after:
-  - rm -rf .git app/assets packaging sipp treadmill tmp vendor/cache/*.gem
+  - rm -rf .git app/assets packaging sipp treadmill tmp vendor/cache

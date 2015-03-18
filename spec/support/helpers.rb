@@ -9,7 +9,7 @@ module HelperMethods
   def set_omniauth(opts = {})
     default = {
         uid: 'att-abcd1234',
-        provider: 'att',
+        provider: 'github',
         credentials: {token: 'zyxwvut4321'},
         info: {
           first_name: 'Test',
@@ -31,7 +31,6 @@ module HelperMethods
   end
 
   def set_invalid_omniauth(opts = {})
-
     credentials = { :provider => :facebook,
       :invalid  => :invalid_crendentials
     }.merge(opts)
@@ -42,6 +41,6 @@ module HelperMethods
 
   def login_with_oauth
     set_omniauth
-    visit user_omniauth_authorize_path :att
+    visit user_omniauth_authorize_path :github
   end
 end

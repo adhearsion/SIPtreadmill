@@ -1,17 +1,3 @@
-GIT
-  remote: git://github.com/att-innovate/omniauth-att.git
-  revision: e0eef28475deae34062431cb46ec0e79d2aca6a1
-  specs:
-    omniauth-att (0.5.3)
-      activesupport
-      i18n
-      omniauth
-      omniauth (~> 1.0)
-      omniauth-oauth2
-      omniauth-oauth2 (~> 1.0)
-      sinatra
-      thin
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -358,7 +344,6 @@ DEPENDENCIES
   minitest
   net-ssh
   omniauth (~> 1.0)
-  omniauth-att!
   omniauth-github (~> 1.1)
   pg
   poltergeist
