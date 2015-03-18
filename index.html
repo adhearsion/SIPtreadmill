@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>SIP Treadmill by mojolingo</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>SIP Treadmill</h1>
+          <h2>Web application to faciliate benchmarking and testing SIP based services</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/mojolingo/SIPtreadmill/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/mojolingo/SIPtreadmill/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/mojolingo/SIPtreadmill" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="sip-treadmill" class="anchor" href="#sip-treadmill" aria-hidden="true"><span class="octicon octicon-link"></span></a>SIP Treadmill</h1>
+
+<p>SIP load test tool originally built with support from AT&amp;T Foundry.</p>
+
+<h2>
+<a id="core-concepts" class="anchor" href="#core-concepts" aria-hidden="true"><span class="octicon octicon-link"></span></a>Core Concepts</h2>
+
+<h3>
+<a id="test-run" class="anchor" href="#test-run" aria-hidden="true"><span class="octicon octicon-link"></span></a>Test Run</h3>
+
+<p>Test Runs are the focal point of SIP Treadmill. When a Test Run is started, SIP traffic is sent via SIPp and analyzed by SIPp and an RTCP listener. Each Test Run is comprised of one or more Scenarios, a Profile, and a Target.</p>
+
+<h3>
+<a id="scenario" class="anchor" href="#scenario" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scenario</h3>
+
+<p>Scenarios describe how the calls in a Test Run behave. Call duration, DTMF input, and the beginning and end of the call are all described in the Scenario. Scenarios may be specified in either the <a href="http://sipp.sourceforge.net">SIPp</a> or <a href="https://github.com/mojolingo/sippy_cup">SippyCup</a> formats.</p>
+
+<h3>
+<a id="profile" class="anchor" href="#profile" aria-hidden="true"><span class="octicon octicon-link"></span></a>Profile</h3>
+
+<p>The profile describes the call volume produced by the Test Run. The profile has three main fields: calls per second (how many calls are generated each second), concurrent calls (the number of calls that can occur at one time), and total number of calls for the test run.</p>
+
+<h3>
+<a id="target" class="anchor" href="#target" aria-hidden="true"><span class="octicon octicon-link"></span></a>Target</h3>
+
+<p>The target describes the server on which the SIP application being tested is running. Each target has a name, an IP address, and an optional SSH username. If the user has SSH access to the target machine, system performance metrics can be gathered and analyzed by SIP Treadmill.</p>
+
+<h2>
+<a id="the-setup" class="anchor" href="#the-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Setup</h2>
+
+<h3>
+<a id="prerequisites" class="anchor" href="#prerequisites" aria-hidden="true"><span class="octicon octicon-link"></span></a>Prerequisites</h3>
+
+<ul>
+<li>An <a href="https://apimatrix.tfoundry.com">AT&amp;T APIMatrix</a> account, or a <a href="https://github.com">GitHub</a> account.</li>
+<li>An AT&amp;T APIMatrix application with profile access, or a GitHub application with user access. Credentials for such. Callback URL is <code>http://yourdomain.com/users/auth/github</code> or <code>/users/auth/att</code>.</li>
+<li>Amazon S3 bucket and credentials for file uploads.</li>
+</ul>
+
+<h3>
+<a id="installation-from-packages" class="anchor" href="#installation-from-packages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation from packages</h3>
+
+<p>The preferred method of installation of SIP Treadmill is to Ubuntu 14.04 via a package:</p>
+
+<pre><code>wget -qO - https://deb.packager.io/key | sudo apt-key add -
+echo "deb https://deb.packager.io/gh/att-innovate/SIPtreadmill trusty master" | sudo tee /etc/apt/sources.list.d/SIPtreadmill.list
+sudo apt-get -y update
+sudo apt-get -y install siptreadmill
+</code></pre>
+
+<p>After installing the application, you will be requested to run <code>sudo siptreadmill configure</code> to complete installation and setup of the database, Redis, SIPp, and a front-end webserver (Apache2), as well as to configure some essential settings of the application.</p>
+
+<p>SIP Treadmill should then be running on port 80.</p>
+
+<h3>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h3>
+
+<p>The majority of configuration for SIP Treadmill is done via environment variables. These environment variables are:</p>
+
+<dl>
+  <dt>COOKIE_SECRET</dt>
+  <dd>A secret token used to sign cookies. Should be at least 30 random characters long.</dd>
+  <dt>OMNIAUTH_TYPE</dt>
+  <dd>The omniauth method to use. Valid options are 'github' and 'att'</dd>
+  <dt>APIMATRIX_KEY</dt>
+  <dd>The Client ID for your APIMatrix application</dd>
+  <dt>APIMATRIX_SECRET</dt>
+  <dd>The Client Secret for your APIMatrix application</dd>
+  <dt>GITHUB_KEY</dt>
+  <dd>The Client ID of your GitHub application</dd>
+  <dt>GITHUB_SECRET</dt>
+  <dd>The Client secret for your GitHub application</dd>
+  <dt>AWS_ACCESS_KEY_ID</dt>
+  <dd>The access key ID for your Amazon S3</dd>
+  <dt>AWS_SECRET_ACCESS_KEY</dt>
+  <dd>The access key secret for your Amazon S3</dd>
+  <dt>AWS_S3_BUCKET</dt>
+  <dd>The name of the Amazon S3 bucket for storage</dd>
+  <dt>TEST_RUN_BIND_IP</dt>
+  <dd>The IP address to bind to for sending SIP traffic</dd>
+</dl>
+
+<p>You can change these settings using <code>sudo siptreadmill config:set KEY=value</code>.</p>
+
+<h3>
+<a id="dependencies-for-manual-installation" class="anchor" href="#dependencies-for-manual-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies (for manual installation)</h3>
+
+<p>In order to get started with Treadmill, the following are required:</p>
+
+<ul>
+<li>
+<a href="http://sipp.sourceforge.net">SIPp</a> - MUST BE A DEVELOPMENT BUILD, see <a href="https://github.com/SIPp/sipp/pull/106">https://github.com/SIPp/sipp/pull/106</a>
+</li>
+<li><a href="http://redis.io">Redis</a></li>
+<li>
+<a href="http://www.postgresql.org/">PostgreSQL</a> (preferred, but any other Rails-compatible database will do)</li>
+</ul>
+
+<p>Ensure that the user running the worker process has passwordless sudo access to run SIPp.</p>
+
+<h2>
+<a id="development-environment" class="anchor" href="#development-environment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Development environment</h2>
+
+<ol>
+<li>Install <a href="https://www.virtualbox.org/wiki/Downloads">virtualbox</a>
+</li>
+<li>Install <a href="http://vagrantup.com">vagrant</a>
+</li>
+<li>Clone this repository.</li>
+<li>Add the <a href="https://github.com/jimmycuadra/vagrant-librarian-chef">librarian-chef plugin</a> to your Vagrant installation by doing <code>vagrant plugin install vagrant-librarian-chef</code>.</li>
+<li>Build the VMs: <code>vagrant up</code>
+</li>
+<li>SSH into the <code>dev</code> VM (<code>vagrant ssh dev</code>), move to <code>/srv/treadmill/current</code> and run the specs (<code>rake spec</code>)</li>
+<li>Launch the app (<code>foreman start</code>).</li>
+<li>You can access the app via <a href="http://dev.local.treadmill.mojolingo.net:5000/">http://dev.local.treadmill.mojolingo.net:5000/</a>
+</li>
+</ol>
+
+<p>The app is shared with the VM, and everything runs in the VM, but you can use your editor on the host machine.</p>
+        </section>
+
+        <footer>
+          SIP Treadmill is maintained by <a href="https://github.com/mojolingo">mojolingo</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
