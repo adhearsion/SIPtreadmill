@@ -6,5 +6,5 @@ before_script:
   - bundle exec rake db:create db:setup
 env: DATABASE_USERNAME=postgres DATABASE_PASSWORD=''
 cache: bundler
-script: bundle exec rake spec
+script: bundle exec rspec spec
 sudo: false
