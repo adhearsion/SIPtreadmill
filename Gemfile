@@ -57,7 +57,7 @@ gem 'thin'
 # Deploy with Capistrano
 # gem 'capistrano'
 
-gem 'sippy_cup', '0.5.0'
+gem 'sippy_cup', '~> 0.6.0'
 gem 'net-ssh'
 
 gem 'rails_12factor'

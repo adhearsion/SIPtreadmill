@@ -23,8 +23,15 @@
             %dd= @profile.calls_per_second
             %dt Max concurrent
             %dd= @profile.max_concurrent
-            - if current_user.admin_mode
-              %dt Owned by
-              %dd= @profile.user.full_name if @profile.user 
             %dt Transport type
             %dd= @profile.transport_type.text
+            %dt Calls Per Second Increment
+            %dd= @profile.calls_per_second_incr
+            %dt Calls Per Second Interval
+            %dd= @profile.calls_per_second_interval
+            %dt Calls Per Second Maximum
+            %dd= @profile.calls_per_second_max
+            - if current_user.admin_mode
+              %hr
+              %dt Owned by
+              %dd= @profile.user.full_name if @profile.user 

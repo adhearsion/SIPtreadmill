@@ -103,6 +103,12 @@ class TestRunner
 
     opts[:scenario_variables] = write_csv_data @test_run.scenario if @test_run.scenario.csv_data.present?
 
+    if @test_run.profile.calls_per_second_max
+      opts[:calls_per_second_max] = @test_run.profile.calls_per_second_max
+      opts[:calls_per_second_incr] = @test_run.profile.calls_per_second_incr
+      opts[:calls_per_second_interval] = @test_run.profile.calls_per_second_interval
+    end
+
     if has_stats_credentials?
       opts[:password] = @password
       opts[:username] = @test_run.target.ssh_username
