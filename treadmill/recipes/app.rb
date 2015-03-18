@@ -19,13 +19,6 @@ include_recipe "rvm::user"
 include_recipe "redis::server"
 include_recipe "postgresql::client"
 
-execute "prepare database config" do
-  command "cp config/database.yml.sample config/database.yml"
-  cwd "/srv/treadmill/current"
-  user 'vagrant'
-  action :run
-end
-
 rvm_shell "install gem deps" do
   code "bundle install"
   cwd "/srv/treadmill/current"

@@ -1,8 +1,14 @@
+description: Web application to faciliate benchmarking and testing SIP based services
+homepage: https://mojolingo.github.io/siptreadmill
+vendor: Mojo Lingo LLC <http://mojolingo.com>
+maintainer: Mojo Lingo LLC <http://mojolingo.com>
+license: MIT
+changelog: CHANGELOG.md
 targets:
   ubuntu-14.04:
 installer: https://github.com/pkgr/installer.git#master
 wizards:
   - https://github.com/pkgr/addon-apache2.git
-  - https://github.com/mojolingo/pkgr-addon-siptreadmill.git
+  - ./packaging/wizards/siptreadmill
 after:
-  - rm -rf .git app/assets sipp treadmill tmp vendor/cache/*.gem
+  - rm -rf .git app/assets packaging sipp treadmill tmp vendor/cache

@@ -21,6 +21,11 @@
             %dd= @user.email
             %dt Phone number
             %dd= @user.phone_number
+            %dt Authentication Token
+            %dd In order to make calls from Continuous Integration or other automated script, include an auth_token parameter with the following authentication token in each request made to Treadmill
+            %dd
+              %pre= @user.authentication_token
+            %dd= link_to 'Generate', "/users/#{@user.id}/generate_token", class: 'btn btn-primary'
             %dt Admin?
             %dd= render "partials/bool_badge", :check_val => @user.admin
     .span6

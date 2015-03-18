@@ -35,11 +35,11 @@ Vagrant.configure("2") do |config|
           'user_installs' => [
             {
               'user' => 'vagrant',
-              'default_ruby'  => '1.9.3-p448',
-              'rubies' => ['1.9.3-p448'],
+              'default_ruby'  => '2.2.0',
+              'rubies' => ['2.2.0'],
               'install_rubies' => true,
               'gems' => {
-                '1.9.3-p448' => [
+                '2.2.0' => [
                   { 'name' => 'bundler' }
                 ]
               }
@@ -109,7 +109,7 @@ Vagrant.configure("2") do |config|
 
     deploy.vm.provision "shell", inline: <<-SCRIPT
   wget -qO - https://deb.packager.io/key | sudo apt-key add -
-  echo "deb https://deb.packager.io/gh/att-innovate/SIPtreadmill trusty develop" | sudo tee /etc/apt/sources.list.d/SIPtreadmill.list
+  echo "deb https://deb.packager.io/gh/mojolingo/SIPtreadmill trusty develop" | sudo tee /etc/apt/sources.list.d/SIPtreadmill.list
 
   sudo apt-get -y update
   sudo apt-get -y install siptreadmill

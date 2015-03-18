@@ -9,10 +9,19 @@ SIPTreadmill::Application.routes.draw do
     end
   end
   resources :targets
-  resources :profiles
-  resources :scenarios
+  resources :profiles do
+    get 'copy'
+  end
+  resources :scenarios do
+    get 'copy'
+  end
 
   resources :users, only: [:index, :show, :edit, :update, :copy]
+  resources :users do
+    member do
+      get 'generate_token'
+    end
+  end
 
   post '/home/toggle_admin'
 

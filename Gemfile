@@ -1,11 +1,10 @@
 source 'https://rubygems.org'
 
-ruby '1.9.3'
+ruby '2.2.0'
 
 gem 'rails', '3.2.19'
 gem 'devise'
 gem 'omniauth', '~> 1.0'
-gem 'omniauth-att', github: 'att-innovate/omniauth-att'
 gem 'omniauth-github', '~> 1.1'
 gem 'haml'
 gem 'simple_form'
@@ -22,16 +21,10 @@ gem 'sidekiq'
 gem 'slim', '>= 1.1.0'
 gem 'sinatra', '>= 1.3.0', :require => nil
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 gem 'pg'
 
-# Gems used only for assets and not required
-# in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-  # gem 'bootstrap-sass', '~> 2.3.2.0'
   gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -46,25 +39,14 @@ gem 'jquery-rails'
 gem 'jquery-datatables-rails'
 gem 'classy_enum'
 
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
 gem 'thin'
 
-# Deploy with Capistrano
-# gem 'capistrano'
-
-gem 'sippy_cup', '0.5.0'
+gem 'sippy_cup', '~> 0.6.0'
 gem 'net-ssh'
 
 gem 'rails_12factor'
 
 group :development do
-  # To use debugger
-  # gem 'debugger'
   gem 'pry-rails'
   gem 'better_errors'
   gem 'binding_of_caller'
@@ -83,4 +65,6 @@ end
 group :test do
   gem 'webmock'
   gem 'timecop'
+  gem 'minitest'
+  gem 'test-unit'
 end

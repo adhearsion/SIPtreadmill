@@ -21,7 +21,7 @@ StartTime;LastResetTime;CurrentTime;ElapsedTime(P);ElapsedTime(C);TargetRate;Cal
     subject.run
     test_run.reload
 
-    test_run.sipp_data.size.should == 5
+    test_run.sipp_data.count.should == 5
 
     first_result = test_run.sipp_data.first
     first_result[:time].should == Time.new(2000, 1, 1, 14, 27, 27, "+00:00")

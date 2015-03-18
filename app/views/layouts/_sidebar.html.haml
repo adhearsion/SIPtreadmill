@@ -30,6 +30,11 @@
         %a{href: targets_path}
           %i.icon-bullseye.icon-2x
           %span Targets
+      %li{class: controller.controller_name == 'users' ? 'active' : ''}
+        %span.glow
+        %a{href: "/users/#{current_user.id}" }
+          %i.icon-user.icon-2x
+          %span User
       - if current_user.admin
         %li{class: controller.controller_name == 'users' ? 'active' : ''}
           %span.glow

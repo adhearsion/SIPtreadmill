@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+. "${INSTALLER_DIR}/wizard"
+
+# Install datastores
+apt-get -y install postgresql redis-server
+
+# Install SIPp & setup sudo
+echo "deb http://ppa.launchpad.net/taisph/sipp/ubuntu trusty main" | tee /etc/apt/sources.list.d/taisph-sipp.list
+apt-get -y update
+apt-get -y install sipp --force-yes
+echo "${APP_NAME} ALL=(ALL) NOPASSWD: /usr/bin/sipp" | tee /etc/sudoers.d/siptreadmill
+chmod 0440 /etc/sudoers.d/siptreadmill
+
+exit 0

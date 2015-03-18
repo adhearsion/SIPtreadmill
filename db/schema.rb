@@ -18,10 +18,13 @@ ActiveRecord::Schema.define(:version => 20150216173416) do
     t.integer  "max_calls"
     t.integer  "calls_per_second"
     t.integer  "max_concurrent"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.integer  "user_id"
     t.string   "transport_type"
+    t.integer  "calls_per_second_incr"
+    t.integer  "calls_per_second_interval"
+    t.integer  "calls_per_second_max"
   end
 
   create_table "rtcp_data", :force => true do |t|
@@ -119,6 +122,7 @@ ActiveRecord::Schema.define(:version => 20150216173416) do
     t.boolean  "admin",        :default => false
     t.boolean  "admin_mode",   :default => false
     t.string   "name"
+    t.string   "authentication_token"
   end
 
 end

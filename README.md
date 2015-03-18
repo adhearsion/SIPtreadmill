@@ -24,8 +24,10 @@ The target describes the server on which the SIP application being tested is run
 
 ### Prerequisites
 
-* An [AT&T APIMatrix](https://apimatrix.tfoundry.com) account, or a [GitHub](https://github.com) account.
-* An AT&T APIMatrix application with profile access, or a GitHub application with user access. Credentials for such. Callback URL is `http://yourdomain.com/users/auth/github` or `/users/auth/att`.
+Optionally:
+
+* A [GitHub](https://github.com) account.
+* A GitHub application with user access & credentials for such. Callback URL is `http://yourdomain.com/users/auth/github`.
 * Amazon S3 bucket and credentials for file uploads.
 
 ### Installation from packages
@@ -34,7 +36,7 @@ The preferred method of installation of SIP Treadmill is to Ubuntu 14.04 via a p
 
 ```
 wget -qO - https://deb.packager.io/key | sudo apt-key add -
-echo "deb https://deb.packager.io/gh/att-innovate/SIPtreadmill trusty master" | sudo tee /etc/apt/sources.list.d/SIPtreadmill.list
+echo "deb https://deb.packager.io/gh/mojolingo/SIPtreadmill trusty master" | sudo tee /etc/apt/sources.list.d/SIPtreadmill.list
 sudo apt-get -y update
 sudo apt-get -y install siptreadmill
 ```
@@ -50,21 +52,21 @@ The majority of configuration for SIP Treadmill is done via environment variable
   <dt>COOKIE_SECRET</dt>
   <dd>A secret token used to sign cookies. Should be at least 30 random characters long.</dd>
   <dt>OMNIAUTH_TYPE</dt>
-  <dd>The omniauth method to use. Valid options are 'github' and 'att'</dd>
-  <dt>APIMATRIX_KEY</dt>
-  <dd>The Client ID for your APIMatrix application</dd>
-  <dt>APIMATRIX_SECRET</dt>
-  <dd>The Client Secret for your APIMatrix application</dd>
+  <dd>The omniauth method to use. Valid options are 'github', and 'none'</dd>
   <dt>GITHUB_KEY</dt>
   <dd>The Client ID of your GitHub application</dd>
   <dt>GITHUB_SECRET</dt>
   <dd>The Client secret for your GitHub application</dd>
+  <dt>STORAGE_TYPE</dt>
+  <dd>Storage for uploaded files. Valid options are 's3' and 'file'.</dd>
   <dt>AWS_ACCESS_KEY_ID</dt>
   <dd>The access key ID for your Amazon S3</dd>
   <dt>AWS_SECRET_ACCESS_KEY</dt>
   <dd>The access key secret for your Amazon S3</dd>
   <dt>AWS_S3_BUCKET</dt>
   <dd>The name of the Amazon S3 bucket for storage</dd>
+  <dt>FILE_PATH</dt>
+  <dd>Location of uploaded files on local filesystem.</dd>
   <dt>TEST_RUN_BIND_IP</dt>
   <dd>The IP address to bind to for sending SIP traffic</dd>
 </dl>
@@ -89,6 +91,7 @@ Ensure that the user running the worker process has passwordless sudo access to 
 4. Add the [librarian-chef plugin](https://github.com/jimmycuadra/vagrant-librarian-chef) to your Vagrant installation by doing `vagrant plugin install vagrant-librarian-chef`.
 4. Build the VMs: `vagrant up`
 5. SSH into the `dev` VM (`vagrant ssh dev`), move to `/srv/treadmill/current` and run the specs (`rake spec`)
+6. Copy `.env.sample` to `.env`.
 6. Launch the app (`foreman start`).
 6. You can access the app via http://dev.local.treadmill.mojolingo.net:5000/
 

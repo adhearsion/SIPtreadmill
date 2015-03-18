@@ -1,17 +1,3 @@
-GIT
-  remote: git://github.com/att-innovate/omniauth-att.git
-  revision: e0eef28475deae34062431cb46ec0e79d2aca6a1
-  specs:
-    omniauth-att (0.5.3)
-      activesupport
-      i18n
-      omniauth
-      omniauth (~> 1.0)
-      omniauth-oauth2
-      omniauth-oauth2 (~> 1.0)
-      sinatra
-      thin
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -98,7 +84,7 @@ GEM
     diff-lcs (1.2.5)
     dotenv (0.9.0)
     erubis (2.7.0)
-    eventmachine (1.0.3)
+    eventmachine (1.0.7)
     excon (0.25.3)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -164,6 +150,7 @@ GEM
     method_source (0.8.2)
     mime-types (1.25.1)
     mini_portile (0.6.0)
+    minitest (5.4.3)
     multi_json (1.10.1)
     multipart-post (1.2.0)
     net-scp (1.1.2)
@@ -195,13 +182,14 @@ GEM
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
     polyglot (0.3.5)
+    power_assert (0.2.2)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
     pry-rails (0.3.2)
       pry (>= 0.9.10)
-    psych (2.0.11)
+    psych (2.0.13)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
     rack (1.4.5)
@@ -280,7 +268,7 @@ GEM
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
-    sippy_cup (0.5.0)
+    sippy_cup (0.6.0)
       activesupport (~> 3.0)
       nokogiri (~> 1.6.0)
       packetfu
@@ -296,6 +284,8 @@ GEM
       tilt (~> 1.1, != 1.3.0)
     state_machine (1.2.0)
     temple (0.6.6)
+    test-unit (3.0.8)
+      power_assert
     therubyracer (0.12.0)
       libv8 (~> 3.16.14.0)
       ref
@@ -351,9 +341,9 @@ DEPENDENCIES
   jquery-datatables-rails
   jquery-rails
   kaminari
+  minitest
   net-ssh
   omniauth (~> 1.0)
-  omniauth-att!
   omniauth-github (~> 1.1)
   pg
   poltergeist
@@ -366,9 +356,10 @@ DEPENDENCIES
   sidekiq
   simple_form
   sinatra (>= 1.3.0)
-  sippy_cup (= 0.5.0)
+  sippy_cup (~> 0.6.0)
   slim (>= 1.1.0)
   state_machine
+  test-unit
   therubyracer
   thin
   timecop

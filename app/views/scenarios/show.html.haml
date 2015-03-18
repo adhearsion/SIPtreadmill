@@ -13,6 +13,7 @@
           %ul.box-toolbar
             %li= link_to '', scenarios_path, class: 'btn btn-primary icon-list', title: 'List'
             %li= link_to '', edit_scenario_path(@scenario), class: 'btn btn-warning icon-edit', title: 'Edit'
+            %li= link_to '', "/scenarios/#{@scenario.id}/copy", class: 'btn alert-info icon-copy', title: 'Clone'
             %li= link_to '', @scenario, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger icon-trash', title: 'Delete'
         .box-content.padded
           %dl

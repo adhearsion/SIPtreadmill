@@ -11,6 +11,7 @@
           %ul.box-toolbar
             %li= link_to '', profiles_path, class: 'btn btn-primary icon-list', title: 'List'
             %li= link_to '', edit_profile_path(@profile), class: 'btn btn-warning icon-edit', title: 'Edit'
+            %li= link_to '', "/profiles/#{@profile.id}/copy", class: 'btn alert-info icon-copy', title: 'Clone'
             %li= link_to '', @profile, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger icon-trash', title: 'Delete'
         .box-content.padded
           %dl
@@ -22,8 +23,15 @@
             %dd= @profile.calls_per_second
             %dt Max concurrent
             %dd= @profile.max_concurrent
-            - if current_user.admin_mode
-              %dt Owned by
-              %dd= @profile.user.full_name if @profile.user 
             %dt Transport type
             %dd= @profile.transport_type.text
+            %dt Calls Per Second Increment
+            %dd= @profile.calls_per_second_incr
+            %dt Calls Per Second Interval
+            %dd= @profile.calls_per_second_interval
+            %dt Calls Per Second Maximum
+            %dd= @profile.calls_per_second_max
+            - if current_user.admin_mode
+              %hr
+              %dt Owned by
+              %dd= @profile.user.full_name if @profile.user 

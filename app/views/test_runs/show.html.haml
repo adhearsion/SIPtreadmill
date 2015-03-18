@@ -12,7 +12,8 @@
             %li= link_to '', test_runs_path, class: 'btn btn-primary icon-list', title: 'List'
             - if @test_run.state == 'pending'
               %li= link_to '', edit_test_run_path(@test_run), class: 'btn btn-warning icon-edit', title: 'Edit'
-              %li= link_to '', "/test_runs/#{@test_run.id}/copy", class: 'btn alert-info icon-copy', title: "Clone"
+            %li= link_to '', "/test_runs/#{@test_run.id}/copy", class: 'btn alert-info icon-copy', title: "Clone"
+            - unless @test_run.state == 'running'
               %li= link_to '', @test_run, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger icon-trash', title: 'Delete'
         .box-content.padded
           %dl
@@ -24,24 +25,37 @@
               %dt Owned by
               %dd= @test_run.user.full_name if @test_run.user
 
-            %dt Sender scenario:
-            %dd= link_to(@test_run.scenario.name, @test_run.scenario) if @test_run.scenario
+            %dt Scenarios:
+            - if @test_run.scenario
+              %dd
+                Sender:
+                = link_to(@test_run.scenario.name, @test_run.scenario) if @test_run.scenario
 
-            %dt Registration scenario:
-            %dd= link_to(@test_run.registration_scenario.name, @test_run.registration_scenario) if @test_run.registration_scenario
+            - if @test_run.registration_scenario
+              %dd
+                Registration:
+                = link_to(@test_run.registration_scenario.name, @test_run.registration_scenario) if @test_run.registration_scenario
 
-            %dt Receiver scenario:
-            %dd= link_to(@test_run.receiver_scenario.name, @test_run.receiver_scenario) if @test_run.receiver_scenario
+            - if @test_run.receiver_scenario
+              %dd
+                Receiver:
+                = link_to(@test_run.receiver_scenario.name, @test_run.receiver_scenario) if @test_run.receiver_scenario
 
-            %dt Profile:
-            %dd= link_to @test_run.profile_name, @test_run.profile
-            %dd= "Max Calls: #{@test_run.profile.max_calls}"
-            %dd= "Max Concurrent: #{@test_run.profile.max_concurrent}"
+            %dt
+              Profile:
+              = link_to @test_run.profile_name, @test_run.profile
+            %dd= "Max Calls: #{number_with_delimiter @test_run.profile.max_calls}"
+            %dd= "Max Concurrent: #{number_with_delimiter @test_run.profile.max_concurrent}"
             %dd= "CPS: #{@test_run.profile.calls_per_second}"
+            - if @test_run.profile.calls_per_second_max
+              %dd= "CPS Max: #{@test_run.profile.calls_per_second_max}"
+              %dd= "CPS Increment: #{@test_run.profile.calls_per_second_incr}"
+              %dd= "CPS Interval: #{@test_run.profile.calls_per_second_interval}"
             %dd= "Transport type: #{@test_run.profile.transport_type.text}"
 
-            %dt Target:
-            %dd= link_to @test_run.target_name, @test_run.target
+            %dt
+              Target:
+              = link_to @test_run.target_name, @test_run.target
             %dd= "SIP user: #{@test_run.to_user}"
             %dd= "Address: #{@test_run.target.address}"
 
@@ -49,17 +63,16 @@
             %dd= link_to "Errors Report", @test_run.errors_report_file_url
             %dd= link_to "Raw Stats", @test_run.stats_file_url
 
-            %dt Created By:
-            %dd= @test_run.user.full_name if @test_run.user
-
-            %dt Created On:
+            %dt Created:
             %dd
               %a{"data-original-title" => @test_run.created_at.to_s(:long_ordinal), "data-placement" => "right", "data-toggle" => "tooltip", :href => "#", :title => ""}
                 = time_ago_in_words(@test_run.created_at) + " ago"
+              by
+              = @test_run.user.full_name if @test_run.user
 
             - if @test_run.created_at != @test_run.updated_at
-              %dt Last Updated On:
               %dd
+                Last Updated:
                 %a{"data-original-title" => @test_run.updated_at.to_s(:long_ordinal), "data-placement" => "right", "data-toggle" => "tooltip", :href => "#", :title => ""}
                   = time_ago_in_words(@test_run.updated_at) + " ago"
 

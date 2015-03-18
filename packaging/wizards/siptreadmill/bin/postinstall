@@ -1,0 +1,62 @@
+#!/bin/bash
+
+set -e
+
+. ${INSTALLER_DIR}/wizard
+
+CLI="${APP_NAME}"
+
+# set cookie secret token
+cookie_secret=$(${CLI} config:get COOKIE_SECRET || ${CLI} run rake -s secret | tail -1)
+${CLI} config:set COOKIE_SECRET="$cookie_secret"
+
+# Create database
+sudo -u postgres psql postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='${APP_NAME}'" | grep -q 1 || sudo -u postgres createuser -D -A ${APP_NAME}
+database_password=$(${CLI} config:get DATABASE_PASSWORD || ${CLI} run rake -s secret | tail -1)
+sudo -u postgres psql -c "alter user ${APP_NAME} with password '$database_password';"
+sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -w ${APP_NAME} | wc -l || sudo -u postgres createdb -O ${APP_NAME} ${APP_NAME}
+${CLI} config:set DATABASE_URL="postgres://${APP_NAME}:$database_password@localhost/${APP_NAME}"
+${CLI} config:set DATABASE_PASSWORD="$database_password"
+
+# prepare database
+${CLI} run rake db:migrate db:seed || true
+
+# Configure third-party auth provider
+auth_provider=$(wiz_get "siptreadmill/authentication/provider")
+${CLI} config:set OMNIAUTH_TYPE=${auth_provider}
+case "${auth_provider}" in
+    "github")
+        ${CLI} config:set GITHUB_KEY=$(wiz_get "siptreadmill/authentication/key")
+        ${CLI} config:set GITHUB_SECRET=$(wiz_get "siptreadmill/authentication/token")
+        ;;
+    "att")
+        ${CLI} config:set APIMATRIX_KEY=$(wiz_get "siptreadmill/authentication/key")
+        ${CLI} config:set APIMATRIX_SECRET=$(wiz_get "siptreadmill/authentication/token")
+        ;;
+    "none")
+        ;;
+    "skip")
+        ;;
+    *)
+        echo "Unknown value for siptreadmill/authentication/provider"
+        ;;
+esac
+
+# Configure Amazon S3 credentials
+if [$(wiz_get "siptreadmill/storage/type") -eq "s3"]; then
+    ${CLI} config:set STORAGE_TYPE=$(wiz_get "siptreadmill/storage/type")
+    ${CLI} config:set AWS_S3_BUCKET=$(wiz_get "siptreadmill/s3/bucket")
+    ${CLI} config:set AWS_ACCESS_KEY_ID=$(wiz_get "siptreadmill/s3/key")
+    ${CLI} config:set AWS_SECRET_ACCESS_KEY=$(wiz_get "siptreadmill/s3/token")
+else
+    ${CLI} config:set STORAGE_TYPE=$(wiz_get "siptreadmill/storage/type")
+    ${CLI} config:set FILE_PATH=$(wiz_get "siptreadmill/storage/directory")
+fi
+
+# scale
+${CLI} scale web=1 worker=1 || true
+
+# restart
+service ${APP_NAME} restart
+
+exit 0
