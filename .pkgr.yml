@@ -1,3 +1,8 @@
+description: Web application to faciliate benchmarking and testing SIP based services
+homepage: https://mojolingo.github.io/siptreadmill
+vendor: Mojo Lingo LLC <http://mojolingo.com>
+maintainer: Mojo Lingo LLC <http://mojolingo.com>
+license: MIT
 targets:
   ubuntu-14.04:
 installer: https://github.com/pkgr/installer.git#master
