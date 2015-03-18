@@ -83,4 +83,6 @@ end
 group :test do
   gem 'webmock'
   gem 'timecop'
+  gem 'minitest'
+  gem 'test-unit'
 end

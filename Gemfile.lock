@@ -164,6 +164,7 @@ GEM
     method_source (0.8.2)
     mime-types (1.25.1)
     mini_portile (0.6.0)
+    minitest (5.4.3)
     multi_json (1.10.1)
     multipart-post (1.2.0)
     net-scp (1.1.2)
@@ -195,6 +196,7 @@ GEM
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
     polyglot (0.3.5)
+    power_assert (0.2.2)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -296,6 +298,8 @@ GEM
       tilt (~> 1.1, != 1.3.0)
     state_machine (1.2.0)
     temple (0.6.6)
+    test-unit (3.0.8)
+      power_assert
     therubyracer (0.12.0)
       libv8 (~> 3.16.14.0)
       ref
@@ -351,6 +355,7 @@ DEPENDENCIES
   jquery-datatables-rails
   jquery-rails
   kaminari
+  minitest
   net-ssh
   omniauth (~> 1.0)
   omniauth-att!
@@ -369,6 +374,7 @@ DEPENDENCIES
   sippy_cup (~> 0.6.0)
   slim (>= 1.1.0)
   state_machine
+  test-unit
   therubyracer
   thin
   timecop
