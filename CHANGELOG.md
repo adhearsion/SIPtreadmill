@@ -1,4 +1,6 @@
-# [develop](https://github.com/mojolingo/SIPtreadmill/compare/0.1.1...develop)
+# [develop](https://github.com/mojolingo/SIPtreadmill/compare/1.0.0...develop)
+
+# [1.0.0](https://github.com/mojolingo/SIPtreadmill/compare/0.1.1...1.0.0)
   * Authentication is now optional. When disabled, anonymous users have full administrative access.
   * AT&T APIMatrix authentication was removed, since the client library for this has been abandoned.
   * File storage may now be to local disk or S3
