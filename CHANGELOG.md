@@ -1,4 +1,6 @@
-# [develop](https://github.com/mojolingo/SIPtreadmill/compare/1.0.0...develop)
+# [develop](https://github.com/mojolingo/SIPtreadmill/compare/1.0.1...develop)
+
+# [1.0.0](https://github.com/mojolingo/SIPtreadmill/compare/1.0.0...1.0.1)
   * Allow running Rails console in production installed from packages. Minitest / TestUnit are required.
 
 # [1.0.0](https://github.com/mojolingo/SIPtreadmill/compare/0.1.1...1.0.0)
