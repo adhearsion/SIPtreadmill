@@ -1,4 +1,5 @@
 # [develop](https://github.com/mojolingo/SIPtreadmill/compare/1.0.0...develop)
+  * Allow running Rails console in production installed from packages. Minitest / TestUnit are required.
 
 # [1.0.0](https://github.com/mojolingo/SIPtreadmill/compare/0.1.1...1.0.0)
   * Authentication is now optional. When disabled, anonymous users have full administrative access.

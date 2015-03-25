@@ -46,6 +46,9 @@ gem 'net-ssh'
 
 gem 'rails_12factor'
 
+gem 'minitest'
+gem 'test-unit'
+
 group :development do
   gem 'pry-rails'
   gem 'better_errors'
@@ -65,6 +68,4 @@ end
 group :test do
   gem 'webmock'
   gem 'timecop'
-  gem 'minitest'
-  gem 'test-unit'
 end
