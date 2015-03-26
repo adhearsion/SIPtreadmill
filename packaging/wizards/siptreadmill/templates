@@ -26,7 +26,7 @@ Description: Where do you want to store uploaded files for $APP_NAME?
 
 Template: siptreadmill/storage/directory
 Type: string
-Default: $APP_HOME/public/uploads
+Default: $APP_HOME/public
 Description: Directory to store uploaded files in
  Chose a directory to store uploaded files in.
 
