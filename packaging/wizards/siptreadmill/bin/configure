@@ -48,7 +48,7 @@ input_filepath() {
     wiz_put "siptreadmill/storage/directory"
 
     if wiz_ask ; then
-        STATE="done"
+        STATE="airbrake"
     else
         STATE="start"
     fi
