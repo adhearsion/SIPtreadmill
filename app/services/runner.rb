@@ -81,6 +81,7 @@ class Runner
         case opts[:mode]
         when :notify
           Airbrake.notify e
+          raise
         when :error
           @ssh_error = e
         end

@@ -1,4 +1,5 @@
 # [develop](https://github.com/mojolingo/SIPtreadmill/compare/1.0.1...develop)
+  * Properly log RTCP collection errors
 
 # [1.0.0](https://github.com/mojolingo/SIPtreadmill/compare/1.0.0...1.0.1)
   * Allow running Rails console in production installed from packages. Minitest / TestUnit are required.
