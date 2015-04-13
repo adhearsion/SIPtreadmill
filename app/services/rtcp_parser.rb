@@ -6,18 +6,6 @@ class RtcpParser
   end
 
   def run
-    @data.each do |d|
-      data = symbolize d
-      data[:test_run] = @test_run
-      RtcpData.create data
-    end
-  end
-
-  def symbolize(h)
-    sym_hash = {}
-    h.each do |k,v|
-      sym_hash[k.to_sym] = v
-    end
-    sym_hash
+    @data.each { |d| @test_run.rtcp_data.create d }
   end
 end
