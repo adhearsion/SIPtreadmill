@@ -5,9 +5,9 @@ describe TestRunWorker do
     FactoryGirl.create(:test_run,
       name: "My Scenario",
       user: FactoryGirl.build(:user),
-      scenario: FactoryGirl.build(:scenario, id: 1),
-      profile: FactoryGirl.build(:profile, id: 1),
-      target: FactoryGirl.build(:target, id: 1),
+      scenario: FactoryGirl.build(:scenario),
+      profile: FactoryGirl.build(:profile),
+      target: FactoryGirl.build(:target),
       state: 'queued'
     )
   }

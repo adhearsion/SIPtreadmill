@@ -16,8 +16,8 @@ describe HomeHelper do
       let(:tr3) { FactoryGirl.create :test_run, completed_at: time3, state: "complete_with_errors" }
       before do
         @tr1 = FactoryGirl.create :test_run, completed_at: time1, state: "complete"
-        @tr2 = FactoryGirl.create :test_run, completed_at: time2, state: "complete", user: User.find(997), scenario: Scenario.find(1), profile: Profile.find(1), target: Target.find(1)
-        @tr3 = FactoryGirl.create :test_run, completed_at: time3, state: "complete", user: User.find(997), scenario: Scenario.find(1), profile: Profile.find(1), target: Target.find(1)
+        @tr2 = FactoryGirl.create :test_run, completed_at: time2, state: "complete"
+        @tr3 = FactoryGirl.create :test_run, completed_at: time3, state: "complete"
         @ability = Object.new
         @ability.extend(CanCan::Ability)
         subject.stub(:current_ability) { @ability }

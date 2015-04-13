@@ -63,7 +63,7 @@ describe TestRunner do
       receiver_scenario.should_receive(:to_sippycup_scenario).twice.with(receiver_options).ordered.and_return(receiver_sippy)
       SippyCup::Runner.should_receive(:new).with(receiver_sippy, runner_options).ordered.and_return(receiver_runner)
       receiver_runner.should_receive :run
-      receiver_runner.should_receive :wait 
+      receiver_runner.should_receive :wait
 
       Runner.should_receive(:new).and_raise StandardError
       receiver_runner.should_receive :stop
@@ -87,7 +87,7 @@ describe TestRunner do
         Runner.should_receive(:new).with("myfirsttest_run", scenario, options).ordered.and_return(mock_runner)
         mock_runner.should_receive(:run).ordered
         receiver_runner.should_receive :stop
-        subject.run 
+        subject.run
       end
     end
 
@@ -162,7 +162,7 @@ describe TestRunner do
   end
 
   context "with CSV" do
-    let(:scenario) { FactoryGirl.build(:sipp_scenario, id: 1, csv_data: "foo;123") }
+    let(:scenario) { FactoryGirl.build(:sipp_scenario, csv_data: "foo;123") }
 
     before do
       options[:scenario_variables] = '/tmp/data.csv'

@@ -230,9 +230,9 @@ describe TestRun do
 
   context "graph data" do
     describe "#total_calls_json" do
-      let(:test_run) { FactoryGirl.build :test_run, id: 1, state: 'complete' }
-      let(:sipp_datum_one) { FactoryGirl.build :sipp_datum, id: 1, successful_calls: 1, failed_calls: 0, concurrent_calls: 1, test_run: test_run }
-      let(:sipp_datum_two) { FactoryGirl.build :sipp_datum, id: 2, successful_calls: 1, failed_calls: 1, concurrent_calls: 1, test_run: test_run }
+      let(:test_run) { FactoryGirl.build :test_run, state: 'complete' }
+      let(:sipp_datum_one) { FactoryGirl.build :sipp_datum, successful_calls: 1, failed_calls: 0, concurrent_calls: 1, test_run: test_run }
+      let(:sipp_datum_two) { FactoryGirl.build :sipp_datum, successful_calls: 1, failed_calls: 1, concurrent_calls: 1, test_run: test_run }
       let(:sipp_data) { double :sipp_data, all: [sipp_datum_one, sipp_datum_two] }
 
       it "should return the proper data structure" do
@@ -244,9 +244,9 @@ describe TestRun do
     end
 
     describe "#jitter_json" do
-      let(:test_run) { FactoryGirl.build :test_run, id: 1, state: 'complete' }
-      let(:rtcp_datum_one) { FactoryGirl.build :rtcp_datum, id: 1, avg_jitter: 1, max_jitter: 2, test_run: test_run }
-      let(:rtcp_datum_two) { FactoryGirl.build :rtcp_datum, id: 1, avg_jitter: 2, max_jitter: 4, test_run: test_run }
+      let(:test_run) { FactoryGirl.build :test_run, state: 'complete' }
+      let(:rtcp_datum_one) { FactoryGirl.build :rtcp_datum, avg_jitter: 1, max_jitter: 2, test_run: test_run }
+      let(:rtcp_datum_two) { FactoryGirl.build :rtcp_datum, avg_jitter: 2, max_jitter: 4, test_run: test_run }
       let(:rtcp_data) { double :rtcp_data, all: [rtcp_datum_one, rtcp_datum_two] }
 
       it "should return the proper data structure" do
@@ -257,9 +257,9 @@ describe TestRun do
     end
 
     describe "#call_rate_json" do
-      let(:test_run) { FactoryGirl.build :test_run, id: 1, state: 'complete' }
-      let(:sipp_datum_one) { FactoryGirl.build :sipp_datum, id: 1, cps: 1.5, concurrent_calls: 3, test_run: test_run }
-      let(:sipp_datum_two) { FactoryGirl.build :sipp_datum, id: 2, cps: 1.0, concurrent_calls: 5, test_run: test_run }
+      let(:test_run) { FactoryGirl.build :test_run, state: 'complete' }
+      let(:sipp_datum_one) { FactoryGirl.build :sipp_datum, cps: 1.5, concurrent_calls: 3, test_run: test_run }
+      let(:sipp_datum_two) { FactoryGirl.build :sipp_datum, cps: 1.0, concurrent_calls: 5, test_run: test_run }
       let(:sipp_data) { double :sipp_data, all: [sipp_datum_one, sipp_datum_two] }
 
       it "should return the proper data structure" do
@@ -270,9 +270,9 @@ describe TestRun do
     end
 
     describe "#packet_loss_json" do
-      let(:test_run) { FactoryGirl.build :test_run, id: 1, state: 'complete' }
-      let(:rtcp_datum_one) { FactoryGirl.build :rtcp_datum, id: 1, avg_packet_loss: 1.0, max_packet_loss: 2.0, test_run: test_run }
-      let(:rtcp_datum_two) { FactoryGirl.build :rtcp_datum, id: 1, avg_packet_loss: 2.0, max_packet_loss: 4.0, test_run: test_run }
+      let(:test_run) { FactoryGirl.build :test_run, state: 'complete' }
+      let(:rtcp_datum_one) { FactoryGirl.build :rtcp_datum, avg_packet_loss: 1.0, max_packet_loss: 2.0, test_run: test_run }
+      let(:rtcp_datum_two) { FactoryGirl.build :rtcp_datum, avg_packet_loss: 2.0, max_packet_loss: 4.0, test_run: test_run }
       let(:rtcp_data) { double :rtcp_data, all: [rtcp_datum_one, rtcp_datum_two] }
 
       it "should return the proper data structure" do
@@ -283,9 +283,9 @@ describe TestRun do
     end
 
     describe "#target_resources_json" do
-      let(:test_run) { FactoryGirl.build :test_run, id: 1, state: 'complete' }
-      let(:system_load_datum_one) { FactoryGirl.build :system_load_datum, id: 1, cpu: 1.0, memory: 2.0, test_run: test_run }
-      let(:system_load_datum_two) { FactoryGirl.build :system_load_datum, id: 1, cpu: 2.0, memory: 4.0, test_run: test_run }
+      let(:test_run) { FactoryGirl.build :test_run, state: 'complete' }
+      let(:system_load_datum_one) { FactoryGirl.build :system_load_datum, cpu: 1.0, memory: 2.0, test_run: test_run }
+      let(:system_load_datum_two) { FactoryGirl.build :system_load_datum, cpu: 2.0, memory: 4.0, test_run: test_run }
       let(:system_load_data) { double :system_load_data, all: [system_load_datum_one, system_load_datum_two] }
 
       it "should return the proper data structure" do
