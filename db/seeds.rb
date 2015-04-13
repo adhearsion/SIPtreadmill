@@ -1,8 +1,7 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 
-main_scenario = Scenario.create! name: 'My First Scenario',
-                                sipp_xml: <<-XML
+main_scenario = Scenario.find_or_create_by_name_and_sipp_xml 'My First Scenario', <<-XML
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE scenario SYSTEM "sipp.dtd">
 
@@ -89,9 +88,7 @@ main_scenario = Scenario.create! name: 'My First Scenario',
 </scenario>
 XML
 
-registration_scenario = Scenario.create! name: 'My First Registration Scenario',
-                                receiver: true,
-                                sipp_xml: <<-XML
+registration_scenario = Scenario.find_or_create_by_name_and_receiver_and_sipp_xml 'My First Registration Scenario', true, <<-XML
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE scenario SYSTEM "sipp.dtd">
 
@@ -147,9 +144,7 @@ registration_scenario = Scenario.create! name: 'My First Registration Scenario',
 </scenario>
 XML
 
-receiver_scenario = Scenario.create! name: 'My First Receiver Scenario',
-                                receiver: true,
-                                sipp_xml: <<-XML
+receiver_scenario = Scenario.find_or_create_by_name_and_receiver_and_sipp_xml 'My First Receiver Scenario', true, <<-XML
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE scenario SYSTEM "sipp.dtd">
 
@@ -232,22 +227,23 @@ receiver_scenario = Scenario.create! name: 'My First Receiver Scenario',
 XML
 
 receiver_scenario.registration_scenario = registration_scenario
-receiver_scenario.save
+receiver_scenario.save!
 
-target = Target.create! name: 'Dev Sink',
-                    address: 'sink.local.treadmill.mojolingo.net'
+target = Target.find_or_create_by_name_and_address 'Dev Sink', 'sink.local.treadmill.mojolingo.net'
 
-profile = Profile.create! name: 'Small run',
-                      calls_per_second: 1,
-                      max_calls: 10,
-                      max_concurrent: 5
+profile = Profile.find_or_create_by_name('Small run')
+profile.update_attributes!(
+  calls_per_second: 1,
+  max_calls: 10,
+  max_concurrent: 5,
+)
 
-user = User.create! first_name: 'Admin', last_name: 'User'
+user = User.first_or_create! first_name: 'Admin', last_name: 'User'
 user.admin = true
 user.admin_mode = true
 user.save
 
-test_run = TestRun.new name: 'My simple test run',
+test_run = TestRun.first_or_create! name: 'My simple test run',
                         profile: profile,
                         target: target,
                         scenario: main_scenario,
