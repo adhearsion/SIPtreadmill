@@ -69,6 +69,10 @@ The majority of configuration for SIP Treadmill is done via environment variable
   <dd>Location of uploaded files on local filesystem.</dd>
   <dt>TEST_RUN_BIND_IP</dt>
   <dd>The IP address to bind to for sending SIP traffic</dd>
+  <dt>AIRBRAKE_TOKEN</dt>
+  <dd>The error reporting API token.</dd>
+  <dt>AIRBRAKE_HOST</dt>
+  <dd>The error reporting API host.</dd>
 </dl>
 
 You can change these settings using `sudo siptreadmill config:set KEY=value`.

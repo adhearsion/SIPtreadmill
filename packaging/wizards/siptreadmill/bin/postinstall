@@ -53,6 +53,9 @@ else
     ${CLI} config:set FILE_PATH=$(wiz_get "siptreadmill/storage/directory")
 fi
 
+${CLI} config:set AIRBRAKE_TOKEN=$(wiz_get "siptreadmill/airbrake/token")
+${CLI} config:set AIRBRAKE_HOST=$(wiz_get "siptreadmill/airbrake/host")
+
 # scale
 ${CLI} scale web=1 worker=1 || true
 

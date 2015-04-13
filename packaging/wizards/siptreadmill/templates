@@ -45,3 +45,14 @@ Template: siptreadmill/s3/token
 Type: string
 Description: AWS S3 authentication token
  The token/secret provided to you by Amazon.
+
+Template: siptreadmill/airbrake/token
+Type: string
+Description: Airbrake authentication token for error notification
+ The token/secret provided to you by Airbrake for error notification.
+
+Template: siptreadmill/airbrake/host
+Type: string
+Default: api.airbrake.io
+Description: Airbrake host for error notification
+ The host provided to you by Airbrake for error notification.

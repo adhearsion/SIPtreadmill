@@ -60,6 +60,17 @@ input_s3() {
     wiz_put "siptreadmill/s3/token"
 
     if wiz_ask ; then
+        STATE="airbrake"
+    else
+        STATE="start"
+    fi
+}
+
+input_airbrake() {
+    wiz_put "siptreadmill/airbrake/token"
+    wiz_put "siptreadmill/airbrake/host"
+
+    if wiz_ask ; then
         STATE="done"
     else
         STATE="start"
@@ -82,6 +93,9 @@ state_machine() {
             ;;
         "s3")
             input_s3
+            ;;
+        "airbrake")
+            input_airbrake
             ;;
         "done")
             echo "DONE"
