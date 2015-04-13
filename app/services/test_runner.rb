@@ -148,6 +148,7 @@ class TestRunner
   end
 
   def parse_rtcp_data(data)
+    Rails.logger.debug "Got RTCP data: #{data.inspect}"
     return unless data
     RtcpParser.new(data, @test_run).run
   end
