@@ -17,7 +17,7 @@ module RTCPTools
         next unless socket_set
         socket = socket_set.first.first
         packet = socket.recvfrom_nonblock(1024).first
-        if new_data = RTCPTools.parse packet
+        if new_data = RTCPTools.parse(packet)
           t = new_data[:time]
           @data[t] ||= { }
           [:fractional_loss, :jitter].each do |k|
