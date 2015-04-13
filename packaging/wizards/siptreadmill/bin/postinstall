@@ -43,7 +43,7 @@ case "${auth_provider}" in
 esac
 
 # Configure Amazon S3 credentials
-if [ $(wiz_get "siptreadmill/storage/type") -eq "s3" ]; then
+if [ $(wiz_get "siptreadmill/storage/type") == "s3" ]; then
     ${CLI} config:set STORAGE_TYPE=$(wiz_get "siptreadmill/storage/type")
     ${CLI} config:set AWS_S3_BUCKET=$(wiz_get "siptreadmill/s3/bucket")
     ${CLI} config:set AWS_ACCESS_KEY_ID=$(wiz_get "siptreadmill/s3/key")

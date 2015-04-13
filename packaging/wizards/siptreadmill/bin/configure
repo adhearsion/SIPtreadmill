@@ -7,7 +7,7 @@ set -e
 input_start() {
     wiz_put "siptreadmill/authentication/provider"
     if wiz_ask ; then
-        if [ $(wiz_get "siptreadmill/authentication/provider") -eq "none" ]; then
+        if [ $(wiz_get "siptreadmill/authentication/provider") == "none" ]; then
             STATE="storage"
         else
             STATE="auth_creds"
@@ -34,7 +34,7 @@ input_storage() {
     wiz_put "siptreadmill/storage/type"
 
     if wiz_ask ;  then
-        if [ $(wiz_get "siptreadmill/storage/type") -eq "s3" ]; then
+        if [ $(wiz_get "siptreadmill/storage/type") == "s3" ]; then
             STATE="s3"
         else
             STATE="filepath"
