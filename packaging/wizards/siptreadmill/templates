@@ -1,7 +1,7 @@
 Template: siptreadmill/authentication/provider
 Type: select
-Choices: github, att, none
-Translations: Github, AT&T APIMatrix, Guest Mode
+Choices: github, none
+Translations: Github, Guest Mode
 Default: github
 Description: Which authentication provider do you want to use for $APP_NAME?
  Chose the authentication provider you have setup $APP_NAME.

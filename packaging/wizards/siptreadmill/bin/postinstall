@@ -29,10 +29,6 @@ case "${auth_provider}" in
         ${CLI} config:set GITHUB_KEY=$(wiz_get "siptreadmill/authentication/key")
         ${CLI} config:set GITHUB_SECRET=$(wiz_get "siptreadmill/authentication/token")
         ;;
-    "att")
-        ${CLI} config:set APIMATRIX_KEY=$(wiz_get "siptreadmill/authentication/key")
-        ${CLI} config:set APIMATRIX_SECRET=$(wiz_get "siptreadmill/authentication/token")
-        ;;
     "none")
         ;;
     "skip")
