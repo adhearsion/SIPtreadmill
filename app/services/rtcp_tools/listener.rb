@@ -17,12 +17,13 @@ module RTCPTools
         next unless socket_set
         socket = socket_set.first.first
         packet = socket.recvfrom_nonblock(1024).first
-        new_data = RTCPTools.parse packet
-        t = new_data[:time]
-        @data[t] ||= { }
-        [:fractional_loss, :jitter].each do |k|
-          @data[t][k] ||= []
-          @data[t][k] << new_data[k]
+        if new_data = RTCPTools.parse packet
+          t = new_data[:time]
+          @data[t] ||= { }
+          [:fractional_loss, :jitter].each do |k|
+            @data[t][k] ||= []
+            @data[t][k] << new_data[k]
+          end
         end
       end
     end
