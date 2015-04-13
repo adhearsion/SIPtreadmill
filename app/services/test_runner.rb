@@ -158,6 +158,6 @@ class TestRunner
   end
 
   def has_stats_credentials?
-    @test_run.target.ssh_username.present? && !@password.nil?
+    @test_run.target.ssh_username.present? && @password.present?
   end
 end
