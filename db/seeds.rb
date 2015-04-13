@@ -243,10 +243,12 @@ user.admin = true
 user.admin_mode = true
 user.save
 
-test_run = TestRun.first_or_create! name: 'My simple test run',
-                        profile: profile,
-                        target: target,
-                        scenario: main_scenario,
-                        receiver_scenario: receiver_scenario
-test_run.user = user
-test_run.save!
+if TestRun.count == 0
+  test_run = TestRun.new name: 'My simple test run',
+                          profile: profile,
+                          target: target,
+                          scenario: main_scenario,
+                          receiver_scenario: receiver_scenario
+  test_run.user = user
+  test_run.save!
+end
