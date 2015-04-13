@@ -130,12 +130,13 @@
                   %h3 Calls Per Second / Concurrent Calls
                   #callRateChart{style: 'height: 250px'}
                     %svg
-                  %h2 Jitter
-                  #jitterChart{style: 'height: 250px'}
-                    %svg
-                  %h2 Packet Loss
-                  #packetLossChart{style: 'height: 250px'}
-                    %svg
+                  - if @test_run.has_qos_stats?
+                    %h2 Jitter
+                    #jitterChart{style: 'height: 250px'}
+                      %svg
+                    %h2 Packet Loss
+                    #packetLossChart{style: 'height: 250px'}
+                      %svg
                   %h2 Target Resources
                   #targetResourcesChart{style: 'height: 250px'}
                     %svg
@@ -162,15 +163,18 @@
                 .box-header
                   %span.title QoS
                 .box-content.padded
-                  %dl
-                    %dt Average jitter
-                    %dd= @test_run.avg_jitter
-                    %dt Max jitter
-                    %dd= @test_run.max_jitter
-                    %dt Average packet loss
-                    %dd= @test_run.avg_packet_loss
-                    %dt Max packet loss
-                    %dd= @test_run.max_packet_loss
+                  - if @test_run.has_qos_stats?
+                    %dl
+                      %dt Average jitter
+                      %dd= @test_run.avg_jitter
+                      %dt Max jitter
+                      %dd= @test_run.max_jitter
+                      %dt Average packet loss
+                      %dd= @test_run.avg_packet_loss
+                      %dt Max packet loss
+                      %dd= @test_run.max_packet_loss
+                  - else
+                    %span No QOS statistics were logged for this test run. This might happen if RTCP data was not received, or if QOS (jitter and packet loss) do not apply to your scenario (for example, testing registrations).
           .row-fluid
             .span12
               .box

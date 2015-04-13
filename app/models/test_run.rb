@@ -66,6 +66,10 @@ class TestRun < ActiveRecord::Base
     new_run
   end
 
+  def has_qos_stats?
+    self.rtcp_data.count > 0
+  end
+
   def max_jitter
     self.rtcp_data.maximum 'max_jitter'
   end
