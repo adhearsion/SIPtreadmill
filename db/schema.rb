@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150216173416) do
+ActiveRecord::Schema.define(:version => 20150414001332) do
 
   create_table "profiles", :force => true do |t|
     t.string   "name"
@@ -61,9 +61,12 @@ ActiveRecord::Schema.define(:version => 20150216173416) do
     t.float    "cps"
     t.integer  "concurrent_calls"
     t.float    "avg_call_duration"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
     t.string   "response_time"
+    t.integer  "successful_calls_cumulative"
+    t.integer  "failed_calls_cumulative"
+    t.float    "avg_call_duration_cumulative"
   end
 
   create_table "system_load_data", :force => true do |t|
@@ -117,10 +120,10 @@ ActiveRecord::Schema.define(:version => 20150216173416) do
     t.string   "phone_number"
     t.string   "provider"
     t.string   "uid"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
-    t.boolean  "admin",        :default => false
-    t.boolean  "admin_mode",   :default => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.boolean  "admin",                :default => false
+    t.boolean  "admin_mode",           :default => false
     t.string   "name"
     t.string   "authentication_token"
   end

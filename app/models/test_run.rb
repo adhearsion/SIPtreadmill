@@ -91,15 +91,15 @@ class TestRun < ActiveRecord::Base
   end
 
   def successful_calls
-    self.sipp_data.last.successful_calls if sipp_data.last
+    self.sipp_data.last.successful_calls_cumulative if sipp_data.last
   end
 
   def failed_calls
-    self.sipp_data.last.failed_calls if sipp_data.last
+    self.sipp_data.last.failed_calls_cumulative if sipp_data.last
   end
 
   def avg_call_duration
-    self.sipp_data.last.avg_call_duration if sipp_data.last
+    self.sipp_data.last.avg_call_duration_cumulative if sipp_data.last
   end
 
   def avg_cps
