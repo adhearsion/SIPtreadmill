@@ -2,6 +2,7 @@
   * Feature: Allow and document fully configuring Airbrake for error notification
   * Bugfix: Properly log RTCP collection errors
   * Bugfix: Correct local file upload directory
+  * Bugfix: Properly record final call counts for test runs
 
 # [1.0.1](https://github.com/mojolingo/SIPtreadmill/compare/1.0.0...1.0.1)
   * Allow running Rails console in production installed from packages. Minitest / TestUnit are required.
