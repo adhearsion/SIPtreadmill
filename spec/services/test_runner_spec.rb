@@ -14,7 +14,7 @@ describe TestRunner do
       calls_per_second: test_run.profile.calls_per_second,
       max_concurrent: test_run.profile.max_concurrent,
       transport_mode: test_run.profile.transport_type.to_s,
-      to_user: '+14044754840',
+      to: '+14044754840',
       from_user: 'sippppp',
       advertise_address: '10.5.5.1',
       options: {'p' => '101'},

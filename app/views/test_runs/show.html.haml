@@ -56,8 +56,8 @@
             %dt
               Target:
               = link_to @test_run.target_name, @test_run.target
-            %dd= "SIP user: #{@test_run.to_user}"
-            %dd= "Address: #{@test_run.target.address}"
+            %dd= "SIP user / address: #{@test_run.to}"
+            %dd= "Host: #{@test_run.target.address}"
 
             %dt Logs:
             %dd= link_to "Errors Report", @test_run.errors_report_file_url

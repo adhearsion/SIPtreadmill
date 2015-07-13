@@ -5,7 +5,7 @@ FactoryGirl.define do
     scenario { FactoryGirl.build(:scenario) }
     profile { FactoryGirl.build(:profile) }
     target { FactoryGirl.build(:target) }
-    to_user '+14044754840'
+    to '+14044754840'
     from_user 'sippppp'
     advertise_address '10.5.5.1'
     sipp_options 'p: "101"'
