@@ -1,7 +1,7 @@
 DEPENDENCIES
   apt
   freeswitch
-    git: https://github.com/mojolingo/freeswitch-cookbook.git
+    git: https://github.com/benlangfeld/freeswitch-cookbook.git
     revision: 50648a22478fee37f40d2793ae85910a3e47e234
     ref: 50648a2
   locale
