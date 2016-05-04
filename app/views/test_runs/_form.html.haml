@@ -35,7 +35,7 @@
         %span#target_display.help-inline.instructions.ajax_display_data
     .row-fluid
       .span12
-        = f.input :to_user, label: 'SIP destination (user portion)'
+        = f.input :to, label: 'SIP destination (user portion or full address)'
         = f.input :from_user, label: 'SIP source (user portion)'
         = f.input :advertise_address, label: 'SIP advertise address'
         = f.label :sipp_options, label: 'SIPp command line options in SippyCup (YAML) format'

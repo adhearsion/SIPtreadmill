@@ -41,7 +41,7 @@ gem 'classy_enum'
 
 gem 'thin'
 
-gem 'sippy_cup', '~> 0.6.0'
+gem 'sippy_cup', '~> 0.7.2'
 gem 'net-ssh'
 
 gem 'rails_12factor'

@@ -5,7 +5,7 @@ class TestRun < ActiveRecord::Base
   attr_accessible :target, :target_id
   attr_accessible :receiver_scenario, :receiver_scenario_id
   attr_accessible :registration_scenario, :registration_scenario_id
-  attr_accessible :to_user, :from_user, :advertise_address, :sipp_options
+  attr_accessible :to, :from_user, :advertise_address, :sipp_options
   belongs_to :profile
   belongs_to :scenario
   belongs_to :receiver_scenario, class_name: "Scenario"
@@ -50,7 +50,7 @@ class TestRun < ActiveRecord::Base
       target_id: self.target.id,
       description: self.description,
       from_user: self.from_user,
-      to_user: self.to_user,
+      to: self.to,
       advertise_address: self.advertise_address,
       sipp_options: self.sipp_options,
     )
